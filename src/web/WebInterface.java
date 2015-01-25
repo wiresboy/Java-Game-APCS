@@ -59,13 +59,14 @@ public class WebInterface {
 	}
 	
 	/**
-	 * Get maps available
-	 * @return String[][]. Dim 0 is list of String[] arrays, each of which is formated as ["name","description"]
+	 * Get all maps available.
+	 * @return String[][]. Dim 0 is list of String[] arrays, each of which is formated as ["name","description","creator_dispname"]
 	 */
 	public static String[][] getMapList()
 	{
 		return new String[][] {{"Name","Description"},{"Name2","Description2"}};
 	}
+	
 	
 	/**
 	 * downloads the specified map to a temporary folder, and returns the path to that folder as a string
@@ -76,6 +77,41 @@ public class WebInterface {
 	{
 		return null;
 	}
+	
+	
+	/**
+	 * uploads a new map to the server
+	 * @param MapName
+	 * @param MapDescription
+	 * @param MapFileLoc
+	 * @return true for success, false for failure
+	 */
+	public static int uploadMap(String MapName, String MapDescription, String MapFileLoc)
+	{
+		return -1;
+	}
+	
+	
+	/**
+	 * Join a game hosted by someone else
+	 * @param PlayerName if PlayerName is empty, it is treated as a request for random player. Otherwise requests the player with that display name to be host
+	 */
+	public static void requestToJoinPlayer(String PlayerName)
+	{
+		
+	}
+	
+	
+	/**
+	 * Request to host a game
+	 * @param worldName name of world to host. must be a valid world name
+	 * @return status: 1 = success; 0 = bad world name; -1 = connection/other issue
+	 */
+	public static int hostGame(String worldName)
+	{
+		return -1;
+	}
+	
 	
 	
 }
