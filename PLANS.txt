@@ -1,0 +1,19 @@
+┌────────────────────┐
+│ BASIC GAME DETAILS │
+└────────────────────┘
+• Side - scrolling platformer
+• 16 x 16 pixel tile format
+• 2-person multiplayer co-op over web-host
+• Multiple different characters to choose from
+• Level editor?
+• No lives; single hit death (like Mario)
+• On death, that particular player is sent back to their spawn point
+• All players must reach the end of a level to continue on to next level
+┌────────────────────┐
+│ LEVEL INFORMATION  │
+└────────────────────┘
+• Level data is saved to a .txt file in CSV format
+• Each CSV data point is a number that corresponds to a certain tile or entity
+• Smart AND dumb enemies
+• Buttons that activate stuff like doors, bridges, teleporters, etc.
+• 
