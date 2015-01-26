@@ -12,6 +12,7 @@ public class WebInterface {
 	private static String username;
 	private static String password;
 	private static String dispName;
+	private static String mapName;//name of map that is being hosted
 	
 	/**
 	 * @return true if successfully initialized, false if no internet connection.
@@ -37,9 +38,9 @@ public class WebInterface {
 	}
 	
 	/**
-	 * Used to change the display name of the user
+	 * Used to change the display name of the user. Will not change if the requested name already exists.
 	 * @param newName
-	 * @return new display name. This is returned incase the display name had illegal chars that were removed.
+	 * @return new display name. Stays same as old name if the requested name is already used.
 	 */
 	public static String changeDisplayName(String newName)
 	{
@@ -55,6 +56,8 @@ public class WebInterface {
 	public static Player updatePlayerStatus(Player p)
 	{
 		//TODO: figure out what data
+		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned?
+		
 		return p;//should return OTHER players data.
 	}
 	
@@ -112,6 +115,36 @@ public class WebInterface {
 		return -1;
 	}
 	
+	
+	/**
+	 * Check to see if someone has requested to join the game.
+	 * @return display name of player, or null if no player has requested yet
+	 */
+	public static String preGameUpdateHost()
+	{
+		return null;
+	}
+	
+	/**
+	 * Have the host decide whether or not 
+	 * @param accept 1=accept match; 0=deny match
+	 * @return true if success, false if fail for whatever reason.
+	 */
+	public static boolean acceptMatch(int accept)
+	{
+		return false;
+	}
+	
+	
+	/**
+	 * Check to see if host has accepted the request to join the game.
+	 * if joining a story-lvl, and if player lvl<story lvl, it will be denied with a -2 code.
+	 * @return -2:not allowed, -1:denial, 0:no status update, 1:accepted, game will begin
+	 */
+	public static int preGameUpdatePlayer()
+	{
+		return 0;
+	}
 	
 	
 }

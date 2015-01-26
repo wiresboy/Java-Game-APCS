@@ -1,0 +1,23 @@
+As a host:
+init;
+logIn;
+getMapList;
+hostGame;
+Loop(preGameUpdateHost)
+acceptMatch
+downloadMap
+Loop(updatePlayerStatus)
+
+
+As a player:
+init;
+logIn;
+requestToJoinPlayer;
+Loop(preGameUpdatePlayer)
+downloadMap
+Loop(updatePlayerStatus)
+
+
+when the game finishes, if it was a story map, the next map will be downloaded, otherwise it will return to the main screen. 
+changeDisplayName should only be called from the main menu, no where else.
+uploadMap can be used to upload a map. Can be called any time, but probably should only be used from a map creation screen.
