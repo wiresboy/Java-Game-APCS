@@ -7,8 +7,16 @@ import java.io.*;
 import java.net.*;
 
 public class Web {
-	private final String USER_AGENT = "Mozilla/5.0/fun";
+	private static final String USER_AGENT = "Mozilla/5.0/fun";
 	private static int lastResponseCode=0;
+	
+	
+	public static boolean init()
+	{
+		return true;
+	}
+	
+	
 	/**
 	 * Downloads file at URL specified
 	 * @param URL URL to download
@@ -25,11 +33,13 @@ public class Web {
 	 * @param params - Array of name/data pairs for post data{{"name","data"},{"name2","data2"}}. Data doesn't need to be encoded
 	 * @return String of data received
 	 */
-	public static String post(String URL, String[][] params)
+	public static String post(String URL, String[][] params) throws Exception
 	{
-		
-		//TODO: convert array into string
-		return post(URL, "");
+		String params_encoded= "";
+		for (String[] a:params)
+			params_encoded += a[0]+"="+a[1]+",";
+		System.out.println("Encoded POST parameters are: "+params_encoded);
+		return post(URL, params_encoded);
 	}
 	
 	
@@ -39,9 +49,10 @@ public class Web {
 	 * @param params encoded POST parameters
 	 * @return String of data received. If response code is needed, call LastResponseCode()
 	 */
-	public static String post(String URL, String params)
+	public static String post(String URL, String params) throws Exception
 	{
-		
+		HttpURLConnection con = openConnection(URL, "POST");
+		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 		return null;
 	}
 	
@@ -54,6 +65,17 @@ public class Web {
 	public static int LastResponseCode()
 	{
 		return lastResponseCode;
+	}
+	
+	
+	private static HttpURLConnection openConnection(String url, String method) throws Exception
+	{
+
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		con.setRequestMethod(method);
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		return con;
 	}
 	
 }
