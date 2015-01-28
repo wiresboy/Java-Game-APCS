@@ -10,6 +10,15 @@ public class Web {
 	private static final String USER_AGENT = "Mozilla/5.0/fun";
 	private static int lastResponseCode=0;
 	
+	public static void main(String[] args)
+	{
+		try {
+			post("https://selfsolve.apple.com/wcResults.do","sn=C02G8416DRJM&cn=&locale=&caller=&num=12345");
+		} catch (Exception e) {
+			System.out.println("Error downloading file!");
+			e.printStackTrace();
+		}
+	}
 	
 	public static boolean init()
 	{
@@ -53,10 +62,42 @@ public class Web {
 	{
 		HttpURLConnection con = openConnection(URL, "POST");
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-		return null;
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.writeBytes(params);
+		wr.flush();
+		wr.close();
+		
+		lastResponseCode=con.getResponseCode();
+		
+		System.out.println("\nSending 'POST' request to URL : " + URL);
+		System.out.println("Post parameters : " + params);
+		System.out.println("Response Code : " + lastResponseCode);
+		
+		StringBuffer response = bufferedRead(con);
+		
+		return response.toString();
 	}
 	
 	
+	public static String get(String URL, String params) throws Exception
+	{
+		return get(URL+"?"+params);
+	}
+	
+	public static String get(String URL) throws Exception
+	{
+		HttpURLConnection con = openConnection(URL, "GET");
+		
+		lastResponseCode=con.getResponseCode();
+		
+		System.out.println("\nSending 'GET' request to URL : " + URL);
+		System.out.println("Response Code : " + lastResponseCode);
+		
+		StringBuffer response = bufferedRead(con);
+		
+		return response.toString();
+	}
 	
 	/**
 	 * Get response code of last connection
@@ -68,14 +109,44 @@ public class Web {
 	}
 	
 	
+	/**
+	 * Open a HttpURLConnection to the URL specified with method specified
+	 * @param url
+	 * @param method
+	 * @return HttpURLConnection that can be used.
+	 * @throws Exception
+	 */
 	private static HttpURLConnection openConnection(String url, String method) throws Exception
 	{
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		con.setRequestMethod(method);
-		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestMethod(method);//set GET or POST method
+		con.setRequestProperty("User-Agent", USER_AGENT);//set (fake) User agent
 		return con;
+	}
+	
+	/**
+	 * Read data response from a URL connection
+	 * @param con connection to read from
+	 * @return StringBuffer holding contents of response
+	 * @throws IOException 
+	 */
+	private static StringBuffer bufferedRead(HttpURLConnection con) throws IOException
+	{
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+ 
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+ 
+		//print result
+		System.out.println("Response: "+response.toString());
+		return response;
 	}
 	
 }
