@@ -5,20 +5,13 @@ package web;
 
 import java.io.*;
 import java.net.*;
+import java.util.Random;
 
 public class Web {
 	private static final String USER_AGENT = "Mozilla/5.0/fun";
 	private static int lastResponseCode=0;
+	private static Random gen = new Random();
 	
-	public static void main(String[] args)
-	{
-		try {
-			downloadFile("http://www.google.com/");
-		} catch (Exception e) {
-			System.out.println("Error downloading file!");
-			e.printStackTrace();
-		}
-	}
 	
 	
 	/**
@@ -32,7 +25,8 @@ public class Web {
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
         
-        String saveDir = "H:\\fileDownloaded.html";//System.getProperty("java.io.tmpdir");
+        System.out.println(System.getProperty("user.dir")+"\\.tmp");
+        String saveDir = System.getProperty("user.dir")+"\\.tmp";
         System.out.println(saveDir);
  
         // always check HTTP response code first
@@ -54,6 +48,10 @@ public class Web {
                 fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1,
                         fileURL.length());
             }
+            
+            if (fileName.equals(""))//was the filename set?
+            	fileName = "\\tmp-"+gen.nextInt(10000000);//appened a 7 digit random number to hopefully prevent overlap issues.
+            	
  
             System.out.println("Content-Type = " + contentType);
             System.out.println("Content-Disposition = " + disposition);
@@ -76,8 +74,9 @@ public class Web {
             outputStream.close();
             inputStream.close();
  
-            System.out.println("File downloaded");
+            System.out.println("File downloaded and saved at: "+saveFilePath);
             httpConn.disconnect();
+            
             return saveFilePath;
             
         } else {
