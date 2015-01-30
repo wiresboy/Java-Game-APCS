@@ -86,6 +86,31 @@ public class Web {
         }
 	}
 	
+	
+	/**
+	 * Upload file via PUT with GET arguments
+	 * @param URL to upload to
+	 * @param fileLoc file to upload
+	 * @return String response
+	 */
+	public static String putGet(String URL, String fileLoc) throws Exception
+	{
+		HttpURLConnection con = openConnection(URL, "POST");
+		con.setRequestProperty("Content-Type", "text/csv");
+		con.setDoOutput(true);
+		
+		OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
+		
+		
+		
+		out.write("FILE TEXT HERE");
+		out.close();
+		
+		StringBuffer response = bufferedRead(con);
+		return response.toString();
+	}
+	
+	
 	/**
 	 * get contents of url with POST data
 	 * @param URL - url to download
@@ -171,7 +196,7 @@ public class Web {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		con.setRequestMethod(method);//set GET or POST method
+		con.setRequestMethod(method);//set PUT, GET or POST method
 		con.setRequestProperty("User-Agent", USER_AGENT);//set (fake) User agent
 		return con;
 	}
@@ -188,12 +213,12 @@ public class Web {
 		        new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
- 
+		
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
 		in.close();
- 
+		
 		//print result
 		System.out.println("Response: "+response.toString());
 		return response;
