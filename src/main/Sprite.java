@@ -17,6 +17,9 @@ public class Sprite {
 		this.id = id_count++;
 	}
 	public void draw(Graphics2D g){
+		draw(g,0);
+	}
+	public void draw(Graphics2D g, int offset){//used when the screen is scrolling.
 		if(image != null)
 			g.drawImage(image,x,y,null);
 	}
