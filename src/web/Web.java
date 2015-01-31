@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class Web {
 	private static final String USER_AGENT = "Mozilla/5.0/fun";
+	private static final String boundary =  "***&&34#7&8*9**";//some string that will never appear in a file being uploaded
 	private static int lastResponseCode=0;
 	private static Random gen = new Random();
 	
@@ -33,7 +34,7 @@ public class Web {
         if (responseCode == HttpURLConnection.HTTP_OK) {
             String fileName = "";
             String disposition = httpConn.getHeaderField("Content-Disposition");
-            String contentType = httpConn.getContentType();
+            String contentType = httpConn.getContentType(); 
             int contentLength = httpConn.getContentLength();
  
             if (disposition != null) {
@@ -88,12 +89,12 @@ public class Web {
 	
 	
 	/**
-	 * Upload file via PUT with GET arguments
+	 * Upload file via PUT. probably will not be used.
 	 * @param URL to upload to
 	 * @param fileLoc file to upload
 	 * @return String response
 	 */
-	public static String putGet(String URL, String fileLoc) throws Exception
+	public static String put(String URL, String fileLoc) throws Exception
 	{
 		HttpURLConnection con = openConnection(URL, "POST");
 		con.setRequestProperty("Content-Type", "text/csv");
@@ -101,13 +102,60 @@ public class Web {
 		
 		OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
 		
+		Reader reader = new FileReader(fileLoc);
+
+		int data = reader.read();
+		while(data != -1) {
+			out.write(data);
+			data = reader.read();
+		}
+		reader.close();
 		
-		
-		out.write("FILE TEXT HERE");
 		out.close();
 		
 		StringBuffer response = bufferedRead(con);
 		return response.toString();
+	}
+	
+	/**
+	 * Upload a file via the POST method.
+	 * @param URL
+	 * @param fileLoc
+	 * @return String: contents of returned data(empty string if none)
+	 */
+	public static String postFile(String URL, String fileLoc) throws Exception
+	{
+		File f = new File(fileLoc);
+		
+		HttpURLConnection con = openConnection(URL,"POST");
+		con.setUseCaches(false);
+		con.setDoOutput(true);
+		con.setRequestProperty("Connection", "Keep-Alive");
+		con.setRequestProperty("Cache-Control", "no-cache");
+		con.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
+		
+		DataOutputStream request = new DataOutputStream(con.getOutputStream());
+		request.writeBytes("--" + boundary + "\r\n");
+		request.writeBytes("Content-Disposition: form-data; name=\"" + "file" + "\";filename=\"" + f.getName() + "\"\r\n");
+		request.writeBytes("\r\n");
+		
+		
+		Reader reader = new FileReader(f);
+
+		int data = reader.read();
+		while(data != -1) {
+			request.writeByte(data);
+			data = reader.read();
+		}
+		reader.close();
+		
+		
+		request.writeBytes("\r\n--"+boundary+"--\r\n");//end content wrapper
+		
+		request.flush();//flush output buffer
+		request.close();//and close
+		
+		return bufferedRead(con).toString();
 	}
 	
 	
@@ -160,6 +208,7 @@ public class Web {
 		return get(URL+"?"+params);
 	}
 	
+	
 	public static String get(String URL) throws Exception
 	{
 		HttpURLConnection con = openConnection(URL, "GET");
@@ -173,6 +222,7 @@ public class Web {
 		
 		return response.toString();
 	}
+	
 	
 	/**
 	 * Get response code of last connection
@@ -221,6 +271,7 @@ public class Web {
 		
 		//print result
 		System.out.println("Response: "+response.toString());
+		con.disconnect();//disconnect connection
 		return response;
 	}
 	
