@@ -216,7 +216,7 @@ public class Map {
 	public void draw(Graphics2D g){
 		int rowMin = (mapOffset/16);//where can we start drawing the images?
 		int rowMax = rowMin+screenWidthBlocks+1;//add 1 so that the blocks on the very right are still drawn
-		rowMax = Math.min(rowMax,tiles.length);//don't accidantally try to access blocks that don't exist, so limit rowMax to the map's width.
+		rowMax = Math.min(rowMax,tiles.length);//don't accidentally try to access blocks that don't exist, so limit rowMax to the map's width.
 		
 		for(int r = rowMin; r < rowMax; r++){
 			for(int c = 0; c < tiles[0].length; c++){

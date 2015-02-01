@@ -30,11 +30,11 @@ public class Player extends Sprite{
 		indexAdd = 0;
 		images = new ArrayList<BufferedImage>();
 		BufferedImage start = null;
-		try {
+		//try {
 			start = ImageManipulator.loadImage("link.png");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//} catch (IOException e) {
+		//	e.printStackTrace();
+		//}
 		for(int yy = 0; yy<48; yy+=16){
 			for(int xx = 0; xx<64; xx+=16){
 				images.add(ImageManipulator.scale(ImageManipulator.cropImage(start, xx,yy,16,16),32));
@@ -42,21 +42,21 @@ public class Player extends Sprite{
 		}
 		swordImages = new ArrayList<BufferedImage>();
 		start = null;
-		try {
+		//try {
 			start = ImageManipulator.loadImage("sword_brown.png");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//} catch (IOException e) {
+		//	e.printStackTrace();
+		//}
 		for(int xx = 0; xx<64; xx+=16){
 				swordImages.add(ImageManipulator.scale(ImageManipulator.cropImage(start, xx,0,16,16),32));
 		}
 		attackImages = new ArrayList<BufferedImage>();
 		start = null;
-		try {
+		//try {
 			start = ImageManipulator.loadImage("link_attacking.png");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		//} catch (IOException e) {
+		//	e.printStackTrace();
+		//}
 		for(int xx = 0; xx<64;xx+=16){
 			attackImages.add(ImageManipulator.scale(ImageManipulator.cropImage(start,xx,0,16,16),32));
 		}
