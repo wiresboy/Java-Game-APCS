@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private static final int PWIDTH = 16*16*2;   // size of panel
 	private static final int PHEIGHT = (10*16+9)*2; 
 
-	private static int MAP_ID = 0;
+	//private static int MAP_ID = 0;
 
 	private static final int NO_DELAYS_PER_YIELD = 16;
 	/* Number of frames with a delay of 0 ms before the animation thread yields
@@ -29,10 +29,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 	private long period;                // period between drawing in _nanosecs_
 
-	private int tempX, tempY;
+	//private int tempX, tempY;
 
 	private Start mainFrame;
-	private Player player;          // the sprites
+	private Player player; 
 
 	private long gameStartTime;   // when the game started
 	private int timeSpentInGame;
@@ -53,13 +53,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private boolean showHelp;
 	private BufferedImage helpIm;
 
-	private int numHits = 0;   // the number of times the player has been hit
+	//private int numHits = 0;
 
 	private ArrayList<Integer> walkableTiles;
 
 	private static int[][] mapIndexes = new int[8][16];
 	private int mapRow = 7, mapColumn = 7;
-
+	private Map map;
 	public GamePanel(Start frame, long period){
 		mainFrame = frame;
 		this.period = period;
@@ -71,19 +71,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		setFocusable(true);
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
-		int index = 0;
-		for(int r = 0;r<8;r++)
-			for(int c = 0;c<16;c++){
-				mapIndexes[r][c] = index;
-				index++;
-			}
-		walkableTiles = new ArrayList<Integer>();
-		walkableTiles.add(2);
-		walkableTiles.add(8);
-		walkableTiles.add(14);
-		walkableTiles.add(22);
-		walkableTiles.add(28);
-		walkableTiles.add(34);
+		map = new Map("testmap");
+		player.setMap(map);
 	}  // end of GamePanel
 
 	private void processKey(KeyEvent e){
@@ -243,7 +232,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		g.setColor(Color.red);
 		g.setFont(msgsFont);
 		
-		g.drawString("Time: " + timeSpentInGame + " secs"+"   Image Index: "+player.imageIndex(), 0,15);
+		g.drawString("Time: " + timeSpentInGame + " secs", 0,15);
 		g.setColor(Color.black);
 	}  // end of reportStats()
 	

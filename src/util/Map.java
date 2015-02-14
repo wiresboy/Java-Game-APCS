@@ -22,18 +22,11 @@ public class Map {
 			platforms = new SpriteMap("tiles\\platform.png",3,4).getSprites(),
 			misc = new SpriteMap("tiles\\misc.png",2,3).getSprites();
 	public static final BufferedImage error = misc[0];
-	private int mapOffset = 0;//offset of map in pixels
-	private int screenWidth;//pixels
-	private int screenWidthBlocks;//width in blocks
-	private final int mapWidth = 256*16;//pixels
-	
-	public Map(String filename, int _screenWidth){
-		screenWidth = _screenWidth;
+	public Map(String filename){
 		animatedTiles = new ArrayList<AnimatedTile>();
 		tiles = new Tile[32][256];
 		loadMap(filename);
 	}
-	
 	private void loadMap(String filename){
 		String dir = System.getProperty("user.dir");
 		File f = new File(dir+"\\mapdata\\"+filename+".txt");
@@ -58,11 +51,10 @@ public class Map {
 				scan.useDelimiter(",");
 				while(scan.hasNext())
 					values.add(scan.next());
-				Integer[] temp = (Integer[])values.toArray();
 				int[] array = new int[256];
 				int i;
-				for(i = 0; i < temp.length; i++)
-					array[i] = temp[i];
+				for(i = 0; i < values.size(); i++)
+					array[i] = Integer.parseInt(values.get(i));
 				if(i < array.length)
 					for(; i < array.length; i++)
 						array[i] = 0;
@@ -80,7 +72,6 @@ public class Map {
 		loadTiles();
 		// DONE!
 	}
-	
 	private void loadTiles(){
 		for(int r = 0; r < mapdata.length; r++){
 			for(int c = 0; c < mapdata[0].length; c++){
@@ -190,39 +181,26 @@ public class Map {
 					case 73: // animated scrolling computer screen
 						tile = new AnimatedTile(x,y,0,new BufferedImage[][] {new SpriteMap("tiles\\animated\\computer.png",4,1).getSprites()});
 						animatedTiles.add((AnimatedTile)tile);
-						break;
 					case 74: // animated graph thing
 						tile = new AnimatedTile(x,y,0,new BufferedImage[][] {new SpriteMap("tiles\\grapher.png",4,1).getSprites()});
 						animatedTiles.add((AnimatedTile)tile);
-						break;
 					case 75: // animated red field thing
 						tile = new AnimatedTile(x,y,0,new BufferedImage[][] {new SpriteMap("tiles\\red_field.png",4,1).getSprites()});
 						animatedTiles.add((AnimatedTile)tile);
-						break;
-					default: //just in case none of those caught it:
-						tile = new Tile(x,y,whiteTiles[5]);
-						break;
 					}
 					tiles[r][c] = tile;
 				}
 			}
 		}
 	}
-
-	/**
-	 * Draws the map, but only the tiles which will be shown on the screen.
-	 * @param g graphics object to use
-	 */
 	public void draw(Graphics2D g){
-		int rowMin = (mapOffset/16);//where can we start drawing the images?
-		int rowMax = rowMin+screenWidthBlocks+1;//add 1 so that the blocks on the very right are still drawn
-		rowMax = Math.min(rowMax,tiles.length);//don't accidentally try to access blocks that don't exist, so limit rowMax to the map's width.
-		
-		for(int r = rowMin; r < rowMax; r++){
-			for(int c = 0; c < tiles[0].length; c++){
-				tiles[r][c].draw(g, mapOffset);
-			}
-		}	
+
+		for(Tile[] tList : tiles)
+			for(Tile t : tList)
+				if(t != null)
+					t.draw(g);
+	}
+	public Tile getTile(int pixelX, int pixelY){
 		
 	}
 }
