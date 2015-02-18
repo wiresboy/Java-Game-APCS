@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 public class Start extends JFrame implements WindowListener{
 	private static final long serialVersionUID = 6074277649488997023L;
-	//private static int DEFAULT_FPS = 30;      // 40 is too fast! 
+	private static int DEFAULT_FPS = 30;      // 40 is too fast! 
 	
 	private GamePanel panel;        // where the game is drawn
 	
@@ -46,11 +46,11 @@ public class Start extends JFrame implements WindowListener{
 	
 	// ----------------------------------------------------
 	
-	/*public static void main(String args[]){ 
+	public static void main(String args[]){ 
 		long period = (long) 1000.0/DEFAULT_FPS;
 		// System.out.println("fps: " + DEFAULT_FPS + "; period: " + period + " ms");
 		new Start(period*1000000L);    // ms --> nanosecs 
-	}*/
+	}
 
 } // end of class
 

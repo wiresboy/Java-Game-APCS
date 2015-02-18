@@ -189,18 +189,37 @@ public class Map {
 						animatedTiles.add((AnimatedTile)tile);
 					}
 					tiles[r][c] = tile;
+				}else{
+					tiles[r][c] = null;
 				}
 			}
 		}
 	}
 	public void draw(Graphics2D g){
-
-		for(Tile[] tList : tiles)
+		
+		/*for(Tile[] tList : tiles)
 			for(Tile t : tList)
 				if(t != null)
 					t.draw(g);
+		*/
+		for(int y = 0; y < tiles.length; y++){
+			for(int x = 0; x < tiles[0].length; x++){
+				Tile t = getTile(x,y);
+				if(t != null)
+					t.draw(g);
+				else{
+					g.setColor(Color.GRAY);
+					g.fillRect(x*16, y*16, 16, 16);
+				}	
+			}
+		}
+		 
 	}
-	public Tile getTile(int pixelX, int pixelY){
-		
+	public Tile getTile_Pixel(int pixelX, int pixelY){
+		//TODO: make a pixelToTile converter
+		return null;
+	}
+	public Tile getTile(int x, int y){
+		return tiles[y][x];
 	}
 }

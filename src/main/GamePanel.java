@@ -73,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		addKeyListener(this); 
 		map = new Map("testmap");
 		player.setMap(map);
+		setBackground(Color.GRAY);
 	}  // end of GamePanel
 
 	private void processKey(KeyEvent e){
@@ -84,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		// game-play keys
 		if (!isPaused && !gameOver) {
 			// move the sprite and ribbons based on the arrow key pressed
-			//move LEFT
+			/*//move LEFT
 			if (keyCode == KeyEvent.VK_LEFT){
 								
 			}
@@ -98,7 +99,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 			//move DOWN
 			}else if (keyCode == KeyEvent.VK_DOWN) {
 								
-			}
+			}*/
+			player.processKey(e);
 			
 		}
 	}  // end of processKey()
@@ -214,9 +216,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		*/
 		Graphics2D g = (Graphics2D)dbg;
 		
+		map.draw(g);
 		player.draw(g);
 		g.setColor(Color.WHITE);
 		g.drawString("X:"+player.x+" Y:"+player.y,0,10);
+		
+		
 		//END DRAWING GAME SECTION
 		if (gameOver)
 			gameOverMessage(dbg);
