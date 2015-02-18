@@ -208,7 +208,7 @@ public class Map {
 				if(t != null)
 					t.draw(g);
 				else{
-					g.setColor(Color.GRAY);
+					g.setColor(Color.LIGHT_GRAY);
 					g.fillRect(x*16, y*16, 16, 16);
 				}	
 			}

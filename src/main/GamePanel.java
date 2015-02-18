@@ -13,9 +13,12 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 	private static final long serialVersionUID = 1L;
-	private static final int PWIDTH = 16*16*2;   // size of panel
-	private static final int PHEIGHT = (10*16+9)*2; 
-
+	public static final int PWIDTH = 16*16*2;   // size of panel
+	public static final int PHEIGHT = (10*16+9)*2; 
+	public static final int DHEIGHT = 32*16;
+	public static final int DWIDTH= 256*16;
+	
+	public static int offset = 0;
 	//private static int MAP_ID = 0;
 
 	private static final int NO_DELAYS_PER_YIELD = 16;
@@ -191,7 +194,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	private void gameRender(){
 		if (dbImage == null){
-			dbImage = createImage(PWIDTH, PHEIGHT);
+			dbImage = createImage(DWIDTH, DHEIGHT);
 		if (dbImage == null) {
 			System.out.println("dbImage is null");
 			return;
@@ -258,7 +261,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		try {
 			g = this.getGraphics();
 			if ((g != null) && (dbImage != null))
-				g.drawImage(dbImage, 0, 0, null);
+				g.drawImage(dbImage, -offset, 0, null);
 			// Sync the display on some systems.
 			// (on Linux, this fixes event queue problems)
 			Toolkit.getDefaultToolkit().sync();
