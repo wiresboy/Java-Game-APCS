@@ -14,7 +14,6 @@ public class Web {
 	private static Random gen = new Random();
 	
 	
-	
 	/**
 	 * Downloads file at URL specified
 	 * @param URL URL to download

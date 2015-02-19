@@ -4,6 +4,8 @@ package web;
  * 
  */
 
+import java.util.ArrayList;
+
 import entity.*;
 
 
@@ -13,15 +15,26 @@ public class WebInterface {
 	private static String password;
 	private static String dispName;
 	private static String mapName;//name of map that is being hosted
+
+	private static ArrayList<Shareable> toSend = new ArrayList<Shareable>();
+	private static ArrayList<Shareable> toReceive = new ArrayList<Shareable>();
 	
 	/**
-	 * @return true if successfully initialized, false if no internet connection.
+	 * initialize the web connection, make sure that everything is ready.
+	 * 
+	 * @return true if successfully initialized, false if no Internet connection.
 	 */
 	public static boolean init()
 	{
 		
 		return false;
 	}
+	
+	public static void addItemToSend(Shareable item)
+	{
+		toSend.add(item);
+	}
+	
 	
 	/**
 	 * 
