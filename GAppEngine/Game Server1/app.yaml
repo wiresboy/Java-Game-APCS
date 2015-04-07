@@ -1,4 +1,4 @@
-application: Game Server1
+application: gameserver1
 version: 1
 runtime: php
 api_version: 1
@@ -9,12 +9,9 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: (new_user.php)
-  script: new_user.php
-
-- url: (upload_file.php)
+- url: (/upload_file.php)
   script: upload_file.php
 
+- url: (/player.php)
+  script: player.php
 
-- url: .*
-  static_files: error.html
