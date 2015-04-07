@@ -34,18 +34,22 @@ $gameDir = "/player_status/"+$GameID+"/";
 $MyFileDir = $gameDir+"u"+$MyID+".player";
 $TheirFileDir = $gameDir+"u"+$TheirID+".player";
 
+echo $gameDir//only used for manual testing
 
 //make sure that the game exists- if it doesn't, then the map doesn't exist, so 
 //set the status code to 412 and exit.
 if (is_dir($gameDir))
 {
+	echo "isn't a directory!";//only used for manual testing
 	http_response_code(412);
 	exit;
 }
 
-if (!file_exists($gameDir+$TheirID))
+echo "<br/>";//only used for manual testing
+
+if (!file_exists($TheirFileDir))
 {
-	header("HTTP/1.0 418 I'm A Teapot");//can't use http_response_code since that only allows known responces
+	header("HTTP/1.0 418 I'm A Teapot");//can't use http_response_code since that only allows known responses
 	exit;
 }
 
