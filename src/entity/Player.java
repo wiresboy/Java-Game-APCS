@@ -120,8 +120,8 @@ public class Player extends Sprite implements Shareable{
 	}
 	
 	@Override
-	public String getIdentifier() {
+	public int getIdentifier() {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 }
