@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Web {
 	private static final String USER_AGENT = "Mozilla/5.0/fun";
-	private static final String boundary =  "***&&34#7&8*9**";//some string that will never appear in a file being uploaded
+	private static final String boundary =  "***&°°°&34#7&8*9**";//some string that will never appear in a file being uploaded
 	private static int lastResponseCode=0;
 	private static Random gen = new Random();
 	
