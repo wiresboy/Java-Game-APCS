@@ -43,11 +43,11 @@ public class DataTransmitter {
 			{
 				CSV += encode(item) + columnDelimiter;//add item and column terminator
 			}
-			CSV = CSV.substring(0, CSV.length()-2);
+			CSV = CSV.substring(0, CSV.length()-1);//remove final column terminator.
 			CSV+=rowDelimiter;//add line break
 		}
 		//TODO: Will we need to retrun the line break from the end of the string?
-		CSV = CSV.substring(0, CSV.length()-2);
+		CSV = CSV.substring(0, CSV.length()-1);
 		
 		return CSV;
 	}
@@ -58,22 +58,24 @@ public class DataTransmitter {
 	 */
 	private static String[][] fromCSV(String data)
 	{
-		ArrayList<String[]> decodedList = new ArrayList<String[]>();
-		String[] rows = data.split(columnDelimiterRegex); //split data into it's rows
-
-		System.out.println("\n\nrows1:");
-		printArray(rows);
-		System.out.println("\nrows length:"+rows.length);
+		String[][] output = null;
+		String[] rows = data.split(rowDelimiterRegex); //split data into it's rows
 		
-		for (String row : rows)
+		output = new String[rows.length][];
+		
+		/*
+		System.out.println("rows1:");
+		printArray(rows);
+		System.out.println("\nrows length:"+rows.length);//*/
+		
+		for (int rowIndex = 0; rowIndex<rows.length; rowIndex++)
 		{
-			System.out.println("\n"+row+" split:");
-			printArray(row.split(rowDelimiterRegex));//needs \ to escape . being a wildcard.
-			decodedList.add(row.split(rowDelimiterRegex));//split row into columns and append to list.
-			//TODO: Decode each element of the array!
+			output[rowIndex] = rows[rowIndex].split(columnDelimiterRegex);//split row into columns and append to list.
+			for (int colIndex=0; colIndex < output[rowIndex].length; colIndex++)
+				output[rowIndex][colIndex] = decode(output[rowIndex][colIndex]);
 		}
 		
-		return (String[][]) decodedList.toArray();
+		return output;
 	}
 	
 	
@@ -85,8 +87,6 @@ public class DataTransmitter {
 	private static String encode(String a)
 	{
 		return byteArrayToString(b64encoder.encode(stringToByteArray(a))).replace("+", "-").replace("/", "_");
-		
-		
 	}
 	/**
 	 * Decodes a string encoded with b64- but with "-" and "_", instead of "+" and "/"
@@ -111,7 +111,10 @@ public class DataTransmitter {
 	
 	private static void printArray(String[] a)
 	{
+		String toPrint = "";
 		for (String b:a)
-			System.out.println(b+", ");
+			toPrint+= b+" | ";
+		System.out.println(toPrint.substring(0, toPrint.length()-3));
 	}
 }
+
