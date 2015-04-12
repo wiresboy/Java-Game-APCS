@@ -24,6 +24,14 @@
  * 
  */
 
+if (not isset($_GET["GameID"],$_GET["MyID"],$_GET["MyData"],$_GET["TheirID"]))
+{
+	http_response_code(400);//bad request, since not all of the parameters were specified
+	echo "Missing some parameters!";
+	exit;
+}
+
+
 $GameID  = cleanString( $_GET["GameID"]  );
 $MyID    = cleanString( $_GET["MyID"]    );
 $MyData  = $_GET["MyData"];
