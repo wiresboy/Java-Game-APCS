@@ -1,0 +1,1 @@
+Each folder in this directory represents a game world.

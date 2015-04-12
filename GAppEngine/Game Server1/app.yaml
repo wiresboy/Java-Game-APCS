@@ -1,5 +1,5 @@
-application: gameserver1
-version: 1
+application: java-game-apcs
+version: 1.0.1
 runtime: php
 api_version: 1
 threadsafe: yes
@@ -14,4 +14,7 @@ handlers:
 
 - url: (/player.php)
   script: player.php
+  
+- url: (/addGame.php)
+  script: addGame.php
 

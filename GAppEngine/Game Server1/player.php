@@ -29,34 +29,34 @@ $MyID    = cleanString( $_GET["MyID"]    );
 $MyData  = $_GET["MyData"];
 $TheirID = cleanString( $_GET["TheirID"] );
 
-$gameDir = "/player_status/"+$GameID+"/";
+$gameDir = "player_status/".$GameID."/";
 
-$MyFileDir = $gameDir+"u"+$MyID+".player";
-$TheirFileDir = $gameDir+"u"+$TheirID+".player";
-
-echo $gameDir//only used for manual testing
+$MyFileDir = $gameDir."u".$MyID.".player";
+$TheirFileDir = $gameDir."u".$TheirID.".player";
 
 //make sure that the game exists- if it doesn't, then the map doesn't exist, so 
 //set the status code to 412 and exit.
-if (is_dir($gameDir))
+if (!is_dir($gameDir))
 {
-	echo "isn't a directory!";//only used for manual testing
 	http_response_code(412);
+	echo "$gameDir isn't a directory!";//only used for manual testing
 	exit;
 }
 
-echo "<br/>";//only used for manual testing
-
-if (!file_exists($TheirFileDir))
-{
-	header("HTTP/1.0 418 I'm A Teapot");//can't use http_response_code since that only allows known responses
-	exit;
-}
 
 //write my data
 $me = fopen($MyFileDir,"w");
 fwrite($me, $MyData);
 fclose($me);
+
+
+if (!file_exists($TheirFileDir))
+{
+	header("HTTP/1.0 418 I'm A Teapot");//can't use http_response_code since that only allows known responses
+	echo "$TheirFileDir doesn't exist!<br />";
+	echo "GameID= $GameID, MyID= $MyID, MyData= $MyData, TheirID= $TheirID, MyFileDir= $MyFileDir, TheirFileDir= $TheirFileDir";
+	exit;
+}
 
 //read their data
 $them = fopen($TheirFileDir,"r");
@@ -64,6 +64,8 @@ $dataForThem = fread($them,filesize($TheirFileDir));
 fclose($them);
 
 echo $dataForThem;//return the data representing the other player.
+
+
 
 function cleanString($str)
 {
