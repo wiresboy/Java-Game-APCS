@@ -1,5 +1,5 @@
 application: java-game-apcs
-version: 1.0.1
+version: 1-01
 runtime: php
 api_version: 1
 threadsafe: yes
