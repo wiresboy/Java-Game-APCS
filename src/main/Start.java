@@ -1,5 +1,8 @@
 package main;
 import javax.swing.*;
+
+import web.WebInterface;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -46,7 +49,8 @@ public class Start extends JFrame implements WindowListener{
 	
 	// ----------------------------------------------------
 	
-	public static void main(String args[]){ 
+	public static void main(String args[]){
+		WebInterface.init();//initialize the Web Interface.
 		long period = (long) 1000.0/DEFAULT_FPS;
 		// System.out.println("fps: " + DEFAULT_FPS + "; period: " + period + " ms");
 		new Start(period*1000000L);    // ms --> nanosecs 

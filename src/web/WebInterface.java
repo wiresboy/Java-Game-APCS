@@ -10,27 +10,101 @@ import entity.*;
 
 
 public class WebInterface {
-	private static final String baseURL = "http://scoutgear.x10.mx/apcs/";
-	private static String username;
-	private static String password; //NOT USED FOR FIRST VERSION
-	private static String dispName; //NOT USED FOR FIRST VERSION
-	private static String mapName;//name of map that is being hosted
-
-	private static ArrayList<Shareable> toSend = new ArrayList<Shareable>();// NOT USED FOR FIRST VERSION
-	private static ArrayList<Shareable> toReceive = new ArrayList<Shareable>();// NOT USED FOR FIRST VERSION
+	private static final String baseURL = "http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
+	private static final String playerURL = baseURL + "player.php";
+	private static String username;//MyID.
+	private static String theirUsername;//username of the other player. Doubles as theirID.
+	private static String mapName;//name of map that is being hosted, doubles as GameID in v1, this may change later.
 	
-	/**
+
+	
+	/** 
+	 * MUST call on startup
 	 * initialize the web connection, make sure that everything is ready.
-	 * 
 	 * @return true if successfully initialized, false if no Internet connection.
 	 */
 	public static boolean init()
 	{
-		username = null;// NOT USED FOR FIRST VERSION
-		password = null;// NOT USED FOR FIRST VERSION
 		mapName = "testmap.txt";
 		return false;
 	}
+	
+	
+	/**
+	 * initilizes a game connection. This will eventually become more advanced.
+	 * @param myID my id that the other player will enter to connect with me.
+	 * @param theirID if of the other player, used to connect to them. Must be identical (except case) to their name.
+	 * @param gameID id of which game is being played. Currently should be the same as the game file (without the extension).
+	 */
+	public static void v1Init(String myID, String theirID, String gameID)
+	{
+		username = myID;
+		theirUsername = theirID;
+		mapName = gameID;
+	}
+	
+	
+	private static final int HTTPResponseSuccess = 200;
+	private static final int HTTPResponseFileNotFound = 404;
+	private static final int HTTPResponseMapUnknown = 412;
+	private static final int HTTPResponseOtherPlayerNotConnected = 418;
+	
+	/**
+	 * Updates player status and gets other player's status
+	 * @param me player being controlled by this computer
+	 * @param it object of other player, which will be updated with unpackData 
+	 * @return player- other player
+	 */
+	public static void updatePlayerStatus(Player me, Player it)
+	{
+		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
+		
+		String toSend = DataTransmitter.pack2DStringArray(me.packData());
+		try {
+			String rawReceived = Web.post(playerURL, new String[][]{{"GameID",mapName},{"MyID",username},{"MyData", toSend},{"TheirID",theirUsername}});
+			//Send my data, receive other players data.
+			int HTTPResponseCode = Web.LastResponseCode();
+			
+			switch(HTTPResponseCode)
+			{
+			case HTTPResponseSuccess:
+				it.unpackData(DataTransmitter.Unpack2DStringArray(rawReceived));//send unpacked data to the other player object for updating and rendering.
+				break;
+			case HTTPResponseFileNotFound:
+				throw new Exception("404 File not found: \n"+rawReceived);
+			case HTTPResponseMapUnknown:
+				throw new Exception("412 Map unknown ("+mapName+"): \n"+rawReceived);
+			case HTTPResponseOtherPlayerNotConnected:
+				throw new Exception("418 Other player ("+theirUsername+") isn't connected: \n"+rawReceived);
+			default:
+				throw new Exception("Unknown response code: "+HTTPResponseCode);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//STUFF NOT USED IN V1:
+	
+	private static String password; //NOT USED FOR FIRST VERSION
+	private static String dispName; //NOT USED FOR FIRST VERSION
+
+	private static ArrayList<Shareable> toSend = new ArrayList<Shareable>();// NOT USED FOR FIRST VERSION
+	private static ArrayList<Shareable> toReceive = new ArrayList<Shareable>();// NOT USED FOR FIRST VERSION
 	
 	/**  NOT USED FOR FIRST VERSION
 	 * Add an object to the list of objects to send to the other computer.
@@ -51,7 +125,7 @@ public class WebInterface {
 		
 	}
 	
-	/** NOT FULLY IMPLEMENTED FOR FIRST VERSION! ONLY USES USERNAME, IGNORES PASSWORD!
+	/** NOT USED FOR FIRST VERSION! ONLY USES USERNAME, IGNORES PASSWORD!
 	 * Sign in. Usernames can be stolen, so be careful.
 	 * @param username-user generated, doesn't matter. Used for joining another players game.
 	 * @return "display name"
@@ -65,6 +139,7 @@ public class WebInterface {
 		return user;
 	}
 	
+	
 	/** NOT USED FOR FIRST VERSION
 	 * Used to change the display name of the user. Will not change if the requested name already exists.
 	 * @param newName
@@ -75,22 +150,7 @@ public class WebInterface {
 		//TODO: Implement changeDisplayName
 		return dispName;
 	}
-	
-	/**
-	 * Updates player status and gets other player's status
-	 * @param me player being controlled by this computer
-	 * @param it object of other player, which will be updated with unpackData 
-	 * @return player- other player
-	 */
-	public static void updatePlayerStatus(Player me, Player it)
-	{
-		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
-		
-		
-		
-		//TODO: should return OTHER players data.
-	}
-	
+
 	/** NOT USED FOR FIRST VERSION
 	 * Get all maps available.
 	 * @return String[][]. Dim 0 is list of String[] arrays, each of which is formated as ["name","description","creator_dispname"]
@@ -166,7 +226,6 @@ public class WebInterface {
 		return false;
 	}
 	
-	
 	/** NOT USED FOR FIRST VERSION
 	 * Check to see if host has accepted the request to join the game.
 	 * if joining a story-lvl, and if player lvl<story lvl, it will be denied with a -2 code.
@@ -176,6 +235,5 @@ public class WebInterface {
 	{
 		return 0;
 	}
-	
 	
 }
