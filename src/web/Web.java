@@ -13,6 +13,18 @@ public class Web {
 	private static int lastResponseCode=0;
 	private static Random gen = new Random();
 	
+	private static String appEngineIP = "74.125.22.141";//these are being used because appspot.com is blocked at school.
+	
+	/**
+	 * Find the most appropriate IP address for accessing the appspot domain.
+	 * @param appEngineURL used to set appEngineHost
+	 */
+	public static void init()
+	{
+		//eventually this will do something! I promise!
+		//can't do until I have a decent amount of time to work on with the schools Internet restrictions.
+	}
+	
 	
 	/**
 	 * Downloads file at URL specified
@@ -234,7 +246,8 @@ public class Web {
 	
 	
 	/**
-	 * Open a HttpURLConnection to the URL specified with method specified
+	 * Open a HttpURLConnection to the URL specified with method specified. If the URL is for appspot.com, this method substitutes
+	 * Google's IP address in for the connection opening, and then overrides the Host parameter to whatever was set in the URL.
 	 * @param url
 	 * @param method
 	 * @return HttpURLConnection that can be used.

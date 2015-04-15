@@ -26,12 +26,13 @@ public class WebInterface {
 	public static boolean init()
 	{
 		mapName = "testmap.txt";
+		Web.init();
 		return false;
 	}
 	
 	
 	/**
-	 * initilizes a game connection. This will eventually become more advanced.
+	 * Initializes a game connection. This will eventually become more advanced.
 	 * @param myID my id that the other player will enter to connect with me.
 	 * @param theirID if of the other player, used to connect to them. Must be identical (except case) to their name.
 	 * @param gameID id of which game is being played. Currently should be the same as the game file (without the extension).

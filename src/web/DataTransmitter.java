@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
-
+//TODO: Find a replacement for Base64: http://www.source-code.biz/base64coder/java/Base64Coder.java.txt ?
 
 
 public class DataTransmitter {
