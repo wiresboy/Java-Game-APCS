@@ -23,6 +23,10 @@
  * Files are stored in the player_status/[GameID] directory and named "u[ID].player"
  * 
  */
+//temp:
+echo getDefaultGoogleStorageBucketName();
+exit;
+/*
 
 if (not isset($_GET["GameID"],$_GET["MyID"],$_GET["MyData"],$_GET["TheirID"]))
 {
@@ -37,7 +41,8 @@ $MyID    = cleanString( $_GET["MyID"]    );
 $MyData  = $_GET["MyData"];
 $TheirID = cleanString( $_GET["TheirID"] );
 
-$gameDir = "player_status/".$GameID."/";
+//getDefaultGoogleStorageBucketName returns "gs://<app_id>.appspot.com/"
+$gameDir = getDefaultGoogleStorageBucketName()."player_status/".$GameID."/";
 
 $MyFileDir = $gameDir."u".$MyID.".player";
 $TheirFileDir = $gameDir."u".$TheirID.".player";
@@ -78,5 +83,5 @@ echo $dataForThem;//return the data representing the other player.
 function cleanString($str)
 {
 return preg_replace('/[^a-z0-9-]/', '', $str);
-}
+}//*/
 ?>
