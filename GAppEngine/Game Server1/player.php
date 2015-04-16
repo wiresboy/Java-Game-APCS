@@ -23,12 +23,9 @@
  * Files are stored in the player_status/[GameID] directory and named "u[ID].player"
  * 
  */
-//temp:
-echo getDefaultGoogleStorageBucketName();
-exit;
-/*
 
-if (not isset($_GET["GameID"],$_GET["MyID"],$_GET["MyData"],$_GET["TheirID"]))
+
+if (! isset($_GET["GameID"],$_GET["MyID"],$_GET["MyData"],$_GET["TheirID"]))
 {
 	http_response_code(400);//bad request, since not all of the parameters were specified
 	echo "Missing some parameters!";
@@ -41,8 +38,11 @@ $MyID    = cleanString( $_GET["MyID"]    );
 $MyData  = $_GET["MyData"];
 $TheirID = cleanString( $_GET["TheirID"] );
 
-//getDefaultGoogleStorageBucketName returns "gs://<app_id>.appspot.com/"
-$gameDir = getDefaultGoogleStorageBucketName()."player_status/".$GameID."/";
+//getDefaultGoogleStorageBucketName() returns "gs://<app_id>.appspot.com/"
+//except it isn't working, so using the literal instead.
+$gameDir = "gs://java-game-apcs.appspot.com/"."player_status/".$GameID."/";
+
+//add a game-instance-id so that progress can be saved? Possibly?
 
 $MyFileDir = $gameDir."u".$MyID.".player";
 $TheirFileDir = $gameDir."u".$TheirID.".player";
@@ -56,11 +56,15 @@ if (!is_dir($gameDir))
 	exit;
 }
 
-
-//write my data
+/*
+//write my data (old)
 $me = fopen($MyFileDir,"w");
 fwrite($me, $MyData);
 fclose($me);
+//*/
+
+//write my data (new)
+file_put_contents($MyFileDir, $MyData);
 
 
 if (!file_exists($TheirFileDir))
@@ -71,13 +75,17 @@ if (!file_exists($TheirFileDir))
 	exit;
 }
 
-//read their data
+/*
+//read their data (old)
 $them = fopen($TheirFileDir,"r");
 $dataForThem = fread($them,filesize($TheirFileDir));
 fclose($them);
 
 echo $dataForThem;//return the data representing the other player.
+//*/
 
+//read data new
+echo file_get_contents($TheirFileDir);
 
 
 function cleanString($str)
