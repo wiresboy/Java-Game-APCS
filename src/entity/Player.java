@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.Sprite;
+import map.Map;
 import web.Shareable;
 
 import java.awt.*;

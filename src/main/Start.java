@@ -14,7 +14,7 @@ public class Start extends JFrame implements WindowListener{
 	
 	public Start(long period){ 
 		super("[unnamed]");
-	
+		
 		 Container c = getContentPane();    // default BorderLayout used
 		 panel = new GamePanel(this, period);
 		 c.add(panel, "Center");
@@ -23,6 +23,9 @@ public class Start extends JFrame implements WindowListener{
 		 pack();
 		 setResizable(false);
 		 setVisible(true);
+		 
+		 PreSetup.init();
+		 
 	}  // end of Start() constructor
 	
 	

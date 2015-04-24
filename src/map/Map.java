@@ -1,6 +1,64 @@
-package util;
+package map;
 
-import java.io.File;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+
+import tile.Tile;
+import tile.TileRegistry;
+import tileentity.TileEntity;
+import util.Resources;
+
+public class Map{
+	public static final int TILE_SIZE = 16;
+    private Tile[][] map;
+    private TileEntity[][] tileEntities;
+    public void loadMap(String mapname){
+		ArrayList<String> list = Resources.getMap(mapname);
+		map = new Tile[15][20];
+		tileEntities = new TileEntity[15][20];
+		int row = 0, column = 0;
+		for(String s : list){
+			for(int i = 0; i < s.length()-2; i+=2,column++){
+				String hex = s.substring(i,i+2);
+				Tile t = TileRegistry.getTile(hex);
+				if(t != null){
+					map[row][column] = t;
+					if(t.hasTileEntity()){
+						TileEntity te = t.createNewTileEntity();
+						tileEntities[row][column] = te;
+						int x = Map.tilesToPixels(column);
+						int y = Map.tilesToPixels(row);
+						te.setLocation(x,y);
+					}	
+				}
+			}
+			row++;
+		}
+   }
+   public TileEntity getTileEntity(int row, int column){
+   		return tileEntities[row][column];
+   }
+   public Tile getTile()
+   public static int tilesToPixels(int tiles){
+	   return tiles*16;
+   }
+   public static int pixelsToTiles(int pixels){
+	   return (int)((double)pixels/16.0);
+   }
+   public void draw(Graphics2D g){
+	   // TODO Implement this
+	   for(int row = 0; row < map.length; row++){
+		   for(int column = 0; column < map.length; column++){
+			   int x = tilesToPixels(column);
+			   int y = tilesToPixels(row);
+			   Tile t = m
+		   }
+	   }
+   }
+
+}
+
+/*import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,6 +67,7 @@ import java.awt.image.BufferedImage;
 
 import tile.AnimatedTile;
 import tile.Tile;
+import util.SpriteMap;
 
 public class Map {
 	private int[][] mapdata;
@@ -201,7 +260,7 @@ public class Map {
 			for(Tile t : tList)
 				if(t != null)
 					t.draw(g);
-		*/
+		
 		for(int y = 0; y < tiles.length; y++){
 			for(int x = 0; x < tiles[0].length; x++){
 				Tile t = getTile(x,y);
@@ -222,4 +281,4 @@ public class Map {
 	public Tile getTile(int x, int y){
 		return tiles[y][x];
 	}
-}
+}*/

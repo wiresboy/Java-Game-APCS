@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.*;
 
+import map.Map;
 import util.*;
 import entity.Player;
 
@@ -9,7 +10,11 @@ import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Lucas Rezac, Brandon John
+ *
+ */
 public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 	private static final long serialVersionUID = 1L;
@@ -74,7 +79,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		setFocusable(true);
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
-		map = new Map("testmap");
+		map = new Map();
+		map.loadMap("testmap");
 		player.setMap(map);
 		setBackground(Color.GRAY);
 	}  // end of GamePanel

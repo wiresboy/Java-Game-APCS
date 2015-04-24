@@ -8,7 +8,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * 
+ * @author Lucas Rezac
+ *
+ */
 public class ImageManipulator {
 	public static BufferedImage cropImage(BufferedImage src, int x, int y, int width, int height) {
 	      BufferedImage dest = src.getSubimage(x, y, width, height);
