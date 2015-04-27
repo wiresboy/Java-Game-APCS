@@ -76,18 +76,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		mainFrame = frame;
 		instance = this;
 		this.period = period;
-		player = new EntityPlayer(7*32,5*32);
 		setDoubleBuffered(false);
 		setBackground(Color.white);
-		setPreferredSize( new Dimension(PWIDTH, PHEIGHT));
+		
 
 		setFocusable(true);
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
 		map = new Map();
-		map.loadMap("testmap");
+		int[] playerLocs = map.loadMap("testmap");
+		player = new EntityPlayer(playerLocs[0],playerLocs[1]);
 		player.setMap(map);
 		setBackground(Color.GRAY);
+		setPreferredSize(map.getPreferredSize());
 	}  // end of GamePanel
 
 	private void processKey(KeyEvent e){
@@ -272,7 +273,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		try {
 			g = this.getGraphics();
 			if ((g != null) && (dbImage != null))
-				g.drawImage(dbImage, -offset, 0, null);
+				g.drawImage(dbImage.getScaledInstance(dbImage.getWidth(null)*2, dbImage.getHeight(null)*2, Image.SCALE_FAST), -offset, 0, null);
 			// Sync the display on some systems.
 			// (on Linux, this fixes event queue problems)
 			Toolkit.getDefaultToolkit().sync();

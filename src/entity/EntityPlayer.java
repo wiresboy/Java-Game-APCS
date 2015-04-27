@@ -14,10 +14,15 @@ import map.Map;
 
 public class EntityPlayer extends Entity{
 	public int speedX = 0, speedY = 0;
-	private final int MAX_SPEEDX = 10, MAX_SPEEDY = 16;
+	private final int MAX_SPEEDX = 5, MAX_SPEEDY = 10;
+	private int jumpCountDown = 0;
+	private boolean isJumping = false;
+	private int startx,starty;
 	public EntityPlayer(int x, int y){
 		setX(x);
 		setY(y);
+		startx = x;
+		starty = y;
 		image = ImageManipulator.loadImage("error.png");
 		boundingBox = new Rectangle(x,y,image.getWidth(),image.getHeight());
 	}
@@ -28,7 +33,7 @@ public class EntityPlayer extends Entity{
 		//}
 	}
 	public void update(){
-		System.out.println("Update called");
+		//System.out.println("Update called");
 		processKeys();
 		//checkForCollisions();
 	}
@@ -39,7 +44,7 @@ public class EntityPlayer extends Entity{
 		}else if(keys[KeyEvent.VK_A]){
 			moveLeft();
 		}else{
-			System.out.print("Not moving");
+			//System.out.print("Not moving");
 			if(speedX < 0){
 				//speedX+=1;
 				moveRight();
@@ -49,75 +54,55 @@ public class EntityPlayer extends Entity{
 				moveLeft();
 			}
 			
-			System.out.println(" speedX = "+speedX);
+			//System.out.println(" speedX = "+speedX);
 		}
-		if(keys[KeyEvent.VK_S]){
+		/*if(keys[KeyEvent.VK_S]){
 			fall();
-		}else if(keys[KeyEvent.VK_W]){
+		}else*/ if(keys[KeyEvent.VK_W] && jumpCountDown == 0 && !isJumping){
+			jumpCountDown = 10;
+			isJumping = true;
 			jump();
 		}else{
-			if(speedY < 0){
+			if(jumpCountDown != 0){
+				jumpCountDown--;
+				System.out.println("Jump Countdown = "+jumpCountDown);
+				int newy = getY()+ ((speedY < 0)? speedY++ : speedY);
+				setY(newy);
+			}else{
+				fall();
+			}
+			/*if(speedY < 0){
 				fall();
 			}else if(speedY > 0){
 				jump();
-			}
+			}*/
 		}
-	}
-	public void checkForCollisions(){
-		int tileX = Map.pixelsToTiles(getX());
-		int tileY = Map.pixelsToTiles(getY());
-		//ArrayList<Shape> boxes = new ArrayList<Shape>();
-		Tile t;
-		Shape box1, box2;
-		t = map.getTile(tileY-1, tileX-1);
-		if(t != null){
-		box1 = boundingBox();
-		box2 = t.boundingBox(Map.tilesToPixels(tileX-1), Map.tilesToPixels(tileY-1));
-		if(box1.intersects(box2.getBounds2D())){
-			t.handleCollision(this);
-		}}
 		
-		t = map.getTile(tileY, tileX-1);
-		if(t != null){
-		box1 = boundingBox();
-		box2 = t.boundingBox(Map.tilesToPixels(tileX-1), Map.tilesToPixels(tileY));
-		if(box1.intersects(box2.getBounds2D())){
-			t.handleCollision(this);
-		}}
-		t = map.getTile(tileY, tileX+1);
-		if(t != null){
-		box1 = boundingBox();
-		box2 = t.boundingBox(Map.tilesToPixels(tileX+1), Map.tilesToPixels(tileY));
-		if(box1.intersects(box2.getBounds2D())){
-			t.handleCollision(this);
-		}}
-		t = map.getTile(tileY-1, tileX+1);
-		if(t != null){
-		box1 = boundingBox();
-		box2 = t.boundingBox(Map.tilesToPixels(tileX+1), Map.tilesToPixels(tileY-1));
-		if(box1.intersects(box2.getBounds2D())){
-			t.handleCollision(this);
-		}}
-		t = map.getTile(tileY-2, tileX);
-		if(t != null){
-		box1 = boundingBox();
-		box2 = t.boundingBox(Map.tilesToPixels(tileX), Map.tilesToPixels(tileY-2));
-		if(box1.intersects(box2.getBounds2D())){
-			t.handleCollision(this);
-		}}
-		t = map.getTile(tileY+1, tileX);
-		if(t != null){
-		box1 = boundingBox();
-		box2 = t.boundingBox(Map.tilesToPixels(tileX), Map.tilesToPixels(tileY+1));
-		if(box1.intersects(box2.getBounds2D())){
-			t.handleCollision(this);
-		}}
-		
+		int x = Map.pixelsToTiles(getX());
+		int y = Map.pixelsToTiles(getY());
+		Tile t = map.getTile(y, x);
+		if(t != null && speedX == 0 && speedY == 0){
+			setY(getY()-1);
+		}
+		if(getX()<0)setX(0);
+		if(getX()>(map.getPreferredSize().width/2)-16)setX((map.getPreferredSize().width/32)-16);
+		if(getY()>(map.getPreferredSize().height/2))kill();
 	}
+	
 	public int getSpeedX(){ return speedX; }
+	
+	public void kill(){
+		System.out.println("player died!");
+		setX(startx);
+		setY(starty);
+		map.reset();
+	}
+	
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
-		int newy = getY()+((speedY == 0)? speedY = -1 :(speedY > 0)? speedY-- : (Math.abs(speedY) < MAX_SPEEDY)? speedY-- : speedY);
+		speedY = -6;
+		System.out.println("Jumping");
+		/**int newy = getY()+((speedY == 0)? speedY = -1 :(speedY > 0)? speedY-- : (Math.abs(speedY) < MAX_SPEEDY)? speedY-- : speedY);
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);
 		Tile t = map.getTile(y, x);
@@ -131,10 +116,11 @@ public class EntityPlayer extends Entity{
 					setX(newy+i);
 					return;
 				}
-			}*/
+			}*
 			return;
 		}else
 			setY(newy);
+		**/
 	}
 	public void moveLeft(){
 		int newx = getX()+((speedX == 0)? speedX = -1 : (speedX > 0)? speedX-- : (Math.abs(speedX) < MAX_SPEEDX)? speedX-- : speedX);
@@ -177,13 +163,14 @@ public class EntityPlayer extends Entity{
 			setX(newx-16);
 	}
 	public void fall(){
-		int newy = getY()+((speedY == 0)? speedY = 1 :(speedY < 0)? speedY++ : (Math.abs(speedY) < MAX_SPEEDY)? speedY++ : speedY)+16;
+		int newy = getY()+((speedY == 0)? speedY = 1 :(speedY < 0)? speedY+=1.5 : (Math.abs(speedY) < MAX_SPEEDY)? speedY+=1.5 : speedY)+16;
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);
 		Tile t = map.getTile(y, x);
 		if(t != null){
 			setY(Map.tilesToPixels(y)-16);
 			speedY = 0;
+			isJumping = false;
 			/*for(int i = 0; i < speedY; i++){
 				y = Map.pixelsToTiles(newy-i);
 				t = map.getTile(y,x);

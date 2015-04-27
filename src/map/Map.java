@@ -1,5 +1,6 @@
 package map;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.ArrayList;
@@ -14,7 +15,11 @@ public class Map{
 	public static final int TILE_SIZE = 16;
     private Tile[][] map;
     private TileEntity[][] tileEntities;
-    public void loadMap(String mapname){
+    private int width,height;
+    private String mapname;
+    public int[] loadMap(String mapname){
+    	this.mapname = mapname;
+    	int[] playerLoc = new int[]{0,0};
 		ArrayList<String> list = Resources.getMap(mapname);
 		map = new Tile[list.size()][list.get(0).length()/2];
 		tileEntities = new TileEntity[list.size()][list.get(0).length()/2];
@@ -24,18 +29,24 @@ public class Map{
 			column = 0;
 			for(int i = 0; i < s.length()-4; i+=2,column++){
 				String hex = s.substring(i,i+2);
-				Tile t = TileRegistry.getTile(hex);
-				if(t != null){
-					System.out.println("row = "+row+" column = "+column);
-					map[row][column] = t;
-					if(t.hasTileEntity()){
-						TileEntity te = t.createNewTileEntity();
-						tileEntities[row][column] = te;
-						int x = Map.tilesToPixels(column);
-						int y = Map.tilesToPixels(row);
-						te.setLocation(x,y);
-						te.setMap(this);
-					}	
+				if(hex.equals("*1")){
+					int x = tilesToPixels(column);
+					int y = tilesToPixels(row);
+					playerLoc = new int[]{x,y};
+				}else{
+					Tile t = TileRegistry.getTile(hex);
+					if(t != null){
+						System.out.println("row = "+row+" column = "+column);
+						map[row][column] = t;
+						if(t.hasTileEntity()){
+							TileEntity te = t.createNewTileEntity();
+							tileEntities[row][column] = te;
+							int x = Map.tilesToPixels(column);
+							int y = Map.tilesToPixels(row);
+							te.setLocation(x,y);
+							te.setMap(this);
+						}	
+					}
 				}
 			}
 			row++;
@@ -44,6 +55,7 @@ public class Map{
 		for(Tile[] tiles : map){
 			System.out.println(Arrays.toString(tiles));
 		}
+		return playerLoc;
    }
    public TileEntity getTileEntity(int row, int column){
    		return tileEntities[row][column];
@@ -56,6 +68,9 @@ public class Map{
    }
    public static int tilesToPixels(int tiles){
 	   return tiles*16;
+   }
+   public Dimension getPreferredSize(){
+	   return new Dimension(map[0].length*32,map.length*32);
    }
    public static int pixelsToTiles(int pixels){
 	   return (int)((double)pixels/16.0);
@@ -86,6 +101,9 @@ public class Map{
 	   }
    }
    public String toString(){ return "Player"; }
+   public void reset(){
+	   loadMap(mapname);
+   }
 }
 
 /*import java.io.File;
