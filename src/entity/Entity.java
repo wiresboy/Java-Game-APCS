@@ -5,9 +5,12 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
+import map.Map;
+
 public abstract class Entity implements IEntity{
 	private static int id_count = -1;
 	private int id;
+	protected Map map;
 	private int x, y;
 	protected int lastX, lastY;
 	protected Rectangle boundingBox;
@@ -16,6 +19,7 @@ public abstract class Entity implements IEntity{
 	public Entity(){
 		id = id_count++;
 	}
+	public final void setMap(Map m){ this.map = m; }
 	public final int getX(){ return x; }
 	public final int getY(){ return y; }
 	public Shape boundingBox(){

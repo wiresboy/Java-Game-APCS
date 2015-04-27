@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
+import util.Data;
 import map.Map;
 import entity.IEntity;
 /**
@@ -12,16 +13,20 @@ import entity.IEntity;
  *
  */
 public abstract class TileEntity implements IEntity{
-	private static int id_count = -1;
+	private static int id_count = 0;
 	private int id;
 	private String name;
 	protected int x, y;
+	protected Map map;
 	@SuppressWarnings("rawtypes")
 	public TileEntity(){
 		Class thisClass = this.getClass();
 		name = thisClass.getSimpleName();
+		
 		id = id_count++;
+		System.out.println("Creating new TileEntity: "+name+" with id "+id);
 	}
+	public final void setMap(Map m){ this.map = m; }
 	public String getName(){ return name;}
 	public int getId(){ return id; }
 	public BufferedImage getImageBasedOnState(){
@@ -30,13 +35,13 @@ public abstract class TileEntity implements IEntity{
 	public BufferedImage getOverlayBasedOnState(){
 		return null;
 	}
-	public void readFromString(String data){
-		// data in format of : "ID:<other data separated by ':'>:0"
-		int i = data.indexOf(':');
-		this.id = Integer.parseInt(data.substring(0,i));
+	public void readFromData(Data data){
+		id = data.getInt("id");
+		// TODO figure out if this statement is needed
+		//id_count--;
 	}
-	public String writeToString(){
-		return id+":0";
+	public void writeToData(Data data){
+		data.setInt("id", id);
 	}
 	public Shape boundingBox(){
 		return new Rectangle(x,y,Map.TILE_SIZE,Map.TILE_SIZE);

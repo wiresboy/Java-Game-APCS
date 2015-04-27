@@ -21,12 +21,16 @@ public class Resources{
 	}
 	public static ArrayList<String> getMap(String filename){
 		String dir = System.getProperty("user.dir");
-		File f = new File(dir+"\\mapdata\\"+filename+".txt");
+		String location = dir+"\\mapdata\\"+filename+".txt";
+		if(System.getProperty("os.name").indexOf("Mac") != -1){
+			while(location.indexOf("\\") != -1) location = location.replace("\\","/");
+		}
+		File f = new File(location);
 		ArrayList<String> lines = new ArrayList<String>();
 		Scanner scan = null;
 		try {
 			scan = new Scanner(f);
-		} catch (FileNotFoundException e) { System.err.println("Error: file not found.");System.exit(0); }
+		} catch (FileNotFoundException e) { System.err.println("Error: file not found "+filename);System.exit(0); }
 		
 		while(scan.hasNext())
 			lines.add(scan.next());

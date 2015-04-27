@@ -11,6 +11,7 @@ public class PreSetup {
 	public static void init(){
 		//register tiles
 		TileRegistry.registerTile(new BlackTile());
+		TileRegistry.registerTile(new BlackTileBottom());
 		TileRegistry.registerTile(new BlackTileCracked());
 		TileRegistry.registerTile(new BlackTileExposed());
 		TileRegistry.registerTile(new BlackTileFrame());
@@ -21,6 +22,7 @@ public class PreSetup {
 		TileRegistry.registerTile(new BlackTileSmall());
 		TileRegistry.registerTile(new BlackTileSmallStained());
 		TileRegistry.registerTile(new BlackTileStained());
+		TileRegistry.registerTile(new BlackTileTop());
 		TileRegistry.registerTile(new DecorationGrass_B());
 		TileRegistry.registerTile(new DecorationGrass_L());
 		TileRegistry.registerTile(new DecorationGrass_R());

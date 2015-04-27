@@ -29,6 +29,7 @@ public abstract class Tile{
 			TileEntity te = map.getTileEntity(mapRow,mapCol);
 			img = te.getImageBasedOnState();
 		}
+		if(img != null)
 		g.drawImage(img,x,y,null);
 	}
 	public final Shape boundingBox(int x, int y, Map map){
@@ -50,12 +51,17 @@ public abstract class Tile{
 	public static final int TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3;
 	public abstract boolean isPortalable(int sides);
 	public void handleCollision(Entity e){
-		int[] dir = e.getDirection();
+		System.out.println("                      Collision detected ! "+e.toString());
+		/*int[] dir = e.getDirection();
 		int[] dir2 = new int[2];
 		System.arraycopy(dir,0,dir2,0,dir.length);
 		e.setX(e.getX()-dir[0]);
 		e.setY(e.getY()-dir[1]);
-		e.setDirection(dir2);
+		e.setDirection(dir2);*/
+		int x = e.getX();
+		int y = e.getY();
+		
+		
 	}
 }
 /*import java.awt.image.*;

@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import map.Map;
 import util.*;
+import entity.EntityPlayer;
 import entity.Player;
 
 import java.awt.image.*;
@@ -40,7 +41,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	//private int tempX, tempY;
 
 	private Start mainFrame;
-	private Player player; 
+	private EntityPlayer player; 
+	public static GamePanel instance;
 
 	private long gameStartTime;   // when the game started
 	private int timeSpentInGame;
@@ -65,13 +67,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 	private ArrayList<Integer> walkableTiles;
 
+	public boolean[] keys = new boolean[192];
+	
 	private static int[][] mapIndexes = new int[8][16];
 	private int mapRow = 7, mapColumn = 7;
 	private Map map;
 	public GamePanel(Start frame, long period){
 		mainFrame = frame;
+		instance = this;
 		this.period = period;
-		player = new Player(7*32,5*32);
+		player = new EntityPlayer(7*32,5*32);
 		setDoubleBuffered(false);
 		setBackground(Color.white);
 		setPreferredSize( new Dimension(PWIDTH, PHEIGHT));
@@ -210,7 +215,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		}
 	
 		// draw a white background
-		dbg.setColor(Color.white);
+		dbg.setColor(Color.GRAY);
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 	
 	 
@@ -228,7 +233,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		map.draw(g);
 		player.draw(g);
 		g.setColor(Color.WHITE);
-		g.drawString("X:"+player.x+" Y:"+player.y,0,10);
+		g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
 		
 		
 		//END DRAWING GAME SECTION
@@ -279,12 +284,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		keys[arg0.getKeyCode()] = true;
 		processKey(arg0);
 	}
 	
 	
 	@Override
-	public void keyReleased(KeyEvent arg0) {}
+	public void keyReleased(KeyEvent arg0) {
+		keys[arg0.getKeyCode()] = false;
+	}
 	
 	
 	@Override

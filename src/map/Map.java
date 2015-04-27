@@ -1,7 +1,9 @@
 package map;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import tile.Tile;
 import tile.TileRegistry;
@@ -14,14 +16,17 @@ public class Map{
     private TileEntity[][] tileEntities;
     public void loadMap(String mapname){
 		ArrayList<String> list = Resources.getMap(mapname);
-		map = new Tile[15][20];
-		tileEntities = new TileEntity[15][20];
+		map = new Tile[list.size()][list.get(0).length()/2];
+		tileEntities = new TileEntity[list.size()][list.get(0).length()/2];
+		System.out.println("list.get(0).length()/2 = "+(list.get(0).length()/2)+";; s.length()-2 = "+(list.get(0).length()-2));
 		int row = 0, column = 0;
 		for(String s : list){
-			for(int i = 0; i < s.length()-2; i+=2,column++){
+			column = 0;
+			for(int i = 0; i < s.length()-4; i+=2,column++){
 				String hex = s.substring(i,i+2);
 				Tile t = TileRegistry.getTile(hex);
 				if(t != null){
+					System.out.println("row = "+row+" column = "+column);
 					map[row][column] = t;
 					if(t.hasTileEntity()){
 						TileEntity te = t.createNewTileEntity();
@@ -29,16 +34,26 @@ public class Map{
 						int x = Map.tilesToPixels(column);
 						int y = Map.tilesToPixels(row);
 						te.setLocation(x,y);
+						te.setMap(this);
 					}	
 				}
 			}
 			row++;
 		}
+		System.out.println("Loaded map : ");
+		for(Tile[] tiles : map){
+			System.out.println(Arrays.toString(tiles));
+		}
    }
    public TileEntity getTileEntity(int row, int column){
    		return tileEntities[row][column];
    }
-   public Tile getTile()
+   public Tile getTile(int row, int column){
+	   if(row < 0 || row >= map.length)return null;
+	   if(column < 0 || column >= map[0].length) return null;
+	   //System.out.println("Row "+row+" Column "+column);
+	   return map[row][column];
+   }
    public static int tilesToPixels(int tiles){
 	   return tiles*16;
    }
@@ -48,14 +63,29 @@ public class Map{
    public void draw(Graphics2D g){
 	   // TODO Implement this
 	   for(int row = 0; row < map.length; row++){
-		   for(int column = 0; column < map.length; column++){
+		   for(int column = 0; column < map[0].length; column++){
+			   //int x = tilesToPixels(column);
+			   //int y = tilesToPixels(row);
+			   Tile t = getTile(row,column);
+			   if(t != null){
+				   //System.out.println("Drawing "+ t.getClass().getSimpleName());
+				   t.draw(g, row, column, this);
+			   }
+		   }
+	   }
+	   for(int row = 0; row < map.length; row++){
+		   for(int column = 0; column < map[0].length; column++){
 			   int x = tilesToPixels(column);
 			   int y = tilesToPixels(row);
-			   Tile t = m
+			   Tile t = getTile(row,column);
+			   if(t != null){
+				   if(t.hasOverlay())
+					   t.drawOverlay(g, x, y);
+			   }
 		   }
 	   }
    }
-
+   public String toString(){ return "Player"; }
 }
 
 /*import java.io.File;

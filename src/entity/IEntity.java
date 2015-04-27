@@ -1,5 +1,7 @@
 package entity;
 
+import map.Map;
+
 public interface IEntity{
 	int getId();
 	int getX();
@@ -7,4 +9,5 @@ public interface IEntity{
 	int getY();
 	void setY(int i);
 	void setLocation(int x, int y);
+	void setMap(Map m);
 }
