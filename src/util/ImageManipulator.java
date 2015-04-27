@@ -14,12 +14,13 @@ import javax.imageio.ImageIO;
  *
  */
 public class ImageManipulator {
+	public static String dir = (System.getProperty("user.dir")).replace("/bin", "").replace("\\bin", "");
 	public static BufferedImage cropImage(BufferedImage src, int x, int y, int width, int height) {
 	      BufferedImage dest = src.getSubimage(x, y, width, height);
 	      return dest; 
 	}
 	public static BufferedImage loadImage(String name){
-		String location = System.getProperty("user.dir")+"\\textures\\"+name;
+		String location = dir+"\\textures\\"+name;
 		if(System.getProperty("os.name").indexOf("Mac") != -1){
 			while(location.indexOf("\\") != -1) location = location.replace("\\","/");
 		}

@@ -124,7 +124,7 @@ public class EntityPlayer extends Entity{
 				int x = Map.pixelsToTiles(getX());
 				int y = Map.pixelsToTiles(newy);
 				Tile t= map.getTile(y, x);
-				if(t != null){
+				if((t != null && t.boundingBox(0, 0) != null)){
 					speedY = 0;
 					setY(Map.tilesToPixels(y)+16);
 					jumpCountDown = 0;
@@ -204,9 +204,10 @@ public class EntityPlayer extends Entity{
 		int x = Map.pixelsToTiles(newx);
 		int y = Map.pixelsToTiles(getY());
 		int y2 = Map.pixelsToTiles(getY()+16);
+		int x2 = Map.pixelsToTiles(newx+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2,x);
-		if(t != null || t2 != null){
+		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
 			
 			setX(Map.tilesToPixels(x)+16);
 			speedX = 0;
@@ -231,7 +232,7 @@ public class EntityPlayer extends Entity{
 		int y2 = Map.pixelsToTiles(getY()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2, x);
-		if(t != null || t2 != null){
+		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
 			setX(Map.tilesToPixels(x)-16);
 			speedX = 0;
 			/*for(int i = 0; i < speedX; i++){
@@ -252,8 +253,10 @@ public class EntityPlayer extends Entity{
 		int newy = getY()+((speedY == 0)? speedY = 1 :(speedY < 0)? speedY+=1.5 : (Math.abs(speedY) < MAX_SPEEDY)? speedY+=1.5 : speedY)+32;
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);
+		int x2 = Map.pixelsToTiles(getX()+16);
 		Tile t = map.getTile(y, x);
-		if(t != null){
+		Tile t2 =map.getTile(y, x2);
+		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
 			setY(Map.tilesToPixels(y)-32);
 			speedY = 0;
 			isJumping = false;

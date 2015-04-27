@@ -18,16 +18,20 @@ public class Map{
     private int width,height;
     private String mapname;
     public int[] loadMap(String mapname){
+    	ArrayList<String> list = Resources.getMap(mapname);
     	this.mapname = mapname;
+    	return loadMap(list);
+    }
+    public int[] loadMap(ArrayList<String> list){
     	int[] playerLoc = new int[]{0,0};
-		ArrayList<String> list = Resources.getMap(mapname);
+		
 		map = new Tile[list.size()][list.get(0).length()/2];
 		tileEntities = new TileEntity[list.size()][list.get(0).length()/2];
 		System.out.println("list.get(0).length()/2 = "+(list.get(0).length()/2)+";; s.length()-2 = "+(list.get(0).length()-2));
 		int row = 0, column = 0;
 		for(String s : list){
 			column = 0;
-			for(int i = 0; i < s.length()-4; i+=2,column++){
+			for(int i = 0; i < s.length()-2; i+=2,column++){
 				String hex = s.substring(i,i+2);
 				if(hex.equals("*1")){
 					int x = tilesToPixels(column);
@@ -75,7 +79,7 @@ public class Map{
    public static int pixelsToTiles(int pixels){
 	   return (int)((double)pixels/16.0);
    }
-   public void draw(Graphics2D g){
+   public void drawBase(Graphics2D g){
 	   // TODO Implement this
 	   for(int row = 0; row < map.length; row++){
 		   for(int column = 0; column < map[0].length; column++){
@@ -88,6 +92,12 @@ public class Map{
 			   }
 		   }
 	   }
+   }
+   public void draw(Graphics2D g){
+	   drawBase(g);
+	   drawOverlays(g);
+   }
+   public void drawOverlays(Graphics2D g){
 	   for(int row = 0; row < map.length; row++){
 		   for(int column = 0; column < map[0].length; column++){
 			   int x = tilesToPixels(column);

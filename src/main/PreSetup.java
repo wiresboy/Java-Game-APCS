@@ -44,6 +44,10 @@ public class PreSetup {
 		TileRegistry.registerTile(new DecorationSignTriangle());
 		TileRegistry.registerTile(new DecorationVinesBottom());
 		TileRegistry.registerTile(new DecorationVinesTop());
+		TileRegistry.registerTile(new Door_L());
+		TileRegistry.registerTile(new Door_R());
+		TileRegistry.registerTile(new ExitDoor_L());
+		TileRegistry.registerTile(new ExitDoor_R());
 		TileRegistry.registerTile(new TileFloorButton_B());
 		TileRegistry.registerTile(new TileFloorButton_L());
 		TileRegistry.registerTile(new TileFloorButton_R());
