@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import map.Map;
 import util.*;
+import entity.Entity;
 import entity.EntityPlayer;
 import entity.Player;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * @author Lucas Rezac, Brandon John
  *
  */
-public class GamePanel extends JPanel implements Runnable, KeyListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener{
 
 	private static final long serialVersionUID = 1L;
 	public static final int PWIDTH = 16*16*2;   // size of panel
@@ -65,7 +66,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 	//private int numHits = 0;
 
-	private ArrayList<Integer> walkableTiles;
+	//private ArrayList<Integer> walkableTiles;
+	
+	private boolean debug = true;
 
 	public boolean[] keys = new boolean[192];
 	
@@ -83,9 +86,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		setFocusable(true);
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
+		addMouseListener(this);
 		map = new Map();
 		int[] playerLocs = map.loadMap("testmap");
-		player = new EntityPlayer(playerLocs[0],playerLocs[1]);
+		player = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
 		player.setMap(map);
 		setBackground(Color.GRAY);
 		setPreferredSize(map.getPreferredSize());
@@ -115,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 			}else if (keyCode == KeyEvent.VK_DOWN) {
 								
 			}*/
-			player.processKey(e);
+			//player.processKey(e);
 			
 		}
 	}  // end of processKey()
@@ -199,6 +203,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private void gameUpdate(){ 
 		if (!isPaused && !gameOver){
 			player.update();
+			for(Entity e : Entity.list){
+				e.update();
+			}
 		} 
 	   
 	}  // end of gameUpdate()
@@ -233,9 +240,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		
 		map.draw(g);
 		player.draw(g);
-		g.setColor(Color.WHITE);
-		g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
-		
+		if(debug){
+			g.setColor(Color.WHITE);
+			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
+		}
 		
 		//END DRAWING GAME SECTION
 		if (gameOver)
@@ -298,6 +306,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		player.mouseClicked(e.getX(),e.getY());
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }  // end of class
 

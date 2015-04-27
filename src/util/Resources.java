@@ -37,4 +37,15 @@ public class Resources{
 		scan.close();
 		return lines;
 	}
+	public static BufferedImage getPlayer(String name){
+		System.out.println("Getting player image for "+name);
+		return ImageManipulator.loadImage("player\\"+name+".png");
+	}
+	public static BufferedImage getEntity(String name){
+		System.out.println("Getting entity image for "+name);
+		return ImageManipulator.loadImage("entities\\"+name+".png");
+	}
+	public static BufferedImage getError(){ 
+		return ImageManipulator.loadImage("error.png");
+	}
 }

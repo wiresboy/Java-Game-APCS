@@ -4,11 +4,13 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import map.Map;
 
 public abstract class Entity implements IEntity{
 	private static int id_count = -1;
+	public static ArrayList<Entity> list = new ArrayList<Entity>();
 	private int id;
 	protected Map map;
 	private int x, y;
@@ -18,6 +20,7 @@ public abstract class Entity implements IEntity{
 	protected int speedX, speedY;
 	public Entity(){
 		id = id_count++;
+		list.add(this);
 	}
 	public final void setMap(Map m){ this.map = m; }
 	public final int getX(){ return x; }
@@ -26,6 +29,7 @@ public abstract class Entity implements IEntity{
 		boundingBox.setLocation(x,y);
 		return boundingBox;
 	}
+	public abstract void update();
 	public final BufferedImage getImage(){ return image; }
 	public final void setImage(BufferedImage b){ image = b; }
 	public int getId(){ return id; }
@@ -42,8 +46,14 @@ public abstract class Entity implements IEntity{
 	}
 	public final int[] getDirection(){
 		int[] val = new int[2];
-		val[0] =(x-lastX)/(x-lastX);
-		val[1] = (y-lastY)/(y-lastY);
+		val[0] =(x-lastX);
+		val[1] = (y-lastY);
+		if(val[0] != 0){
+			val[0] = Math.abs(val[0])/val[0];
+		}
+		if(val[1] != 0){
+			val[1] = Math.abs(val[1])/val[1];
+		}
 		return val;
 	}
 	public final void setDirection(int[] newDir){

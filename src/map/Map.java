@@ -32,7 +32,7 @@ public class Map{
 				if(hex.equals("*1")){
 					int x = tilesToPixels(column);
 					int y = tilesToPixels(row);
-					playerLoc = new int[]{x,y};
+					playerLoc = new int[]{x,y-16};
 				}else{
 					Tile t = TileRegistry.getTile(hex);
 					if(t != null){
