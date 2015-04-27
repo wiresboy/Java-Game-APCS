@@ -1,5 +1,7 @@
 package tile;
 
+import java.awt.Graphics2D;
+
 import util.Resources;
 
 public abstract class TileOverlay extends Tile {
@@ -11,4 +13,7 @@ public abstract class TileOverlay extends Tile {
 	}
 	@Override
 	public final boolean hasOverlay(){ return true; }
+	public void drawOverlay(Graphics2D g, int x, int y){
+		g.drawImage(overlay,x+offsetX,y+offsetY,null);
+	}
 }

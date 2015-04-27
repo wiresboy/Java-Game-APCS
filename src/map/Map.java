@@ -95,6 +95,7 @@ public class Map{
 			   Tile t = getTile(row,column);
 			   if(t != null){
 				   if(t.hasOverlay())
+					  // System.out.println("Drawing overlay");
 					   t.drawOverlay(g, x, y);
 			   }
 		   }
