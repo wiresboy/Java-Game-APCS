@@ -31,7 +31,7 @@ public class Map{
 		int row = 0, column = 0;
 		for(String s : list){
 			column = 0;
-			for(int i = 0; i < s.length()-2; i+=2,column++){
+			for(int i = 0; i < s.length()-1; i+=2,column++){
 				String hex = s.substring(i,i+2);
 				if(hex.equals("*1")){
 					int x = tilesToPixels(column);
