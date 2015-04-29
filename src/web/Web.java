@@ -9,9 +9,21 @@ import java.util.Random;
 
 public class Web {
 	private static final String USER_AGENT = "Mozilla/5.0/fun";
-	private static final String boundary =  "***&&34#7&8*9**";//some string that will never appear in a file being uploaded
+	private static final String boundary =  "***&°°°&34#7&8*9**";//some string that will never appear in a file being uploaded
 	private static int lastResponseCode=0;
 	private static Random gen = new Random();
+	
+	private static String appEngineIP = "74.125.22.141";//these are being used because appspot.com is blocked at school.
+	
+	/**
+	 * Find the most appropriate IP address for accessing the appspot domain.
+	 * @param appEngineURL used to set appEngineHost
+	 */
+	public static void init()
+	{
+		//eventually this will do something! I promise!
+		//can't do until I have a decent amount of time to work on with the schools Internet restrictions.
+	}
 	
 	
 	/**
@@ -234,7 +246,8 @@ public class Web {
 	
 	
 	/**
-	 * Open a HttpURLConnection to the URL specified with method specified
+	 * Open a HttpURLConnection to the URL specified with method specified. If the URL is for appspot.com, this method substitutes
+	 * Google's IP address in for the connection opening, and then overrides the Host parameter to whatever was set in the URL.
 	 * @param url
 	 * @param method
 	 * @return HttpURLConnection that can be used.

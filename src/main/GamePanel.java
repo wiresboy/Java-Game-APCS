@@ -2,15 +2,22 @@ package main;
 
 import javax.swing.*;
 
+import map.Map;
 import util.*;
+import entity.Entity;
+import entity.EntityPlayer;
 import entity.Player;
 
 import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
-
-public class GamePanel extends JPanel implements Runnable, KeyListener{
+/**
+ * 
+ * @author Lucas Rezac, Brandon John
+ *
+ */
+public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener{
 
 	private static final long serialVersionUID = 1L;
 	public static final int PWIDTH = 16*16*2;   // size of panel
@@ -35,7 +42,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	//private int tempX, tempY;
 
 	private Start mainFrame;
-	private Player player; 
+	private EntityPlayer player; 
+	public static GamePanel instance;
 
 	private long gameStartTime;   // when the game started
 	private int timeSpentInGame;
@@ -58,25 +66,33 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
 	//private int numHits = 0;
 
-	private ArrayList<Integer> walkableTiles;
+	//private ArrayList<Integer> walkableTiles;
+	
+	private boolean debug = true;
 
+	public boolean[] keys = new boolean[192];
+	
 	private static int[][] mapIndexes = new int[8][16];
 	private int mapRow = 7, mapColumn = 7;
 	private Map map;
 	public GamePanel(Start frame, long period){
 		mainFrame = frame;
+		instance = this;
 		this.period = period;
-		player = new Player(7*32,5*32);
 		setDoubleBuffered(false);
 		setBackground(Color.white);
-		setPreferredSize( new Dimension(PWIDTH, PHEIGHT));
+		
 
 		setFocusable(true);
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
-		map = new Map("testmap");
+		addMouseListener(this);
+		map = new Map();
+		int[] playerLocs = map.loadMap("testmap");
+		player = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
 		player.setMap(map);
 		setBackground(Color.GRAY);
+		setPreferredSize(map.getPreferredSize());
 	}  // end of GamePanel
 
 	private void processKey(KeyEvent e){
@@ -103,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 			}else if (keyCode == KeyEvent.VK_DOWN) {
 								
 			}*/
-			player.processKey(e);
+			//player.processKey(e);
 			
 		}
 	}  // end of processKey()
@@ -187,6 +203,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	private void gameUpdate(){ 
 		if (!isPaused && !gameOver){
 			player.update();
+			for(Entity e : Entity.list){
+				e.update();
+			}
 		} 
 	   
 	}  // end of gameUpdate()
@@ -204,7 +223,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		}
 	
 		// draw a white background
-		dbg.setColor(Color.white);
+		dbg.setColor(Color.GRAY);
 		dbg.fillRect(0, 0, PWIDTH, PHEIGHT);
 	
 	 
@@ -221,9 +240,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		
 		map.draw(g);
 		player.draw(g);
-		g.setColor(Color.WHITE);
-		g.drawString("X:"+player.x+" Y:"+player.y,0,10);
-		
+		if(debug){
+			g.setColor(Color.WHITE);
+			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
+		}
 		
 		//END DRAWING GAME SECTION
 		if (gameOver)
@@ -261,7 +281,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		try {
 			g = this.getGraphics();
 			if ((g != null) && (dbImage != null))
-				g.drawImage(dbImage, -offset, 0, null);
+				g.drawImage(dbImage.getScaledInstance(dbImage.getWidth(null)*2, dbImage.getHeight(null)*2, Image.SCALE_FAST), -offset, 0, null);
 			// Sync the display on some systems.
 			// (on Linux, this fixes event queue problems)
 			Toolkit.getDefaultToolkit().sync();
@@ -273,16 +293,48 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		keys[arg0.getKeyCode()] = true;
 		processKey(arg0);
 	}
 	
 	
 	@Override
-	public void keyReleased(KeyEvent arg0) {}
+	public void keyReleased(KeyEvent arg0) {
+		keys[arg0.getKeyCode()] = false;
+	}
 	
 	
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		player.mouseClicked(e.getX(),e.getY());
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }  // end of class
 

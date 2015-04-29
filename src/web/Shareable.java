@@ -5,11 +5,11 @@ package web;
 
 public interface Shareable{
 
-	String getIdentifier(); //get a unique identifier so that the WebInterface knows where to send what data. This should be initialized somewhere in the main initialization place.
+	int getIdentifier(); //get a unique identifier so that the WebInterface knows where to send what data. This should be initialized somewhere in the main initialization place.
 	
 	String[][] packData(); 
 	/*gather any data to share with other player and package it, returning a 2D String array, containing key,value pairs.
-	 * All values will be CSV formatted by Web.java
+	 * All values will be formatted by Web.java
 	  {{"Key1","Value1"},
 	   {"Key2","Value2"},
 	   {"Key3","Value3"}}		*/

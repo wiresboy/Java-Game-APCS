@@ -8,17 +8,27 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * 
+ * @author Lucas Rezac
+ *
+ */
 public class ImageManipulator {
+	public static String dir = (System.getProperty("user.dir")).replace("/bin", "").replace("\\bin", "");
 	public static BufferedImage cropImage(BufferedImage src, int x, int y, int width, int height) {
 	      BufferedImage dest = src.getSubimage(x, y, width, height);
 	      return dest; 
 	}
 	public static BufferedImage loadImage(String name){
+		String location = dir+"\\textures\\"+name;
+		if(System.getProperty("os.name").indexOf("Mac") != -1){
+			while(location.indexOf("\\") != -1) location = location.replace("\\","/");
+		}
+		File f = new File(location);
 		try{
-		return ImageIO.read(new File(System.getProperty("user.dir")+"\\textures\\"+name));
+		return ImageIO.read(f);
 		}catch(IOException e){
-			System.err.println("ERROR: image "+name+" not found.");
+			System.err.println("ERROR: image "+name+" not found at "+f.toString());
 			return null;
 		}
 	}

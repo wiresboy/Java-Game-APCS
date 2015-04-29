@@ -1,25 +1,31 @@
 package main;
 import javax.swing.*;
+
+import web.WebInterface;
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class Start extends JFrame implements WindowListener{
 	private static final long serialVersionUID = 6074277649488997023L;
-	private static int DEFAULT_FPS = 30;      // 40 is too fast! 
+	private static int DEFAULT_FPS = 25;      // 50 is too fast! 
 	
 	private GamePanel panel;        // where the game is drawn
 	
 	public Start(long period){ 
 		super("[unnamed]");
-	
+		PreSetup.init();
 		 Container c = getContentPane();    // default BorderLayout used
 		 panel = new GamePanel(this, period);
 		 c.add(panel, "Center");
 		 	//setSize(16*16*2,(10*16+13)*2);
 		 addWindowListener( this );
 		 pack();
-		 setResizable(false);
+		 setResizable(true);
 		 setVisible(true);
+		 
+		 
+		 
 	}  // end of Start() constructor
 	
 	
@@ -46,7 +52,8 @@ public class Start extends JFrame implements WindowListener{
 	
 	// ----------------------------------------------------
 	
-	public static void main(String args[]){ 
+	public static void main(String args[]){
+		WebInterface.init();//initialize the Web Interface.
 		long period = (long) 1000.0/DEFAULT_FPS;
 		// System.out.println("fps: " + DEFAULT_FPS + "; period: " + period + " ms");
 		new Start(period*1000000L);    // ms --> nanosecs 

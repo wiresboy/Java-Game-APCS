@@ -30,4 +30,19 @@ public class Animation {
 		thisFrame++;
 		return getCurrent();
 	}
+	public BufferedImage back(){
+		if(currImgIndx == 0){
+			currImgIndx = images.size()-1;
+		}else{
+			currImgIndx--;
+		}
+		thisFrame = 0;
+		lastFrame = 0;
+		return getCurrent();
+	}
+	public void reset(){
+		lastFrame = 0;
+		thisFrame = 0;
+		currImgIndx = 0;
+	}
 }
