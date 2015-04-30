@@ -111,10 +111,15 @@ public class Map{
 		   }
 	   }
    }
-   public String toString(){ return "Player"; }
-   public void reset(){
+	public String toString(){ 
+		return "Map: " + mapname; 
+	}
+	public String mapName(){	
+		return mapname;
+	}
+	public void reset(){
 	   loadMap(mapname);
-   }
+	}
 }
 
 /*import java.io.File;

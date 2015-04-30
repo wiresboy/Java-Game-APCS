@@ -10,7 +10,7 @@ import entity.*;
 
 
 public class WebInterface {
-	private static final String baseURL = "http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
+	private static final String baseURL = "http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
 	private static final String playerURL = baseURL + "player.php";
 	private static String username;//MyID.
 	private static String theirUsername;//username of the other player. Doubles as theirID.
@@ -27,7 +27,7 @@ public class WebInterface {
 	{
 		mapName = "testmap.txt";
 		Web.init();
-		return false;
+		return true;
 	}
 	
 	
@@ -46,6 +46,7 @@ public class WebInterface {
 	
 	
 	private static final int HTTPResponseSuccess = 200;
+	private static final int HTTPResponseMissingParams = 401;
 	private static final int HTTPResponseFileNotFound = 404;
 	private static final int HTTPResponseMapUnknown = 412;
 	private static final int HTTPResponseOtherPlayerNotConnected = 418;
@@ -56,7 +57,7 @@ public class WebInterface {
 	 * @param it object of other player, which will be updated with unpackData 
 	 * @return player- other player
 	 */
-	public static void updatePlayerStatus(Player me, Player it)
+	public static void updatePlayerStatus(EntityPlayer me, EntityPlayer it)
 	{
 		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
 		
@@ -64,6 +65,7 @@ public class WebInterface {
 		try {
 			String rawReceived = Web.post(playerURL, new String[][]{{"GameID",mapName},{"MyID",username},{"MyData", toSend},{"TheirID",theirUsername}});
 			//Send my data, receive other players data.
+			
 			int HTTPResponseCode = Web.LastResponseCode();
 			
 			switch(HTTPResponseCode)
@@ -77,6 +79,8 @@ public class WebInterface {
 				throw new Exception("412 Map unknown ("+mapName+"): \n"+rawReceived);
 			case HTTPResponseOtherPlayerNotConnected:
 				throw new Exception("418 Other player ("+theirUsername+") isn't connected: \n"+rawReceived);
+			case HTTPResponseMissingParams:
+				throw new Exception("400 Apparently we had a malformed request that was missing some parameters: \n"+rawReceived);
 			default:
 				throw new Exception("Unknown response code: "+HTTPResponseCode);
 			}

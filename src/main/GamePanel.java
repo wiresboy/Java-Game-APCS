@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import map.Map;
 import util.*;
+import web.WebInterface;
 import entity.Entity;
 import entity.EntityPlayer;
 import entity.Player;
@@ -12,6 +13,7 @@ import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 /**
  * 
  * @author Lucas Rezac, Brandon John
@@ -43,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 
 	private Start mainFrame;
 	private EntityPlayer player; 
+	private EntityPlayer otherPlayer = null; 
 	public static GamePanel instance;
 
 	private long gameStartTime;   // when the game started
@@ -69,7 +72,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//private ArrayList<Integer> walkableTiles;
 	
 	private boolean debug = true;
-
+	
+	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+					//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
+	
+	
 	public boolean[] keys = new boolean[192];
 	
 	private static int[][] mapIndexes = new int[8][16];
@@ -88,9 +95,33 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		addKeyListener(this); 
 		addMouseListener(this);
 		map = new Map();
-		int[] playerLocs = map.loadMap("testmap");
+		int[] playerLocs = map.loadMap("testmap");//playerLocs holds location of the player. For now, both players start in the same place, so used for both.
 		player = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
 		player.setMap(map);
+		
+		if (!singlePlayer)
+		{
+			//TODO: Start menu that generates this info?
+			Scanner key = new Scanner(System.in);//get a scanner object for getting players names. This SHOULD be replaced by a menu first.
+			//initialize web settings:
+			
+			String mapName = map.mapName();
+			System.out.println("Please enter your username: (Note, the other player will have to enter yours identically! So don't make it too crazy!) ");
+			String myName = key.nextLine();
+			System.out.println("Please enter the other players username. They must have the same map open as you do. You are playing |"+mapName+"|.");
+			String theirName = key.nextLine();
+			key.close();//must close the scanner so we don't cause any keyboard input issues.
+			
+			WebInterface.v1Init(myName, theirName, mapName);//initialize web interface to this game and these players.
+			
+			//TODO: we may want to wait here for the other player to sign in.
+			
+			
+			otherPlayer = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
+			otherPlayer.setMap(map);
+			
+		}
+		
 		setBackground(Color.GRAY);
 		setPreferredSize(map.getPreferredSize());
 	}  // end of GamePanel
@@ -203,6 +234,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private void gameUpdate(){ 
 		if (!isPaused && !gameOver){
 			player.update();
+			if (!singlePlayer)
+			{
+				//TODO: Put the web connection in some other thread, and make this a gettersetter thing.
+				WebInterface.updatePlayerStatus(player, otherPlayer);
+			}
 			for(Entity e : Entity.list){
 				e.update();
 			}

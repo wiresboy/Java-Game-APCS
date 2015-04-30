@@ -1,9 +1,9 @@
 <?PHP
-if (isset($_GET["NewGameID"]);
+if (isset($_GET["NewGameID"]))
 {
 $newGame = cleanString($_GET["NewGameID"]);
 
-$gameDir = "player_status/".$newGame."/";
+$gameDir = "gs://java-game-apcs.appspot.com/player_status/".$newGame."/";
 
 //does this game not exist yet?
 if (!is_dir($gameDir))

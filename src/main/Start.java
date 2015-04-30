@@ -13,7 +13,7 @@ public class Start extends JFrame implements WindowListener{
 	private GamePanel panel;        // where the game is drawn
 	
 	public Start(long period){ 
-		super("[unnamed]");
+		super("we should name this?");
 		PreSetup.init();
 		 Container c = getContentPane();    // default BorderLayout used
 		 panel = new GamePanel(this, period);

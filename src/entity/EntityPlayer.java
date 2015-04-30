@@ -12,10 +12,11 @@ import tile.Tile;
 import util.Animation;
 import util.ImageManipulator;
 import util.Resources;
+import web.Shareable;
 import main.GamePanel;
 import map.Map;
 
-public class EntityPlayer extends Entity{
+public class EntityPlayer extends Entity implements Shareable{
 	public int speedX = 0, speedY = 0;
 	private final int MAX_SPEEDX = 3, MAX_SPEEDY = 10;
 	private int jumpCountDown = 0;
@@ -283,4 +284,44 @@ public class EntityPlayer extends Entity{
 	}
 	public EntityPortal_Red getRedPortal(){ return redportal; }
 	public EntityPortal_Blue getBluePortal(){ return blueportal;}
+	
+	
+	/** gather any data to share with other player and package it, returning a 2D String array, containing key,value pairs.
+	  * All values will be CSV formatted by Web.java
+	  {{"Key1","Value1"},
+	   {"Key2","Value2"},
+	   {"Key3","Value3"}}		*/	
+	@Override
+	public String[][] packData() {
+		String[] xRow = new String[] {"x",((Integer)getX()).toString()};
+		String[] yRow = new String[] {"y",((Integer)getY()).toString()};
+		//TODO: Add other vars as needed, like character image, etc.
+		
+		return new String[][]{xRow,yRow};
+	}
+	
+	/** update all internal variables to new values based on data packed by a different client.
+	 * Should follow exact same pattern for decoding as it does for encoding.
+	 */
+	@Override
+	public void unpackData(String[][] update) {
+		for(String[] row : update)//loop through each item to use with this frame update
+		{
+			switch (row[0]){
+				case "x":
+					setX(Integer.decode(row[1]));
+					break;
+				case "y":
+					setY(Integer.decode(row[1]));
+					break;
+			}
+		}
+	}
+	
+	@Override
+	public int getIdentifier() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }

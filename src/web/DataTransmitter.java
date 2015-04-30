@@ -12,10 +12,10 @@ public class DataTransmitter {
 	//private static Encoder b64encoder = Base64.getEncoder();
 	//private static Decoder b64decoder = Base64.getDecoder();
 
-	private static String columnDelimiter = "*";
-	private static String columnDelimiterRegex = "\\*";
-	private static String rowDelimiter = ".";
-	private static String rowDelimiterRegex = "\\.";
+	private static String columnDelimiter = ".";
+	private static String columnDelimiterRegex = "\\.";
+	private static String rowDelimiter = "~";
+	private static String rowDelimiterRegex = "\\~";
 	
 	public static String pack2DStringArray(String[][] data)
 	{

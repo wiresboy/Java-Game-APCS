@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import map.Map;
 
 public abstract class Entity implements IEntity{
+	//TODO: Must implement Shareable, but I don't have time right now to understand all of the comment-less code that requires changing :)
 	private static int id_count = -1;
 	public static ArrayList<Entity> list = new ArrayList<Entity>();
 	private int id;

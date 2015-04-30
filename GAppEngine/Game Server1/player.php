@@ -25,18 +25,19 @@
  */
 
 
-if (! isset($_GET["GameID"],$_GET["MyID"],$_GET["MyData"],$_GET["TheirID"]))
+if (! isset($_REQUEST["GameID"],$_REQUEST["MyID"],$_REQUEST["MyData"],$_REQUEST["TheirID"]))
 {
-	http_response_code(400);//bad request, since not all of the parameters were specified
-	echo "Missing some parameters!";
+	header("HTTP/1.1 201 Missing parameters!");//bad request, since not all of the parameters were specified
+	echo "Missing some parameters!\n";
+	print_r($_REQUEST);
 	exit;
 }
 
 
-$GameID  = cleanString( $_GET["GameID"]  );
-$MyID    = cleanString( $_GET["MyID"]    );
-$MyData  = $_GET["MyData"];
-$TheirID = cleanString( $_GET["TheirID"] );
+$GameID  = cleanString( $_REQUEST["GameID"]  );
+$MyID    = cleanString( $_REQUEST["MyID"]    );
+$MyData  = $_REQUEST["MyData"];
+$TheirID = cleanString( $_REQUEST["TheirID"] );
 
 //getDefaultGoogleStorageBucketName() returns "gs://<app_id>.appspot.com/"
 //except it isn't working, so using the literal instead.

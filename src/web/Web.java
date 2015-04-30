@@ -13,7 +13,7 @@ public class Web {
 	private static int lastResponseCode=0;
 	private static Random gen = new Random();
 	
-	private static String appEngineIP = "74.125.22.141";//these are being used because appspot.com is blocked at school.
+	private static String appEngineIP = "74.125.22.141";//these may be used because *.appspot.com is blocked at school.
 	
 	/**
 	 * Find the most appropriate IP address for accessing the appspot domain.
@@ -180,7 +180,8 @@ public class Web {
 	{
 		String params_encoded= "";
 		for (String[] a:params)
-			params_encoded += a[0]+"="+a[1]+",";
+			params_encoded += a[0]+"="+a[1]+"&";
+		params_encoded = params_encoded.substring(0, params_encoded.length()-1);
 		System.out.println("Encoded POST parameters are: "+params_encoded);
 		return post(URL, params_encoded);
 	}
