@@ -27,7 +27,7 @@
 
 if (! isset($_REQUEST["GameID"],$_REQUEST["MyID"],$_REQUEST["MyData"],$_REQUEST["TheirID"]))
 {
-	header("HTTP/1.1 201 Missing parameters!");//bad request, since not all of the parameters were specified
+	header("HTTP/1.1 400 Missing parameters!");//bad request, since not all of the parameters were specified
 	echo "Missing some parameters!\n";
 	print_r($_REQUEST);
 	exit;

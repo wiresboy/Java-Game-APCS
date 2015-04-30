@@ -4,9 +4,11 @@ import javax.swing.*;
 
 import map.Map;
 import util.*;
-import web.WebInterface;
+import web.GameStatus;
+import web.WebRunner;
 import entity.Entity;
 import entity.EntityPlayer;
+import entity.EntityPlayerWebControlled;
 import entity.Player;
 
 import java.awt.image.*;
@@ -45,7 +47,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 
 	private Start mainFrame;
 	private EntityPlayer player; 
-	private EntityPlayer otherPlayer = null; 
 	public static GamePanel instance;
 
 	private long gameStartTime;   // when the game started
@@ -73,9 +74,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	
 	private boolean debug = true;
 	
-	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+	// **************WEB STUFF***************
+	private boolean singlePlayer = true; //when testing this at school before I have the web thing figured out, you will need to set this to true.
 					//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
-	
+	private EntityPlayer otherPlayer = null; 
+	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
+	private WebRunner webRunner = null;
 	
 	public boolean[] keys = new boolean[192];
 	
@@ -102,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if (!singlePlayer)
 		{
 			//TODO: Start menu that generates this info?
-			Scanner key = new Scanner(System.in);//get a scanner object for getting players names. This SHOULD be replaced by a menu first.
+			Scanner key = new Scanner(System.in);//get a scanner object for getting players names. This SHOULD be replaced by a menu.
 			//initialize web settings:
 			
 			String mapName = map.mapName();
@@ -112,13 +116,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			String theirName = key.nextLine();
 			key.close();//must close the scanner so we don't cause any keyboard input issues.
 			
-			WebInterface.v1Init(myName, theirName, mapName);//initialize web interface to this game and these players.
-			
-			//TODO: we may want to wait here for the other player to sign in.
-			
-			
-			otherPlayer = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
+			player.setUsername(myName);
+			otherPlayer = new EntityPlayerWebControlled(playerLocs[0],playerLocs[1],"Chell",theirName);
 			otherPlayer.setMap(map);
+			
+			gameStatus = new GameStatus(mapName);
+			
+			webRunner = new WebRunner(player,otherPlayer,gameStatus);
+			
+			//TODO: we may want to wait here for the other player to sign in?
 			
 		}
 		
@@ -234,11 +240,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private void gameUpdate(){ 
 		if (!isPaused && !gameOver){
 			player.update();
+			
 			if (!singlePlayer)
 			{
-				//TODO: Put the web connection in some other thread, and make this a gettersetter thing.
-				WebInterface.updatePlayerStatus(player, otherPlayer);
+				otherPlayer.update();
 			}
+			
 			for(Entity e : Entity.list){
 				e.update();
 			}
@@ -276,6 +283,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		
 		map.draw(g);
 		player.draw(g);
+		
+		if (!singlePlayer)//Draw the other player only if they exist. 
+			otherPlayer.draw(g);
+		
 		if(debug){
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);

@@ -182,7 +182,7 @@ public class Web {
 		for (String[] a:params)
 			params_encoded += a[0]+"="+a[1]+"&";
 		params_encoded = params_encoded.substring(0, params_encoded.length()-1);
-		System.out.println("Encoded POST parameters are: "+params_encoded);
+		//System.out.println("Encoded POST parameters are: "+params_encoded);
 		return post(URL, params_encoded);
 	}
 	
@@ -205,9 +205,9 @@ public class Web {
 		
 		lastResponseCode=con.getResponseCode();
 		
-		System.out.println("\nSending 'POST' request to URL : " + URL);
-		System.out.println("Post parameters : " + params);
-		System.out.println("Response Code : " + lastResponseCode);
+		//System.out.println("\nSending 'POST' request to URL : " + URL);
+		//System.out.println("Post parameters : " + params);
+		//System.out.println("Response Code : " + lastResponseCode);
 		
 		StringBuffer response = bufferedRead(con);
 		
@@ -227,8 +227,8 @@ public class Web {
 		
 		lastResponseCode=con.getResponseCode();
 		
-		System.out.println("\nSending 'GET' request to URL : " + URL);
-		System.out.println("Response Code : " + lastResponseCode);
+		//System.out.println("\nSending 'GET' request to URL : " + URL);
+		//System.out.println("Response Code : " + lastResponseCode);
 		
 		StringBuffer response = bufferedRead(con);
 		
@@ -283,7 +283,7 @@ public class Web {
 		in.close();
 		
 		//print result
-		System.out.println("Response: "+response.toString());
+		//System.out.println("Response: "+response.toString());
 		con.disconnect();//disconnect connection
 		return response;
 	}

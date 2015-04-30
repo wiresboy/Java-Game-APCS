@@ -30,6 +30,11 @@ public class EntityPlayer extends Entity implements Shareable{
 	private EntityPortal_Red redportal;
 	private EntityPortal_Blue blueportal;
 	private boolean willShootBlue = false;
+	private String username;
+	public EntityPlayer(int x, int y,String name,String username_){
+		this(x,y,name);
+		username = username_;
+	}
 	public EntityPlayer(int x, int y,String name){
 		setX(x);
 		setY(y);
@@ -318,10 +323,15 @@ public class EntityPlayer extends Entity implements Shareable{
 		}
 	}
 	
-	@Override
+	@Override//not used in the player class, but is in other entities.
 	public int getIdentifier() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
+	public String getUsername() {
+		return username;
+	}
 	
+	public void setUsername(String username_) {
+		username = username_;
+	}
 }

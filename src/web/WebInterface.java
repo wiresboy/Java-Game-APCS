@@ -10,7 +10,7 @@ import entity.*;
 
 
 public class WebInterface {
-	private static final String baseURL = "http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
+	private static final String baseURL = "http://1-02.java-game-apcs.appspot.com/";//"http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
 	private static final String playerURL = baseURL + "player.php";
 	private static String username;//MyID.
 	private static String theirUsername;//username of the other player. Doubles as theirID.
@@ -46,7 +46,7 @@ public class WebInterface {
 	
 	
 	private static final int HTTPResponseSuccess = 200;
-	private static final int HTTPResponseMissingParams = 401;
+	private static final int HTTPResponseMissingParams = 400;
 	private static final int HTTPResponseFileNotFound = 404;
 	private static final int HTTPResponseMapUnknown = 412;
 	private static final int HTTPResponseOtherPlayerNotConnected = 418;
