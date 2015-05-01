@@ -28,7 +28,7 @@ public class EntityPlayer extends Entity{
 	private EntityShotPortal_Red shotPortalRed;
 	private EntityPortal_Red redportal;
 	private EntityPortal_Blue blueportal;
-	private boolean willShootBlue = false;
+	private boolean willShootBlue = true;
 	public EntityPlayer(int x, int y,String name){
 		setX(x);
 		setY(y);
@@ -74,18 +74,23 @@ public class EntityPlayer extends Entity{
 		// I want to make the player shoot a portal in the direction of the mouse click,
 		// and, if the destination wall tiles can hold a portal, then a new portal
 		// should be created there.
-		/*
-		int dirx = x-getX();
+		//*
+		int dirx = x-getX();//find location of mouse click relative to me.
 		int diry = y-getY();
 		if(willShootBlue){
-			shotPortalBlue = new EntityShotPortal_Blue(dirx,diry,this);
+			//remove last blue portal?
+			
+			shotPortalBlue = new EntityShotPortal_Blue(dirx,diry,getX(),getY(),this);
+			System.out.println("* blue portal created");
 			shotPortalBlue.setMap(map);
+			System.out.println("* blue portal set to map.");
 			shotPortalBlue.go();
+			System.out.println("* blue portal go called");
 		}else{
 			shotPortalRed = new EntityShotPortal_Red(dirx,diry,this);
 			shotPortalRed.setMap(map);
 			shotPortalRed.go();
-		}*/
+		}//*/
 	}
 	public void processKeys(){
 		boolean[] keys = GamePanel.instance.keys;

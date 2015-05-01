@@ -79,6 +79,14 @@ public class Map{
    public static int pixelsToTiles(int pixels){
 	   return (int)((double)pixels/16.0);
    }
+   public boolean onMapPixel(int x, int y) // return true if the coordinates
+   {
+	   return onMapTile(pixelsToTiles(x), pixelsToTiles(y));
+   }
+   public boolean onMapTile(int x, int y)
+   {//possible off by one errors on maximum... not sure how it is working.
+	   return ((x>=0) && (y>=0) && (x<=map[0].length) && (y<=map.length));
+   }
    public void drawBase(Graphics2D g){
 	   // TODO Implement this
 	   for(int row = 0; row < map.length; row++){
