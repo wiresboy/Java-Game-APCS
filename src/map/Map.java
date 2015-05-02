@@ -36,7 +36,7 @@ public class Map{
 				if(hex.equals("*1")){
 					int x = tilesToPixels(column);
 					int y = tilesToPixels(row);
-					playerLoc = new int[]{x,y-16};
+					playerLoc = new int[]{x,y-TILE_SIZE};
 				}else{
 					Tile t = TileRegistry.getTile(hex);
 					if(t != null){
@@ -71,13 +71,13 @@ public class Map{
 	   return map[row][column];
    }
    public static int tilesToPixels(int tiles){
-	   return tiles*16;
+	   return tiles*TILE_SIZE;
    }
    public Dimension getPreferredSize(){
 	   return new Dimension(map[0].length*32,map.length*32);
    }
    public static int pixelsToTiles(int pixels){
-	   return (int)((double)pixels/16.0);
+	   return (int)((double)pixels/(double)TILE_SIZE);
    }
    public boolean onMapPixel(int x, int y) // return true if the coordinates
    {
@@ -125,7 +125,8 @@ public class Map{
    }
 }
 
-/*import java.io.File;
+/*
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;

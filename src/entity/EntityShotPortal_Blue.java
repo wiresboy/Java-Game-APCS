@@ -6,109 +6,121 @@ import util.Resources;
 
 public class EntityShotPortal_Blue extends Entity{
 	private int dirx, diry;
+	private int startx, starty;
 	private EntityPlayer player;
+	private double angle = 0;//measured in radians
 	public boolean isDead = false;
-	public EntityShotPortal_Blue(int dirx, int diry, EntityPlayer player){
+	public EntityShotPortal_Blue(int dirx, int diry, int startx, int starty, EntityPlayer player){
 		this.dirx = dirx;
 		this.diry = diry;
+		this.startx=startx;
+		this.starty=starty;
 		this.player = player;
 		image = Resources.getEntity("ShotPortal_Blue");
 	}
 	public void update(){
-	
-	}
-	public void go(){
-		System.out.println("ShotPortal: go");
+		if (map.onMapPixel(getX(), getY()))
+			//TODO: left the screen, so destruct the object... somehow.
+			return;
 		Tile t;
-		int x,y;
-		do{
+
 		setX(getX()+dirx);
 		setY(getY()+diry);
-		x = Map.pixelsToTiles(getX());
-		y = Map.pixelsToTiles(getY());
-		t = map.getTile(y, x);
-		}while(t == null);
-		if(t != null){
+		int x = Map.pixelsToTiles(getX());
+		int y = Map.pixelsToTiles(getY());
+		t = map.getTile(x, y);
+
+		if (t!=null)
+		{
+			System.out.println("Found a block collision, lets make a portal");
+			//this code won't work right now... uhh... yeah.
+			//not entirely sure what needs to be happening, but dirx and diry should no longer be used to calculate this stuff.
 			int lx = Map.tilesToPixels(x)+4;
 			int ty = Map.tilesToPixels(y)+4;
 			int rx = lx+8;
 			int by = ty+8;
 			if(t.boundingBox(lx-4, ty-4,map) != null)
-			if(dirx > 0 && diry < 0){
-				if(getX() <= lx+4){
-					//LEFT SIDE
-					if(t.isPortalable(Tile.LEFT)){
-						createNewPortal(getX(),getY(),Tile.LEFT);
+				if(dirx > 0 && diry < 0){
+					if(getX() <= lx+4){
+						//LEFT SIDE
+						if(t.isPortalable(Tile.LEFT)){
+							createNewPortal(getX(),getY(),Tile.LEFT);
+						}
+					}else{
+						//BOTTOM SIDE
+						if(t.isPortalable(Tile.BOTTOM)){
+							createNewPortal(getX(),getY(),Tile.BOTTOM);
+						}
 					}
-				}else{
-					//BOTTOM SIDE
-					if(t.isPortalable(Tile.BOTTOM)){
-						createNewPortal(getX(),getY(),Tile.BOTTOM);
+				}else if(dirx == 0){
+					if(diry < 0){
+						//BOTTOM SIDE
+						if(t.isPortalable(Tile.BOTTOM)){
+							createNewPortal(getX(),getY(),Tile.BOTTOM);
+						}
+					}else{
+						//TOP SIDE
+						if(t.isPortalable(Tile.TOP)){
+							createNewPortal(getX(),getY(),Tile.TOP);
+						}
+					}
+				}else if(diry == 0){
+					if(dirx < 0){
+						//LEFT SIDE
+						if(t.isPortalable(Tile.LEFT)){
+							createNewPortal(getX(),getY(),Tile.LEFT);
+						}
+					}else{
+						//RIGHT SIDE
+						if(t.isPortalable(Tile.RIGHT)){
+							createNewPortal(getX(),getY(),Tile.RIGHT);
+						}
+					}
+				}else if(dirx > 0 &&  diry > 0){
+					if(getX() >= lx-4){
+						//LEFT SIDE
+						if(t.isPortalable(Tile.LEFT)){
+							createNewPortal(getX(),getY(),Tile.LEFT);
+						}
+					}else{
+						//TOP SIDE
+						if(t.isPortalable(Tile.TOP)){
+							createNewPortal(getX(),getY(),Tile.TOP);
+						}
+					}
+
+				}else if(dirx < 0 && diry < 0){
+					if(getX() >= rx+4){
+						//RIGHT SIDE
+						if(t.isPortalable(Tile.RIGHT)){
+							createNewPortal(getX(),getY(),Tile.RIGHT);
+						}
+					}else{
+						//BOTTOM SIDE
+						if(t.isPortalable(Tile.BOTTOM)){
+							createNewPortal(getX(),getY(),Tile.BOTTOM);
+						}
+					}
+				}else if(dirx < 0 && diry > 0){
+					if(getX() >= rx+4){
+						//RIGHT SIDE
+						if(t.isPortalable(Tile.RIGHT)){
+							createNewPortal(getX(),getY(),Tile.RIGHT);
+						}
+					}else{
+						//TOP SIDE
+						if(t.isPortalable(Tile.TOP)){
+							createNewPortal(getX(),getY(),Tile.TOP);
+						}
 					}
 				}
-			}else if(dirx == 0){
-				if(diry < 0){
-					//BOTTOM SIDE
-					if(t.isPortalable(Tile.BOTTOM)){
-						createNewPortal(getX(),getY(),Tile.BOTTOM);
-					}
-				}else{
-					//TOP SIDE
-					if(t.isPortalable(Tile.TOP)){
-						createNewPortal(getX(),getY(),Tile.TOP);
-					}
-				}
-			}else if(diry == 0){
-				if(dirx < 0){
-					//LEFT SIDE
-					if(t.isPortalable(Tile.LEFT)){
-						createNewPortal(getX(),getY(),Tile.LEFT);
-					}
-				}else{
-					//RIGHT SIDE
-					if(t.isPortalable(Tile.RIGHT)){
-						createNewPortal(getX(),getY(),Tile.RIGHT);
-					}
-				}
-			}else if(dirx > 0 &&  diry > 0){
-				if(getX() >= lx-4){
-					//LEFT SIDE
-					if(t.isPortalable(Tile.LEFT)){
-						createNewPortal(getX(),getY(),Tile.LEFT);
-					}
-				}else{
-					//TOP SIDE
-					if(t.isPortalable(Tile.TOP)){
-						createNewPortal(getX(),getY(),Tile.TOP);
-					}
-				}
-			
-			}else if(dirx < 0 && diry < 0){
-				if(getX() >= rx+4){
-					//RIGHT SIDE
-					if(t.isPortalable(Tile.RIGHT)){
-						createNewPortal(getX(),getY(),Tile.RIGHT);
-					}
-				}else{
-					//BOTTOM SIDE
-					if(t.isPortalable(Tile.BOTTOM)){
-						createNewPortal(getX(),getY(),Tile.BOTTOM);
-					}
-				}
-			}else if(dirx < 0 && diry > 0){
-				if(getX() >= rx+4){
-					//RIGHT SIDE
-					if(t.isPortalable(Tile.RIGHT)){
-						createNewPortal(getX(),getY(),Tile.RIGHT);
-					}
-				}else{
-					//TOP SIDE
-					if(t.isPortalable(Tile.TOP)){
-						createNewPortal(getX(),getY(),Tile.TOP);
-					}
-				}
-			}
+
 		}
+
+	}
+	public void go(){
+
+
 	}
 	public void createNewPortal(int tilex, int tiley, int side){
 		switch(side){
