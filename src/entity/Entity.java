@@ -71,10 +71,9 @@ public abstract class Entity implements IEntity{
 	 * @param startX
 	 * @param startY
 	 * @param angleRadians: keep in mind this angle follows geometry, where increasing y is upward, while this game increasing y is downward!
-	 * @return double array, [blockX, blockY, faceOfBlock], where face of block is 0 for top, 1 for right, 2 for bottom, and 3 for left.
-	 * returns null if block isn't found.
+	 * @return Object array; index 0 = tile, index 1 = side, index 2 = x, index 3 = y
 	 */
-	public final int[] findNextIntersection(int startX, int startY, double angleRadians)
+	public final Object[] findNextIntersection(int startX, int startY, double angleRadians)
 	{	
 		double x = startX;
 		double y = startY;
@@ -113,6 +112,7 @@ public abstract class Entity implements IEntity{
 		int right = left+Map.TILE_SIZE;
 		
 		int dir = -1;
+	
 		//TODO: This calculates incorrectly! Not sure why...
 		if (Math.abs(angleRadians)<0.000001)//is it almost exactly horizontally right? Then return that it hit left side
 		{
@@ -152,6 +152,9 @@ public abstract class Entity implements IEntity{
 		}
 		found[2] = dir;
 		System.out.println("Tile = ("+found[0]+","+found[1]+"), t= "+t+", Dir = "+dir);
-		return found;
+		return new Object[]{t,new Integer(dir),new Integer((int)x-16), new Integer((int)y-16)};
+	}
+	public String name(){
+		return this.getClass().getSimpleName();
 	}
 }

@@ -14,79 +14,79 @@ public class EntityShotPortal_Blue extends Entity{
 		this.starty=starty;
 		this.player = player;
 		this.angle = Math.atan2(clicky-starty, clickx-startx);//multipy y val by -1 since increasing y is downward.
-		System.out.println("start = ("+startx+","+starty+"), click = ("+clickx+","+clicky+"), angle = "+angle+", which is "+Math.toDegrees(angle)+"°");
+		System.out.println("start = ("+startx+","+starty+"), click = ("+clickx+","+clicky+"), angle = "+angle+", which is "+Math.toDegrees(angle));
 		image = Resources.getEntity("ShotPortal_Blue");
 	}
 	public void update(){}//we are not drawing this, so update can be ignored.
 	
 	public void go(){
-		int[] intersect = this.findNextIntersection(startx, starty, angle);
-		
-		if (intersect!=null)
+		Object[] values = this.findNextIntersection(startx, starty, angle);
+		Tile t = (Tile)values[0];
+		int side = ((Integer)values[1]).intValue();
+		int x = ((Integer)values[2]).intValue();
+		int y  = ((Integer)values[3]).intValue();
+		//x = Map.tilesToPixels(x);
+		//y = Map.tilesToPixels(y);
+		/*if (intersect!=null)
 		{
 			//System.out.println("Found a block collision, lets make a portal");
 			int x = intersect[0];
 			int y = intersect[1];
-			int side = intersect[2];
-			Tile t = map.getTile(y, x);//row, column still confuses me... columns = x?
+			int side = intersect[2];*/
+			//Tile t = map.getTile(y, x);//row, column still confuses me... columns = x Yes.
 			if (t!=null && t.isPortalable(side))
-				createNewPortal(x,y,side);
+				createNewPortal(t,x,y,side);
 			else
 				System.out.println("Not creating portal since it isn't tileable!");
 			
-		}
+		//}
 	}
 	
-	public void createNewPortal(int tilex, int tiley, int side){
+	public void createNewPortal(Tile t, int tilex, int tiley, int side){
+		System.out.println("ShotPortal_Blue: createNewPortal called!");
 		switch(side){
 		case Tile.LEFT:
-			int x = Map.pixelsToTiles(tilex);
-			int y = Map.pixelsToTiles(tiley+16);
-			Tile t= map.getTile(y,x);
+			
 			if(t != null && t.isPortalable(Tile.LEFT)){
 				EntityPortalVert_Blue p = new EntityPortalVert_Blue();
 				p.setY(tiley);
-				p.setX(tilex-2);
+				p.setX(tilex);
 				p.setMap(map);
 				player.setBluePortal(p);
 			}
 			break;
 		case Tile.RIGHT:
-			x = Map.pixelsToTiles(tilex);
-			y = Map.pixelsToTiles(tiley+16);
-			t = map.getTile(y, x);
+			
 			if(t != null && t.isPortalable(Tile.RIGHT)){
 				EntityPortalVert_Blue p = new EntityPortalVert_Blue();
 				p.setY(tiley);
-				p.setX(tilex+16+2);
+				p.setX(tilex+16);
 				p.setMap(map);
 				player.setBluePortal(p);
 			}
 			break;
 		case Tile.BOTTOM:
-			x = Map.pixelsToTiles(tilex+16);
-			y = Map.pixelsToTiles(tiley);
-			t = map.getTile(y,x);
+			
 			if(t != null && t.isPortalable(Tile.BOTTOM)){
 				EntityPortalHoriz_Blue p = new EntityPortalHoriz_Blue();
-				p.setY(tiley+16+2);
+				p.setY(tiley+16);
 				p.setX(tilex+16);
 				p.setMap(map);
 				player.setBluePortal(p);
 			}
 			break;
 		case Tile.TOP:
-			x = Map.pixelsToTiles(tilex+16);
-			y = Map.pixelsToTiles(tiley);
-			t = map.getTile(y, x);
+			
 			if(t != null && t.isPortalable(Tile.TOP)){
 				EntityPortalHoriz_Blue p = new EntityPortalHoriz_Blue();
-				p.setY(tiley-2);
+				p.setY(tiley);
 				p.setX(tilex);
 				p.setMap(map);
 				player.setBluePortal(p);
 			}
 			break;	
+		default:
+			System.out.println("ShotPortal_Blue: there was an error!");
 		}
 	}
 }

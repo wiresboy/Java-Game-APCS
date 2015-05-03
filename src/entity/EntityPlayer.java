@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
@@ -176,7 +177,15 @@ public class EntityPlayer extends Entity{
 		setY(starty);
 		map.reset();
 	}
-	
+	@Override
+	public void draw(Graphics2D g){
+		super.draw(g);
+		//System.out.println(name()+" drawing!");
+		if(redportal != null)
+			redportal.draw(g);
+		if(blueportal != null)
+			blueportal.draw(g);
+	}
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
 		speedY = -6;

@@ -84,6 +84,9 @@ public class Map{
    public static int pixelsToTiles(int pixels){
 	   return (int)((double)pixels/(double)TILE_SIZE);
    }
+   public static int absPixelsToTiles(int pixels){
+	   return tilesToPixels(pixelsToTiles(pixels));
+   }
    public boolean onMapPixel(int x, int y) // return true if the coordinates
    {
 	   return onMapTile(pixelsToTiles(x), pixelsToTiles(y));
