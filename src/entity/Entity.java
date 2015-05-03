@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import tile.Tile;
 
+import main.GamePanel;
 import map.Map;
 
 public abstract class Entity implements IEntity{
@@ -69,29 +70,39 @@ public abstract class Entity implements IEntity{
 	 * Finds the first block along the 
 	 * @param startX
 	 * @param startY
-	 * @param angleRadians
+	 * @param angleRadians: keep in mind this angle follows geometry, where increasing y is upward, while this game increasing y is downward!
 	 * @return double array, [blockX, blockY, faceOfBlock], where face of block is 0 for top, 1 for right, 2 for bottom, and 3 for left.
 	 * returns null if block isn't found.
 	 */
 	public final int[] findNextIntersection(int startX, int startY, double angleRadians)
-	{
+	{	
 		double x = startX;
 		double y = startY;
 		Tile t=null;
 		
-		double xChange = Math.sin(angleRadians);
-		double yChange = Math.cos(angleRadians);
+		double xChange = Math.cos(angleRadians);
+		double yChange = Math.sin(angleRadians);
 
 		while (t==null && map.onMapPixel((int)x, (int)y))
 		{
-			t = map.getTile(Map.pixelsToTiles((int)x), Map.pixelsToTiles((int)y));
+			//t = map.getTile(Map.pixelsToTiles((int)x), Map.pixelsToTiles((int)y));
+			t = map.getTile(Map.pixelsToTiles((int)y), Map.pixelsToTiles((int)x));
 			
 			x+= xChange;
 			y+= yChange;
 		}
+		System.out.println("OnMap: coords = ("+x+","+y+"), t="+t);
+
+		GamePanel.tempLineHelp[0]=startX;
+		GamePanel.tempLineHelp[1]=startY;
+		GamePanel.tempLineHelp[2]=(int)x;
+		GamePanel.tempLineHelp[3]=(int)y;//*/
 		
 		if (t==null)//if we jumped the loop by going off of the screen, then return null to indicate it.
+		{
+			System.out.println("Didn't find anything in that direction!");
 			return null;
+		}
 		int[] found = new int[3];
 		found[0] = Map.pixelsToTiles((int)x);
 		found[1] = Map.pixelsToTiles((int)y);
@@ -99,11 +110,48 @@ public abstract class Entity implements IEntity{
 		int top = Map.tilesToPixels(found[0]);//returns top y coordinate of box for use with calculating first impact point.
 		int left = Map.tilesToPixels(found[0]);//returns left x coordinate of box for use with calculating first impact point.
 		int bottom = top+Map.TILE_SIZE;
-		int right = left+Map.TILE_SIZE;		
+		int right = left+Map.TILE_SIZE;
 		
-		found[2] = Tile.LEFT;//TODO: Fix this so that it actually calculates properly.
-		
-		
+		int dir = -1;
+		//TODO: This calculates incorrectly! Not sure why...
+		if (Math.abs(angleRadians)<0.000001)//is it almost exactly horizontally right? Then return that it hit left side
+		{
+			dir = Tile.LEFT;
+			System.out.println("Almost horizontally right, so returning left");
+		}
+		else if (Math.abs(Math.PI-angleRadians)<0.000001)//is it almost exactly horizontally left? Then return that it hit the right side
+		{
+			dir = Tile.RIGHT;
+			System.out.println("Almost horizontally left, so returning right");
+		}
+		else if (Math.abs(angleRadians)>Math.PI/2)//roughly left, so it must hit the right wall or top or bottom first.
+		{
+			//y - y1 = m(x-x1)
+			//y1= starty
+			//x1= startx
+			//m = tan(angleRadians)
+			//x=right
+			//y = tan(angleRadians)*(right-startx) +starty
+			double yHit =  Math.tan(angleRadians)*(right-startX) +startY;//calculate the slope of the line, multiply by (right), then add some y offset... not sure how to calculate yet...
+			if (yHit>top)
+				dir = Tile.TOP;
+			else if (yHit<bottom)
+				dir = Tile.BOTTOM;
+			else 
+				dir = Tile.RIGHT;
+		}
+		else //must be roughly right. Do the same thing as above, but
+		{
+			double yHit =  Math.tan(angleRadians)*(left-startX) +startY; //calculate the same way as above, but with (left) instead.
+			if (yHit>top)
+				dir = Tile.TOP;
+			else if (yHit<bottom)
+				dir = Tile.BOTTOM;
+			else 
+				dir = Tile.LEFT;
+		}
+		found[2] = dir;
+		System.out.println("Tile = ("+found[0]+","+found[1]+"), t= "+t+", Dir = "+dir);
 		return found;
 	}
 }

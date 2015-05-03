@@ -69,11 +69,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//private ArrayList<Integer> walkableTiles;
 	
 	private boolean debug = true;
+	
+	public static int[] tempLineHelp = new int[4];
 
 	public boolean[] keys = new boolean[192];
 	
-	private static int[][] mapIndexes = new int[8][16];
-	private int mapRow = 7, mapColumn = 7;
 	private Map map;
 	public GamePanel(Start frame, long period){
 		mainFrame = frame;
@@ -243,6 +243,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if(debug){
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
+			g.setColor(Color.GREEN);
+			g.drawLine(tempLineHelp[0], tempLineHelp[1], tempLineHelp[2], tempLineHelp[3]);
 		}
 		
 		//END DRAWING GAME SECTION
@@ -309,6 +311,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		/*tempLineHelp[0] = player.getX();
+		tempLineHelp[1] = player.getY();
+		tempLineHelp[2] = e.getX()-player.getX();
+		tempLineHelp[3] = e.getY()-player.getY();
+		*/
 		player.mouseClicked(e.getX(),e.getY());
 	}
 

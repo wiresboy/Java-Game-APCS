@@ -74,20 +74,17 @@ public class EntityPlayer extends Entity{
 		// I want to make the player shoot a portal in the direction of the mouse click,
 		// and, if the destination wall tiles can hold a portal, then a new portal
 		// should be created there.
-		//*
-		int dirx = x-getX();//find location of mouse click relative to me.
-		int diry = y-getY();
+		//TODO: make sure that the start location is from the head or another decent place, not from an arbitrary corner.
+		x=x/2;
+		y=y/2;
 		if(willShootBlue){
-			//remove last blue portal?
-			
-			shotPortalBlue = new EntityShotPortal_Blue(dirx,diry,getX(),getY(),this);
-			System.out.println("* blue portal created");
+			//if (blueportal!=null)
+				//remove last blue portal?
+			shotPortalBlue = new EntityShotPortal_Blue(x,y,getX(),getY(),this);
 			shotPortalBlue.setMap(map);
-			System.out.println("* blue portal set to map.");
 			shotPortalBlue.go();
-			System.out.println("* blue portal go called");
 		}else{
-			shotPortalRed = new EntityShotPortal_Red(dirx,diry,this);
+			shotPortalRed = new EntityShotPortal_Red(x,y,getX(),getY(),this);
 			shotPortalRed.setMap(map);
 			shotPortalRed.go();
 		}//*/

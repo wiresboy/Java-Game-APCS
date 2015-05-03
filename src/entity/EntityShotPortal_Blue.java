@@ -5,123 +5,38 @@ import tile.Tile;
 import util.Resources;
 
 public class EntityShotPortal_Blue extends Entity{
-	private int dirx, diry;
 	private int startx, starty;
 	private EntityPlayer player;
-	private double angle = 0;//measured in radians
+	private double angle;//measured in radians
 	public boolean isDead = false;
-	public EntityShotPortal_Blue(int dirx, int diry, int startx, int starty, EntityPlayer player){
-		this.dirx = dirx;
-		this.diry = diry;
+	public EntityShotPortal_Blue(int clickx, int clicky, int startx, int starty, EntityPlayer player){
 		this.startx=startx;
 		this.starty=starty;
 		this.player = player;
+		this.angle = Math.atan2(clicky-starty, clickx-startx);//multipy y val by -1 since increasing y is downward.
+		System.out.println("start = ("+startx+","+starty+"), click = ("+clickx+","+clicky+"), angle = "+angle+", which is "+Math.toDegrees(angle)+"°");
 		image = Resources.getEntity("ShotPortal_Blue");
 	}
-	public void update(){
-		if (map.onMapPixel(getX(), getY()))
-			//TODO: left the screen, so destruct the object... somehow.
-			return;
-		Tile t;
-
-		setX(getX()+dirx);
-		setY(getY()+diry);
-		int x = Map.pixelsToTiles(getX());
-		int y = Map.pixelsToTiles(getY());
-		t = map.getTile(x, y);
-
-		if (t!=null)
-		{
-			System.out.println("Found a block collision, lets make a portal");
-			//this code won't work right now... uhh... yeah.
-			//not entirely sure what needs to be happening, but dirx and diry should no longer be used to calculate this stuff.
-			int lx = Map.tilesToPixels(x)+4;
-			int ty = Map.tilesToPixels(y)+4;
-			int rx = lx+8;
-			int by = ty+8;
-			if(t.boundingBox(lx-4, ty-4,map) != null)
-				if(dirx > 0 && diry < 0){
-					if(getX() <= lx+4){
-						//LEFT SIDE
-						if(t.isPortalable(Tile.LEFT)){
-							createNewPortal(getX(),getY(),Tile.LEFT);
-						}
-					}else{
-						//BOTTOM SIDE
-						if(t.isPortalable(Tile.BOTTOM)){
-							createNewPortal(getX(),getY(),Tile.BOTTOM);
-						}
-					}
-				}else if(dirx == 0){
-					if(diry < 0){
-						//BOTTOM SIDE
-						if(t.isPortalable(Tile.BOTTOM)){
-							createNewPortal(getX(),getY(),Tile.BOTTOM);
-						}
-					}else{
-						//TOP SIDE
-						if(t.isPortalable(Tile.TOP)){
-							createNewPortal(getX(),getY(),Tile.TOP);
-						}
-					}
-				}else if(diry == 0){
-					if(dirx < 0){
-						//LEFT SIDE
-						if(t.isPortalable(Tile.LEFT)){
-							createNewPortal(getX(),getY(),Tile.LEFT);
-						}
-					}else{
-						//RIGHT SIDE
-						if(t.isPortalable(Tile.RIGHT)){
-							createNewPortal(getX(),getY(),Tile.RIGHT);
-						}
-					}
-				}else if(dirx > 0 &&  diry > 0){
-					if(getX() >= lx-4){
-						//LEFT SIDE
-						if(t.isPortalable(Tile.LEFT)){
-							createNewPortal(getX(),getY(),Tile.LEFT);
-						}
-					}else{
-						//TOP SIDE
-						if(t.isPortalable(Tile.TOP)){
-							createNewPortal(getX(),getY(),Tile.TOP);
-						}
-					}
-
-				}else if(dirx < 0 && diry < 0){
-					if(getX() >= rx+4){
-						//RIGHT SIDE
-						if(t.isPortalable(Tile.RIGHT)){
-							createNewPortal(getX(),getY(),Tile.RIGHT);
-						}
-					}else{
-						//BOTTOM SIDE
-						if(t.isPortalable(Tile.BOTTOM)){
-							createNewPortal(getX(),getY(),Tile.BOTTOM);
-						}
-					}
-				}else if(dirx < 0 && diry > 0){
-					if(getX() >= rx+4){
-						//RIGHT SIDE
-						if(t.isPortalable(Tile.RIGHT)){
-							createNewPortal(getX(),getY(),Tile.RIGHT);
-						}
-					}else{
-						//TOP SIDE
-						if(t.isPortalable(Tile.TOP)){
-							createNewPortal(getX(),getY(),Tile.TOP);
-						}
-					}
-				}
-
-		}
-
-	}
+	public void update(){}//we are not drawing this, so update can be ignored.
+	
 	public void go(){
-
-
+		int[] intersect = this.findNextIntersection(startx, starty, angle);
+		
+		if (intersect!=null)
+		{
+			//System.out.println("Found a block collision, lets make a portal");
+			int x = intersect[0];
+			int y = intersect[1];
+			int side = intersect[2];
+			Tile t = map.getTile(y, x);//row, column still confuses me... columns = x?
+			if (t!=null && t.isPortalable(side))
+				createNewPortal(x,y,side);
+			else
+				System.out.println("Not creating portal since it isn't tileable!");
+			
+		}
 	}
+	
 	public void createNewPortal(int tilex, int tiley, int side){
 		switch(side){
 		case Tile.LEFT:

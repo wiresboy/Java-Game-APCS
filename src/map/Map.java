@@ -70,6 +70,11 @@ public class Map{
 	   //System.out.println("Row "+row+" Column "+column);
 	   return map[row][column];
    }
+   public boolean canSeeThroughTile(int row, int column)
+   {
+	   //TODO: Make this return true when it sees either an empty block OR a 'background' block. Really anything that can be walked through.
+	   return (getTile(row,column)!=null);
+   }
    public static int tilesToPixels(int tiles){
 	   return tiles*TILE_SIZE;
    }

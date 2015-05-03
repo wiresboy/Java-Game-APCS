@@ -6,8 +6,8 @@ import util.Resources;
 
 public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 	private EntityPlayer player;
-	public EntityShotPortal_Red(int dirx, int diry,EntityPlayer player) {
-		super(dirx, diry,player);
+	public EntityShotPortal_Red(int dirx, int diry, int startx, int starty, EntityPlayer player) {
+		super(dirx, diry, startx, starty, player);
 		this.player = player;
 		image = Resources.getEntity("ShotPortal_Red");
 	}
