@@ -19,7 +19,7 @@ public class EntityShotPortal_Blue extends Entity{
 	}
 	public void update(){}//we are not drawing this, so update can be ignored.
 	
-	public void go(){
+	public boolean go(){
 		Object[] values = this.findNextIntersection(startx, starty, angle);
 		Tile t = (Tile)values[0];
 		int side = ((Integer)values[1]).intValue();
@@ -34,12 +34,15 @@ public class EntityShotPortal_Blue extends Entity{
 			int y = intersect[1];
 			int side = intersect[2];*/
 			//Tile t = map.getTile(y, x);//row, column still confuses me... columns = x Yes.
-			if (t!=null && t.isPortalable(side))
+			if (t!=null && t.isPortalable(side)){
 				createNewPortal(t,x,y,side);
-			else
+				return true;
+			}else{
 				System.out.println("Not creating portal since it isn't tileable!");
+				return false;
+				
 			
-		//}
+		}
 	}
 	
 	public void createNewPortal(Tile t, int tilex, int tiley, int side){

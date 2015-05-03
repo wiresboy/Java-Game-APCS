@@ -70,11 +70,9 @@ public class EntityPlayer extends Entity{
 	public void update(){
 		processKeys();
 	}
+	public boolean willShootBlue(){return willShootBlue;}
 	public void mouseClicked(int x, int y){
-		// TODO Make this work; right now there is an infinite loop somewhere
-		// I want to make the player shoot a portal in the direction of the mouse click,
-		// and, if the destination wall tiles can hold a portal, then a new portal
-		// should be created there.
+		
 		//TODO: make sure that the start location is from the head or another decent place, not from an arbitrary corner.
 		x=x/2;
 		y=y/2;
@@ -83,11 +81,13 @@ public class EntityPlayer extends Entity{
 				//remove last blue portal?
 			shotPortalBlue = new EntityShotPortal_Blue(x,y,getX(),getY(),this);
 			shotPortalBlue.setMap(map);
-			shotPortalBlue.go();
+			if(shotPortalBlue.go())
+				willShootBlue = false;
 		}else{
 			shotPortalRed = new EntityShotPortal_Red(x,y,getX(),getY(),this);
 			shotPortalRed.setMap(map);
-			shotPortalRed.go();
+			if(shotPortalRed.go())
+				willShootBlue = true;
 		}//*/
 	}
 	public void processKeys(){

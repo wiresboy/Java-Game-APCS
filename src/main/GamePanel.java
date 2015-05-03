@@ -17,14 +17,15 @@ import java.util.ArrayList;
  * @author Lucas Rezac, Brandon John
  *
  */
-public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener,MouseMotionListener{
 
 	private static final long serialVersionUID = 1L;
-	public static final int PWIDTH = 16*16*2;   // size of panel
+	public static final int PWIDTH = 16*16*2; // size of panel
 	public static final int PHEIGHT = (10*16+9)*2; 
 	public static final int DHEIGHT = 32*16;
 	public static final int DWIDTH= 256*16;
-	
+	public static final Color BLUE = new Color(121,214,253);
+	public static final Color RED = new Color(250,147,38);
 	public static int offset = 0;
 	//private static int MAP_ID = 0;
 
@@ -40,7 +41,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private long period;                // period between drawing in _nanosecs_
 
 	//private int tempX, tempY;
-
+	private int mousex = 0, mousey = 0;
+	
 	private Start mainFrame;
 	private EntityPlayer player; 
 	public static GamePanel instance;
@@ -87,6 +89,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		map = new Map();
 		int[] playerLocs = map.loadMap("testmap");
 		player = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
@@ -243,9 +246,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if(debug){
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
+			g.drawString("mousex:"+mousex+" mousey:"+mousey,0,20);
 			g.setColor(Color.GREEN);
 			g.drawLine(tempLineHelp[0], tempLineHelp[1], tempLineHelp[2], tempLineHelp[3]);
 		}
+		if(player.willShootBlue()){
+			g.setColor(BLUE);
+			
+		}else{
+			g.setColor(RED);
+		}
+		g.fillRect(2,map.getPreferredSize().height/2-18, 16,16);
 		
 		//END DRAWING GAME SECTION
 		if (gameOver)
@@ -341,6 +352,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		mousex = e.getX();
+		mousey = e.getY();
 	}
 
 }  // end of class

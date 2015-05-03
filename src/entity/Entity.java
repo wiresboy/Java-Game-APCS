@@ -82,13 +82,14 @@ public abstract class Entity implements IEntity{
 		double xChange = Math.cos(angleRadians);
 		double yChange = Math.sin(angleRadians);
 
-		while (t==null && map.onMapPixel((int)x, (int)y))
+		while ((t==null || t.boundingBox(0, 0) == null)&& map.onMapPixel((int)x, (int)y))
 		{
+			x+= xChange;
+			y+= yChange;
 			//t = map.getTile(Map.pixelsToTiles((int)x), Map.pixelsToTiles((int)y));
 			t = map.getTile(Map.pixelsToTiles((int)y), Map.pixelsToTiles((int)x));
 			
-			x+= xChange;
-			y+= yChange;
+			
 		}
 		System.out.println("OnMap: coords = ("+x+","+y+"), t="+t);
 
@@ -106,15 +107,52 @@ public abstract class Entity implements IEntity{
 		found[0] = Map.pixelsToTiles((int)x);
 		found[1] = Map.pixelsToTiles((int)y);
 		
-		int top = Map.tilesToPixels(found[0]);//returns top y coordinate of box for use with calculating first impact point.
+		int top = Map.tilesToPixels(found[1]);//returns top y coordinate of box for use with calculating first impact point.
 		int left = Map.tilesToPixels(found[0]);//returns left x coordinate of box for use with calculating first impact point.
 		int bottom = top+Map.TILE_SIZE;
 		int right = left+Map.TILE_SIZE;
 		
 		int dir = -1;
-	
+		int hitx = (int)x;
+		int hity = (int)y;
+		int leftx = left+1;
+		int rightx = left+15;
+		int topy = top+1;
+		int bottomy = top+14;
+		System.out.println("hitx = "+hitx+" , hity = "+hity+" , \nleftx = "+leftx+" , rightx = "+rightx+" , \ntopy = "+topy+" , bottomy = "+bottomy);
+		if(hitx <= leftx){
+			dir = Tile.LEFT;
+		}else if(hitx >= rightx){
+			dir = Tile.RIGHT;
+		}
+		if(hity <= topy){
+			dir = Tile.TOP;
+		}else if(hity >= bottomy){
+			dir = Tile.BOTTOM;
+		}
+		/*if(hitx < leftx){ //Test for left
+			if(hity < topy){
+				dir = Tile.TOP;
+			}else if(hity > bottomy){
+				dir = Tile.BOTTOM;
+			}else{
+				dir = Tile.LEFT;
+			}
+		}else if(hitx > rightx){ //Test for right
+			if(hity < topy){ 
+				dir = Tile.TOP;
+			}else if(hity > bottomy){
+				dir = Tile.BOTTOM;
+			}else{
+				dir = Tile.RIGHT;
+			}
+		}else if(hity < topy){ //Test for top
+			dir = Tile.TOP;
+		}else{
+			dir = Tile.BOTTOM;
+		}
 		//TODO: This calculates incorrectly! Not sure why...
-		if (Math.abs(angleRadians)<0.000001)//is it almost exactly horizontally right? Then return that it hit left side
+		/*if (Math.abs(angleRadians)<0.000001)//is it almost exactly horizontally right? Then return that it hit left side
 		{
 			dir = Tile.LEFT;
 			System.out.println("Almost horizontally right, so returning left");
@@ -149,6 +187,12 @@ public abstract class Entity implements IEntity{
 				dir = Tile.BOTTOM;
 			else 
 				dir = Tile.LEFT;
+		}*/
+		switch(dir){
+		case Tile.TOP:
+			y = y+16; break;
+		case Tile.LEFT:
+			x = x+16; break;
 		}
 		found[2] = dir;
 		System.out.println("Tile = ("+found[0]+","+found[1]+"), t= "+t+", Dir = "+dir);
