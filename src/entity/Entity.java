@@ -93,6 +93,7 @@ public abstract class Entity implements IEntity{
 		}
 		System.out.println("OnMap: coords = ("+x+","+y+"), t="+t);
 
+		GamePanel.tempLineHelp = new int[4];
 		GamePanel.tempLineHelp[0]=startX;
 		GamePanel.tempLineHelp[1]=startY;
 		GamePanel.tempLineHelp[2]=(int)x;
@@ -200,5 +201,8 @@ public abstract class Entity implements IEntity{
 	}
 	public String name(){
 		return this.getClass().getSimpleName();
+	}
+	public void destroy(){
+		list.remove(id);
 	}
 }

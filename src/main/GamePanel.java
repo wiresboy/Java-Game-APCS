@@ -247,8 +247,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
 			g.drawString("mousex:"+mousex+" mousey:"+mousey,0,20);
-			g.setColor(Color.GREEN);
-			g.drawLine(tempLineHelp[0], tempLineHelp[1], tempLineHelp[2], tempLineHelp[3]);
+			
 		}
 		if(player.willShootBlue()){
 			g.setColor(BLUE);
@@ -256,7 +255,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		}else{
 			g.setColor(RED);
 		}
+		
+		
 		g.fillRect(2,map.getPreferredSize().height/2-18, 16,16);
+		if(player.willShootBlue()){
+			g.setColor(RED);
+		}else{
+			g.setColor(BLUE);
+		}
+		if(tempLineHelp != null){
+			g.drawLine(tempLineHelp[0], tempLineHelp[1], tempLineHelp[2], tempLineHelp[3]);
+			tempLineHelp = null;
+		}
 		
 		//END DRAWING GAME SECTION
 		if (gameOver)
