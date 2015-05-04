@@ -3,15 +3,12 @@ package main;
 import javax.swing.*;
 
 import map.Map;
-import util.*;
 import entity.Entity;
 import entity.EntityPlayer;
-import entity.Player;
 
 import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.util.ArrayList;
 /**
  * 
  * @author Lucas Rezac, Brandon John
