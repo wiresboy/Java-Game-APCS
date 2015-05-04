@@ -90,6 +90,10 @@ public class EntityPlayer extends Entity{
 				willShootBlue = true;
 		}//*/
 	}
+	public void mouseRightClicked()//switch portal to other color; we may want it to be a button but I though mouse would work well.
+	{
+		willShootBlue = !willShootBlue;
+	}
 	public void processKeys(){
 		boolean[] keys = GamePanel.instance.keys;
 		if(keys[KeyEvent.VK_D]){

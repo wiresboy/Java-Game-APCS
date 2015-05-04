@@ -337,7 +337,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		tempLineHelp[2] = e.getX()-player.getX();
 		tempLineHelp[3] = e.getY()-player.getY();
 		*/
-		player.mouseClicked(e.getX(),e.getY());
+		if (e.getButton()==MouseEvent.BUTTON1)//was the left button clicked?
+			player.mouseClicked(e.getX(),e.getY());//then shoot
+		else
+			//assume that it was the equivalent of the right button.
+			player.mouseRightClicked();
 	}
 
 	@Override
