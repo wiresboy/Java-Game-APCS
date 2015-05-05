@@ -11,6 +11,7 @@ import tileentity.TileEntity;
  * @author Lucas Rezac
  *
  */
+//TODO: Comment what these methods mean! I have no idea what they do!
 public abstract class Tile{
 	protected BufferedImage image = null;
 	protected BufferedImage overlay = null;

@@ -2,7 +2,6 @@ package map;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,12 +30,12 @@ public class Map{
 		int row = 0, column = 0;
 		for(String s : list){
 			column = 0;
-			for(int i = 0; i < s.length()-2; i+=2,column++){
+			for(int i = 0; i < s.length()-1; i+=2,column++){
 				String hex = s.substring(i,i+2);
 				if(hex.equals("*1")){
 					int x = tilesToPixels(column);
 					int y = tilesToPixels(row);
-					playerLoc = new int[]{x,y-16};
+					playerLoc = new int[]{x,y-TILE_SIZE};
 				}else{
 					Tile t = TileRegistry.getTile(hex);
 					if(t != null){
@@ -70,14 +69,30 @@ public class Map{
 	   //System.out.println("Row "+row+" Column "+column);
 	   return map[row][column];
    }
+   public boolean canSeeThroughTile(int row, int column)
+   {
+	   //TODO: Make this return true when it sees either an empty block OR a 'background' block. Really anything that can be walked through.
+	   return (getTile(row,column)!=null);
+   }
    public static int tilesToPixels(int tiles){
-	   return tiles*16;
+	   return tiles*TILE_SIZE;
    }
    public Dimension getPreferredSize(){
 	   return new Dimension(map[0].length*32,map.length*32);
    }
    public static int pixelsToTiles(int pixels){
-	   return (int)((double)pixels/16.0);
+	   return (int)((double)pixels/(double)TILE_SIZE);
+   }
+   public static int absPixelsToTiles(int pixels){
+	   return tilesToPixels(pixelsToTiles(pixels));
+   }
+   public boolean onMapPixel(int x, int y) // return true if the coordinates
+   {
+	   return onMapTile(pixelsToTiles(x), pixelsToTiles(y));
+   }
+   public boolean onMapTile(int x, int y)
+   {//possible off by one errors on maximum... not sure how it is working.
+	   return ((x>=0) && (y>=0) && (x<=map[0].length) && (y<=map.length));
    }
    public void drawBase(Graphics2D g){
 	   // TODO Implement this
@@ -122,7 +137,8 @@ public class Map{
 	}
 }
 
-/*import java.io.File;
+/*
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;

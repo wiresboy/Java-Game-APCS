@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import tile.Tile;
-import tile.TileRegistry;
 import main.PreSetup;
 import map.Map;
 

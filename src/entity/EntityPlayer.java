@@ -1,12 +1,9 @@
 package entity;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import tile.Tile;
 import util.Animation;
@@ -29,7 +26,7 @@ public class EntityPlayer extends Entity implements Shareable{
 	private EntityShotPortal_Red shotPortalRed;
 	private EntityPortal_Red redportal;
 	private EntityPortal_Blue blueportal;
-	private boolean willShootBlue = false;
+	private boolean willShootBlue = true;
 	private String username;
 	public EntityPlayer(int x, int y,String name,String username_){
 		this(x,y,name);
@@ -75,23 +72,29 @@ public class EntityPlayer extends Entity implements Shareable{
 	public void update(){
 		processKeys();
 	}
+	public boolean willShootBlue(){return willShootBlue;}
 	public void mouseClicked(int x, int y){
-		// TODO Make this work; right now there is an infinite loop somewhere
-		// I want to make the player shoot a portal in the direction of the mouse click,
-		// and, if the destination wall tiles can hold a portal, then a new portal
-		// should be created there.
-		/*
-		int dirx = x-getX();
-		int diry = y-getY();
+		
+		//TODO: make sure that the start location is from the head or another decent place, not from an arbitrary corner.
+		x=x/2;
+		y=y/2;
 		if(willShootBlue){
-			shotPortalBlue = new EntityShotPortal_Blue(dirx,diry,this);
+			//if (blueportal!=null)
+				//remove last blue portal?
+			shotPortalBlue = new EntityShotPortal_Blue(x,y,getX(),getY(),this);
 			shotPortalBlue.setMap(map);
-			shotPortalBlue.go();
+			if(shotPortalBlue.go())
+				willShootBlue = false;
 		}else{
-			shotPortalRed = new EntityShotPortal_Red(dirx,diry,this);
+			shotPortalRed = new EntityShotPortal_Red(x,y,getX(),getY(),this);
 			shotPortalRed.setMap(map);
-			shotPortalRed.go();
-		}*/
+			if(shotPortalRed.go())
+				willShootBlue = true;
+		}//*/
+	}
+	public void mouseRightClicked()//switch portal to other color; we may want it to be a button but I though mouse would work well.
+	{
+		willShootBlue = !willShootBlue;
 	}
 	public void processKeys(){
 		boolean[] keys = GamePanel.instance.keys;
@@ -180,7 +183,15 @@ public class EntityPlayer extends Entity implements Shareable{
 		setY(starty);
 		map.reset();
 	}
-	
+	@Override
+	public void draw(Graphics2D g){
+		super.draw(g);
+		//System.out.println(name()+" drawing!");
+		if(redportal != null)
+			redportal.draw(g);
+		if(blueportal != null)
+			blueportal.draw(g);
+	}
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
 		speedY = -6;

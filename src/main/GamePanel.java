@@ -3,6 +3,7 @@ package main;
 import javax.swing.*;
 
 import map.Map;
+
 import util.*;
 import web.GameStatus;
 import web.WebRunner;
@@ -21,14 +22,15 @@ import java.util.Scanner;
  * @author Lucas Rezac, Brandon John
  *
  */
-public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener,MouseMotionListener{
 
 	private static final long serialVersionUID = 1L;
-	public static final int PWIDTH = 16*16*2;   // size of panel
+	public static final int PWIDTH = 16*16*2; // size of panel
 	public static final int PHEIGHT = (10*16+9)*2; 
 	public static final int DHEIGHT = 32*16;
 	public static final int DWIDTH= 256*16;
-	
+	public static final Color BLUE = new Color(121,214,253);
+	public static final Color RED = new Color(250,147,38);
 	public static int offset = 0;
 	//private static int MAP_ID = 0;
 
@@ -44,7 +46,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private long period;                // period between drawing in _nanosecs_
 
 	//private int tempX, tempY;
-
+	private int mousex = 0, mousey = 0;
+	
 	private Start mainFrame;
 	private EntityPlayer player; 
 	public static GamePanel instance;
@@ -81,10 +84,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
 	private WebRunner webRunner = null;
 	
+	public static int[] tempLineHelp = new int[4];
+
 	public boolean[] keys = new boolean[192];
 	
-	private static int[][] mapIndexes = new int[8][16];
-	private int mapRow = 7, mapColumn = 7;
 	private Map map;
 	public GamePanel(Start frame, long period){
 		mainFrame = frame;
@@ -98,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		requestFocus();    // the JPanel now has focus, so receives key events, in theory
 		addKeyListener(this); 
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		map = new Map();
 		int[] playerLocs = map.loadMap("testmap");//playerLocs holds location of the player. For now, both players start in the same place, so used for both.
 		player = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
@@ -290,6 +294,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if(debug){
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
+			g.drawString("mousex:"+mousex+" mousey:"+mousey,0,20);
+			
+		}
+		if(player.willShootBlue()){
+			g.setColor(BLUE);
+			
+		}else{
+			g.setColor(RED);
+		}
+		
+		
+		g.fillRect(2,map.getPreferredSize().height/2-18, 16,16);
+		if(player.willShootBlue()){
+			g.setColor(RED);
+		}else{
+			g.setColor(BLUE);
+		}
+		if(tempLineHelp != null){
+			g.drawLine(tempLineHelp[0], tempLineHelp[1], tempLineHelp[2], tempLineHelp[3]);
+			tempLineHelp = null;
 		}
 		
 		//END DRAWING GAME SECTION
@@ -356,7 +380,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		player.mouseClicked(e.getX(),e.getY());
+		/*tempLineHelp[0] = player.getX();
+		tempLineHelp[1] = player.getY();
+		tempLineHelp[2] = e.getX()-player.getX();
+		tempLineHelp[3] = e.getY()-player.getY();
+		*/
+		if (e.getButton()==MouseEvent.BUTTON1)//was the left button clicked?
+			player.mouseClicked(e.getX(),e.getY());//then shoot
+		else
+			//assume that it was the equivalent of the right button.
+			player.mouseRightClicked();
 	}
 
 	@Override
@@ -381,6 +414,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		mousex = e.getX();
+		mousey = e.getY();
 	}
 
 }  // end of class
