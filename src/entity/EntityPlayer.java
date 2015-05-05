@@ -23,9 +23,10 @@ public class EntityPlayer extends Entity{
 	private Animation leftAnim, rightAnim, leftJumpAnim, rightJumpAnim;
 	private EntityShotPortal_Blue shotPortalBlue;
 	private EntityShotPortal_Red shotPortalRed;
-	private EntityPortal_Red redportal;
-	private EntityPortal_Blue blueportal;
+	private IEntityPortal_Red redportal;
+	private IEntityPortal_Blue blueportal;
 	private boolean willShootBlue = true;
+	private boolean inPortal = false;
 	public EntityPlayer(int x, int y,String name){
 		setX(x);
 		setY(y);
@@ -65,6 +66,46 @@ public class EntityPlayer extends Entity{
 	}
 	public void update(){
 		processKeys();
+		testforportals();
+		if(inPortal)System.out.println("In portal!");
+	}
+	public void testforportals(){
+		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal};
+		for(IEntityPortal portal : portals){
+		if(portal != null){
+			if(portal.isHorizontal()){
+				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()){
+					inPortal = true;
+				}else{
+					if(inPortal){
+						inPortal = false;
+						System.out.println("Teleporting");
+						teleportToOtherPortal(portal);
+					}
+				}
+			}else{ //isVertical
+				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX() && getY() >= portal.getY() && getY() <= portal.getY()+6){
+					inPortal = true;
+				}else if(inPortal){
+					inPortal = false;
+					System.out.println("Teleporting");
+					teleportToOtherPortal(portal);
+				}
+			}
+		}
+		}
+	}
+	public void teleportToOtherPortal(IEntityPortal portal){
+		IEntityPortal other = portal.getOtherPortal();
+		int x = other.getX();
+		int y = other.getY();
+		if(other.isHorizontal()){
+			setX(other.getX());
+			setY(other.getY()+3);
+		}else{
+			setX(other.getX()+3);
+			setY(other.getY());
+		}
 	}
 	public boolean willShootBlue(){return willShootBlue;}
 	public void mouseClicked(int x, int y){
@@ -122,7 +163,7 @@ public class EntityPlayer extends Entity{
 		}else{
 			if(jumpCountDown != 0){
 				jumpCountDown--;
-				System.out.println("Jump Countdown = "+jumpCountDown);
+				//System.out.println("Jump Countdown = "+jumpCountDown);
 				int newy = getY()+ ((speedY < 0)? speedY++ : speedY);
 				int x = Map.pixelsToTiles(getX());
 				int y = Map.pixelsToTiles(newy);
@@ -161,7 +202,7 @@ public class EntityPlayer extends Entity{
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(getY());
 		Tile t = map.getTile(y, x);
-		if(t != null && speedX == 0 && speedY == 0){
+		if(!inPortal && (t != null && speedX == 0 && speedY == 0)){
 			setY(getY()-1);
 		}
 		if(getX()<0)setX(0);
@@ -218,7 +259,7 @@ public class EntityPlayer extends Entity{
 		int x2 = Map.pixelsToTiles(newx+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2,x);
-		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
+		if(!inPortal && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null)) ){
 			
 			setX(Map.tilesToPixels(x)+16);
 			speedX = 0;
@@ -243,7 +284,7 @@ public class EntityPlayer extends Entity{
 		int y2 = Map.pixelsToTiles(getY()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2, x);
-		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
+		if(!inPortal && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null)) ){
 			setX(Map.tilesToPixels(x)-16);
 			speedX = 0;
 			/*for(int i = 0; i < speedX; i++){
@@ -267,7 +308,7 @@ public class EntityPlayer extends Entity{
 		int x2 = Map.pixelsToTiles(getX()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 =map.getTile(y, x2);
-		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
+		if(!inPortal && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null))){
 			setY(Map.tilesToPixels(y)-32);
 			speedY = 0;
 			isJumping = false;
@@ -284,14 +325,20 @@ public class EntityPlayer extends Entity{
 			setY(newy-32);
 		
 	}
-	public void setRedPortal(EntityPortal_Red portal){
+	public void setRedPortal(IEntityPortal_Red portal){
 		System.out.println("Setting red portal");
 		redportal =portal;
+		redportal.setOtherPortal(blueportal);
+		if(blueportal!=null)
+		blueportal.setOtherPortal(redportal);
 	}
-	public void setBluePortal(EntityPortal_Blue portal){
+	public void setBluePortal(IEntityPortal_Blue portal){
 		System.out.println("Setting blue portal");
 		blueportal = portal;
+		blueportal.setOtherPortal(redportal);
+		if(redportal != null)
+		redportal.setOtherPortal(blueportal);
 	}
-	public EntityPortal_Red getRedPortal(){ return redportal; }
-	public EntityPortal_Blue getBluePortal(){ return blueportal;}
+	public IEntityPortal_Red getRedPortal(){ return redportal; }
+	public IEntityPortal_Blue getBluePortal(){ return blueportal;}
 }
