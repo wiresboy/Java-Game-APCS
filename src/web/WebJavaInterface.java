@@ -9,7 +9,6 @@ public class WebJavaInterface{
 	private static String theirUsername;//username of the other player. Doubles as theirID.
 	private static String mapName;//name of map that is being hosted, doubles as GameID in v1, this may change later.
 	
-	
 	/** 
 	 * MUST call on startup, only does basic stuff. Doesn't connect to server.
 	 * initialize the web connection, make sure that everything is ready.
@@ -35,6 +34,8 @@ public class WebJavaInterface{
 		username = myID;
 		theirUsername = theirID;
 		mapName = gameID;
+		//connect to server and get an instance number
+		
 	}
 	
 	
@@ -52,8 +53,42 @@ public class WebJavaInterface{
 	 */
 	public static void updatePlayerStatus(EntityPlayer me, EntityPlayer it)
 	{
+		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
 		
+		String toSend = DataTransmitter.pack2DStringArray(me.packData());
+		
+		try {
+			String rawReceived = Web.post(playerURL, new String[][]{{"GameID",mapName},{"MyID",username},{"MyData", toSend},{"TheirID",theirUsername}});
+			//Send my data, receive other players data.
+			
+			int HTTPResponseCode = Web.LastResponseCode();
+			
+			switch(HTTPResponseCode)
+			{
+			case HTTPResponseSuccess:
+				it.unpackData(DataTransmitter.Unpack2DStringArray(rawReceived));//send unpacked data to the other player object for updating and rendering.
+				break;
+			case HTTPResponseFileNotFound:
+				throw new Exception("404 File not found: \n"+rawReceived);
+			case HTTPResponseMapUnknown:
+				throw new Exception("412 Map unknown ("+mapName+"): \n"+rawReceived);
+			case HTTPResponseOtherPlayerNotConnected:
+				throw new Exception("418 Other player ("+theirUsername+") isn't connected: \n"+rawReceived);
+			case HTTPResponseMissingParams:
+				throw new Exception("400 Apparently we had a malformed request that was missing some parameters: \n"+rawReceived);
+			default:
+				throw new Exception("Unknown response code: "+HTTPResponseCode+"\n"+rawReceived);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+	public static void updateGameStatus()
+	{
+		//todo: update game status, somehow merging between me and them.
+	}
 
 }
