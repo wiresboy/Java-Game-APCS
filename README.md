@@ -1,14 +1,4 @@
 # Java-Game-APCS
-Game for APCS final exam
-We will see how this goes
+Game for our APCS final exam
 
-To use github at school:
-download eclipse luna (it has git installed, and we can't install the github for windows client)
-Set your workspace on H drive - I chose a new one, you can choose any that you want
-under project explorer, import -> from git
-Set the URI to https://github.com/wiresboy/Java-Game-APCS.git
-Set authentication to your github user/password
-make a change
-make a commit
-hope it works!
-If not, keep messing around until it does.
+This game will be a 2-player portal derivitive. We hope to make it run using a web server, probably hosted by google app engine, though are waiting to have appspot.com unblocked by our school it department to do so. 
