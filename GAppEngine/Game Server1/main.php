@@ -6,7 +6,7 @@ foreach($filter as $entry) {
     $filelist[] = $entry->getFilename();
 }
 
-print_r($filelist[]);
+print_r($filelist);
 
 ?>
 
