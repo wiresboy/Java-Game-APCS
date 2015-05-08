@@ -7,7 +7,7 @@ import util.Resources;
 public class EntityPortalHoriz_Blue extends EntityPortalHoriz_Red implements IEntityPortal_Blue{
 	private IEntityPortal_Red otherportal;
 	public EntityPortalHoriz_Blue(){
-		System.out.println("Creating new horizontal blue portal!");
+		//System.out.println("Creating new horizontal blue portal!");
 		image = Resources.getEntity("PortalHoriz_Blue");
 	}
 	

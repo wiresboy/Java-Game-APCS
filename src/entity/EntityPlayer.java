@@ -73,8 +73,8 @@ public class EntityPlayer extends Entity{
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal};
 		for(IEntityPortal portal : portals){
 		if(portal != null){
-			if(portal.isHorizontal()){
-				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()){
+			if(portal.isHorizontal() && portal.getDir() == Tile.TOP){
+				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()+16){
 					inPortal = true;
 				}else{
 					if(inPortal){
@@ -83,9 +83,25 @@ public class EntityPlayer extends Entity{
 						teleportToOtherPortal(portal);
 					}
 				}
-			}else{ //isVertical
-				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX() && getY() >= portal.getY() && getY() <= portal.getY()+6){
+			}else if(!portal.isHorizontal() && portal.getDir() == Tile.LEFT){ //isVertical
+				if(getX() >= portal.getX()-image.getWidth()-1 && getX() <= portal.getX()+image.getWidth() && getY() >= portal.getY() && getY() <= portal.getY()+6){
 					inPortal = true;
+					System.out.println("in left portal");
+					jumpCountDown = 0;
+					isJumping = false;
+					speedY = 0;
+				}else if(inPortal){
+					inPortal = false;
+					System.out.println("Teleporting");
+					teleportToOtherPortal(portal);
+				}
+			}else if(!portal.isHorizontal() && portal.getDir() == Tile.RIGHT){
+				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX()+image.getWidth()+16 && getY() >= portal.getY() && getY() <= portal.getY()+6){
+					inPortal = true;
+					System.out.println("in right portal");
+					jumpCountDown = 0;
+					isJumping = false;
+					speedY = 0;
 				}else if(inPortal){
 					inPortal = false;
 					System.out.println("Teleporting");
@@ -96,15 +112,36 @@ public class EntityPlayer extends Entity{
 		}
 	}
 	public void teleportToOtherPortal(IEntityPortal portal){
-		IEntityPortal other = portal.getOtherPortal();
-		int x = other.getX();
-		int y = other.getY();
-		if(other.isHorizontal()){
-			setX(other.getX());
-			setY(other.getY()+3);
+		IEntityPortal other = null;
+		//if(false/*portal instanceof IEntityPortal_Red/**/){
+			//other = portal;
+		//}else{
+			other = portal.getOtherPortal();
+		//}
+		if(other.isHorizontal() && other.getDir() == Tile.BOTTOM){
+			int newx = other.getX();																																																												
+			int newy = other.getY()+4;
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = BOTTOM");
+		}else if(other.isHorizontal() && other.getDir() == Tile.TOP){
+			int newx = other.getX();
+			int newy = other.getY()-16;
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = TOP");
+		}else if (other.getDir() == Tile.RIGHT){
+			int newx = other.getX()+3;
+			int newy = other.getY();
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = RIGHT");
 		}else{
-			setX(other.getX()+3);
-			setY(other.getY());
+			int newx = other.getX()-1-image.getWidth();
+			int newy = other.getY();
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = LEFT");
 		}
 	}
 	public boolean willShootBlue(){return willShootBlue;}
@@ -230,7 +267,7 @@ public class EntityPlayer extends Entity{
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
 		speedY = -6;
-		System.out.println("Jumping");
+	
 		/**int newy = getY()+((speedY == 0)? speedY = -1 :(speedY > 0)? speedY-- : (Math.abs(speedY) < MAX_SPEEDY)? speedY-- : speedY);
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);

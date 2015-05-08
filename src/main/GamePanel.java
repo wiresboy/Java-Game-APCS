@@ -5,6 +5,7 @@ import javax.swing.*;
 import map.Map;
 import entity.Entity;
 import entity.EntityPlayer;
+import entity.IEntityPortal;
 
 import java.awt.image.*;
 import java.awt.event.*;
@@ -243,8 +244,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if(debug){
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
-			g.drawString("mousex:"+mousex+" mousey:"+mousey,0,20);
-			
+			g.drawString("mousex:"+mousex/2+" mousey:"+mousey/2,0,20);
+			IEntityPortal red = player.getRedPortal();
+			IEntityPortal blue = player.getBluePortal();
+			if(red != null){
+				g.drawString("red: x:"+red.getX()+" y:"+red.getY()+" dir:"+red.getDir(), 0,30);
+				IEntityPortal other = red.getOtherPortal();
+				if(other != null){
+					g.drawString("      other: x:"+other.getX()+" y:"+other.getY(), 0, 40);
+				}
+			}
+			if(blue != null){
+				g.drawString("blu: x:"+blue.getX()+" y:"+blue.getY()+" dir:"+blue.getDir(), 0,50);
+				IEntityPortal other = blue.getOtherPortal();
+				if(other != null){
+					g.drawString("      other: x:"+other.getX()+" y:"+other.getY(), 0, 60);
+				}
+			}
 		}
 		if(player.willShootBlue()){
 			g.setColor(BLUE);

@@ -9,4 +9,6 @@ public interface IEntityPortal {
 	boolean isHorizontal();
 	IEntityPortal getOtherPortal();
 	void setOtherPortal(IEntityPortal p);
+	int getDir();
+	void setDir(int dir);
 }

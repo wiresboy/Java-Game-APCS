@@ -55,6 +55,7 @@ public class EntityShotPortal_Blue extends Entity{
 				p.setY(tiley);
 				p.setX(tilex);
 				p.setMap(map);
+				p.setDir(side);
 				player.setBluePortal(p);
 			}
 			break;
@@ -65,6 +66,7 @@ public class EntityShotPortal_Blue extends Entity{
 				p.setY(tiley);
 				p.setX(tilex+16);
 				p.setMap(map);
+				p.setDir(side);
 				player.setBluePortal(p);
 			}
 			break;
@@ -75,6 +77,7 @@ public class EntityShotPortal_Blue extends Entity{
 				p.setY(tiley+16);
 				p.setX(tilex+16);
 				p.setMap(map);
+				p.setDir(side);
 				player.setBluePortal(p);
 			}
 			break;
@@ -85,6 +88,7 @@ public class EntityShotPortal_Blue extends Entity{
 				p.setY(tiley);
 				p.setX(tilex);
 				p.setMap(map);
+				p.setDir(side);
 				player.setBluePortal(p);
 			}
 			break;	
