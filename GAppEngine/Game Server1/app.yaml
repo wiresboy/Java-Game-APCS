@@ -1,6 +1,6 @@
 application: java-game-apcs
 version: 1-02-1
-runtime: php
+runtime: php55
 api_version: 1
 threadsafe: yes
 
