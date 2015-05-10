@@ -1,8 +1,6 @@
 package main;
 import javax.swing.*;
 
-import web.WebInterface;
-
 import java.awt.*;
 import java.awt.event.*;
 
