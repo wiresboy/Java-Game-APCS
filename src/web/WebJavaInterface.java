@@ -8,6 +8,7 @@ public class WebJavaInterface{
 	private static String username;//MyID.
 	private static String theirUsername;//username of the other player. Doubles as theirID.
 	private static String mapName;//name of map that is being hosted, doubles as GameID in v1, this may change later.
+
 	
 	/** 
 	 * MUST call on startup, only does basic stuff. Doesn't connect to server.
@@ -66,7 +67,8 @@ public class WebJavaInterface{
 			switch(HTTPResponseCode)
 			{
 			case HTTPResponseSuccess:
-				it.unpackData(DataTransmitter.Unpack2DStringArray(rawReceived));//send unpacked data to the other player object for updating and rendering.
+				String[] ReceivedParts = rawReceived.split(":");
+				it.unpackData(DataTransmitter.Unpack2DStringArray(ReceivedParts[0]));//send unpacked data to the other player object for updating and rendering.
 				break;
 			case HTTPResponseFileNotFound:
 				throw new Exception("404 File not found: \n"+rawReceived);
