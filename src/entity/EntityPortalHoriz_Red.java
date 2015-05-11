@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Graphics2D;
 
+import main.GamePanel;
 import util.Resources;
 
 public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red,IEntityPortal{
@@ -10,6 +11,12 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red,I
 	public EntityPortalHoriz_Red(){
 		//System.out.println("Creating new horizontal red portal!");
 		image = Resources.getEntity("PortalHoriz_Red");
+	}
+	public void draw(Graphics2D g){
+		super.draw(g);
+		if(GamePanel.debug){
+			
+		}
 	}
 	@Override
 	public void update() {}

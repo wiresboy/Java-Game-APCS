@@ -38,6 +38,9 @@ public abstract class Entity implements IEntity{
 	public int getId(){ return id; }
 	public void draw(Graphics2D g){
 		g.drawImage(image,x,y,null);
+		if(GamePanel.debug){
+			g.drawRect(x, y, image.getWidth(), image.getHeight());
+		}
 	}
 	public final void setX(int newx){
 		lastX = x;

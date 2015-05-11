@@ -17,6 +17,9 @@ import java.awt.*;
  */
 public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener,MouseMotionListener{
 
+	
+	public static boolean debug = true;
+	
 	private static final long serialVersionUID = 1L;
 	public static final int PWIDTH = 16*16*2; // size of panel
 	public static final int PHEIGHT = (10*16+9)*2; 
@@ -67,8 +70,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//private int numHits = 0;
 
 	//private ArrayList<Integer> walkableTiles;
-	
-	private boolean debug = true;
+
 	
 	public static int[] tempLineHelp = new int[4];
 
@@ -261,6 +263,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 					g.drawString("      other: x:"+other.getX()+" y:"+other.getY(), 0, 60);
 				}
 			}
+			g.drawString("Player x:"+player.getX()+" y:"+player.getY(), 0, 70);
 		}
 		if(player.willShootBlue()){
 			g.setColor(BLUE);

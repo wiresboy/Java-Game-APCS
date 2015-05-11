@@ -13,14 +13,17 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 	}
 	public void createNewPortal(Tile t,int tilex, int tiley, int side){
 		System.out.println("ShotPortal_Red: createNewPortal called!");
+		tiley = Map.absPixelsToTiles(tiley);
+		tilex = Map.absPixelsToTiles(tilex);
 		switch(side){
 		case Tile.LEFT:
 			
 			if(t != null && t.isPortalable(Tile.LEFT)){
 				EntityPortalVert_Red p = new EntityPortalVert_Red();
-				p.setY(tiley);
+				p.setY(tiley+16);
 				p.setX(tilex);
 				p.setMap(map);
+				p.setDir(side);
 				player.setRedPortal(p);
 			}
 			break;
@@ -28,9 +31,10 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 			
 			if(t != null && t.isPortalable(Tile.RIGHT)){
 				EntityPortalVert_Red p = new EntityPortalVert_Red();
-				p.setY(tiley);
-				p.setX(tilex+16);
+				p.setY(tiley+16);
+				p.setX(tilex+32);
 				p.setMap(map);
+				p.setDir(side);
 				player.setRedPortal(p);
 			}
 			break;
@@ -41,6 +45,7 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 				p.setY(tiley+16);
 				p.setX(tilex+16);
 				p.setMap(map);
+				p.setDir(side);
 				player.setRedPortal(p);
 			}
 			break;
@@ -51,6 +56,7 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 				p.setY(tiley);
 				p.setX(tilex);
 				p.setMap(map);
+				p.setDir(side);
 				player.setRedPortal(p);
 			}
 			break;	
