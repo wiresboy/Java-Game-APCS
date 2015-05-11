@@ -16,27 +16,33 @@ public class Message {
 	 */
 	Message(String rawReceived)
 	{
-		char firstChar = rawReceived.charAt(0);
-		switch(firstChar)
+		
+		switch(stringToType(rawReceived))
 		{
-		case 'c':
+		case Chat:
 			type = Message.typeEnum.Chat;
 			content = rawReceived.substring(1);//char 1 to the end
 			break;
-		case 'e':
+		case EntityUpdated:
 			type = Message.typeEnum.EntityUpdated;
 			content = rawReceived.substring(1);//char 1 to the end
 			break;
+		case error:
 		default:
-			//error!!!!
-			System.out.println("Invalid Message type. Received: '"+firstChar+"'");
+			break;//error!
 		}
-		
-		
-		
-		
 	}
 	
+	/**
+	 * Construct a new Message object to be sent from a b64 encoded content string and a typeEnum. 
+	 * First character will indicate the Type, and the rest will be stored as the content.
+	 * @param rawReceived
+	 */
+	Message(typeEnum t, String c)
+	{
+		this.type = t;
+		this.content = c;
+	}
 	
 	
 	public typeEnum getType()
@@ -44,9 +50,12 @@ public class Message {
 		return type;
 	}
 	
+	/**
+	 * Use toString to generate the string to send to the server.
+	 */
 	public String toString()
 	{
-		return typeToString(type)+": "+content;
+		return typeToString(type)+content;
 	}
 	
 	/**
