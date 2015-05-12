@@ -3,7 +3,7 @@ package web;
 import entity.EntityPlayer;
 
 public class WebJavaInterface{
-	private static final String baseURL = "http://1-03.java-game-apcs.appspot.com/";//"http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
+	private static final String baseURL = "http://2-01.java-game-apcs.appspot.com/";//"http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
 	private static final String playerURL = baseURL + "player.php";
 	private static String username;//MyID.
 	private static String theirUsername;//username of the other player. Doubles as theirID.
