@@ -15,7 +15,6 @@ import entity.Player;
 import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * 
@@ -78,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private boolean debug = true;
 	
 	// **************WEB STUFF***************
-	private boolean singlePlayer = true; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
 					//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
 	private EntityPlayer otherPlayer = null; 
 	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
@@ -142,26 +141,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if ((keyCode == KeyEvent.VK_ESCAPE) || (keyCode == KeyEvent.VK_Q) || (keyCode == KeyEvent.VK_END) || ((keyCode == KeyEvent.VK_C) && e.isControlDown()) )
 			running = false;
 
-		// game-play keys
-		if (!isPaused && !gameOver) {
-			// move the sprite and ribbons based on the arrow key pressed
-			/*//move LEFT
-			if (keyCode == KeyEvent.VK_LEFT){
-								
-			}
-			//move RIGHT
-			else if (keyCode == KeyEvent.VK_RIGHT) {
-				
-			} 
-			//move UP
-			else if (keyCode == KeyEvent.VK_UP){
-								
-			//move DOWN
-			}else if (keyCode == KeyEvent.VK_DOWN) {
-								
-			}*/
-			//player.processKey(e);
-			
+		if (!isPaused && !gameOver) {			
 		}
 	}  // end of processKey()
 

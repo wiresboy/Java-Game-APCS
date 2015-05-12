@@ -3,8 +3,6 @@ package main;
 
 import javax.swing.*;
 
-import web.WebJavaInterface;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -25,7 +23,6 @@ public class Start extends JFrame implements WindowListener{
 		pack();
 		setResizable(true);
 		setVisible(true);
-		WebJavaInterface.init();
 		
 		
 	}  // end of Start() constructor

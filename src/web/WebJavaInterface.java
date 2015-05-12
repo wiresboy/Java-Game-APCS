@@ -3,8 +3,8 @@ package web;
 import entity.EntityPlayer;
 
 public class WebJavaInterface{
-	private static final String baseURL = "http://2-01.java-game-apcs.appspot.com/";//"http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
-	private static final String playerURL = baseURL + "player.php";
+	private static final String baseURL = "http://java-game-apcs.appspot.com/";//"http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
+	private static final String playerURL = baseURL + "game/update/";
 	private static String username;//MyID.
 	private static String theirUsername;//username of the other player. Doubles as theirID.
 	private static String mapName;//name of map that is being hosted, doubles as GameID in v1, this may change later.
@@ -59,7 +59,7 @@ public class WebJavaInterface{
 		String toSend = DataTransmitter.pack2DStringArray(me.packData());
 		
 		try {
-			String rawReceived = Web.post(playerURL, new String[][]{{"GameID",mapName},{"MyID",username},{"MyData", toSend},{"TheirID",theirUsername}});
+			String rawReceived = Web.post(playerURL, new String[][]{{"game",mapName},{"me",username},{"meData", toSend},{"it",theirUsername}});
 			//Send my data, receive other players data.
 			
 			int HTTPResponseCode = Web.LastResponseCode();

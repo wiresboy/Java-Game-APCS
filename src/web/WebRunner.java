@@ -27,11 +27,11 @@ public class WebRunner implements Runnable {
 	
 	@Override
 	public void run() {
-		WebInterface.init();
-		WebInterface.v1Init(PlayerMe.getUsername(), PlayerIt.getUsername(), Game.getGameName());//initialize web interface to this game and these players.
+		WebJavaInterface.init();
+		WebJavaInterface.v1Init(PlayerMe.getUsername(), PlayerIt.getUsername(), Game.getGameName());//initialize web interface to this game and these players.
 		while (run)
 		{
-			WebInterface.updatePlayerStatus(PlayerMe, PlayerIt);
+			WebJavaInterface.updatePlayerStatus(PlayerMe, PlayerIt);
 			//TODO: get WebInterface GameStatus
 			//try {
 			//	Thread.sleep(100);
