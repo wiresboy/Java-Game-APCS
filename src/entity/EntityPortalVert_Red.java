@@ -1,13 +1,12 @@
 package entity;
 
-import java.awt.Graphics2D;
-
 import main.GamePanel;
 
 import util.Resources;
 
-public class EntityPortalVert_Red extends Entity implements EntityPortal_Red{
-	private EntityPortal_Blue otherportal;
+public class EntityPortalVert_Red extends Entity implements IEntityPortal_Red,IEntityPortal{
+	private IEntityPortal_Blue otherportal;
+	private int dir;
 	public EntityPortalVert_Red(){
 		if (GamePanel.debug)
 			System.out.println("Creating new vertical red portal!");
@@ -15,7 +14,9 @@ public class EntityPortalVert_Red extends Entity implements EntityPortal_Red{
 	}
 	@Override
 	public void update() {}
-	
-	public void setOtherPortal(EntityPortal_Blue other) { otherportal = other; }
-
+	public boolean isHorizontal(){return false;}
+	public void setOtherPortal(IEntityPortal other) { otherportal = (IEntityPortal_Blue) other; }
+	public IEntityPortal getOtherPortal(){return otherportal;}
+	public void setDir(int dir){this.dir = dir;}
+	public int getDir(){return dir;}
 }

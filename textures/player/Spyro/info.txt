@@ -1,0 +1,3 @@
+This character can only be used by me.
+At least when we implement usernames, and I implement it into the game.
+Hey, programmer priveleges.

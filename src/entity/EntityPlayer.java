@@ -24,14 +24,17 @@ public class EntityPlayer extends Entity implements Shareable{
 	private Animation leftAnim, rightAnim, leftJumpAnim, rightJumpAnim;
 	private EntityShotPortal_Blue shotPortalBlue;
 	private EntityShotPortal_Red shotPortalRed;
-	private EntityPortal_Red redportal;
-	private EntityPortal_Blue blueportal;
+	private IEntityPortal_Red redportal;
+	private IEntityPortal_Blue blueportal;
 	private boolean willShootBlue = true;
 	private String username;
 	public EntityPlayer(int x, int y,String name,String username_){
 		this(x,y,name);
 		username = username_;
 	}
+	private boolean inPortalVert = false;
+	private boolean inPortalHoriz = false;
+	private int tempY = 0;
 	public EntityPlayer(int x, int y,String name){
 		setX(x);
 		setY(y);
@@ -71,6 +74,87 @@ public class EntityPlayer extends Entity implements Shareable{
 	}
 	public void update(){
 		processKeys();
+		testforportals();
+		if(inPortalVert)System.out.println("In portal vert!");
+		if(inPortalHoriz)System.out.println("In portal horiz!");
+	}
+	public void testforportals(){
+		
+		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal};
+		for(IEntityPortal portal : portals){
+		if(portal != null){
+			if(portal.isHorizontal() && portal.getDir() == Tile.TOP){
+				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()+16){
+					inPortalHoriz = true;
+				}else{
+					if(inPortalHoriz){
+						inPortalHoriz = false;
+						System.out.println("Teleporting");
+						teleportToOtherPortal(portal);
+					}
+				}
+			}else if(!portal.isHorizontal() && portal.getDir() == Tile.LEFT){ //isVertical
+				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX()+16 && getY() >= portal.getY()-2 && getY() <= portal.getY()+6){
+					inPortalVert = true;
+					System.out.println("in left portal");
+					jumpCountDown = 0;
+					isJumping = false;
+					speedY = 0;
+					tempY = getY();
+				}else if(inPortalVert){
+					inPortalVert = false;
+					System.out.println("Teleporting");
+					teleportToOtherPortal(portal);
+				}
+			}else if(!portal.isHorizontal() && portal.getDir() == Tile.RIGHT){
+				if(getX() >= portal.getX()-16 && getX() <= portal.getX()+image.getWidth()-16 && getY() >= portal.getY() && getY() <= portal.getY()+6){
+					inPortalVert = true;
+					System.out.println("in right portal");
+					jumpCountDown = 0;
+					isJumping = false;
+					speedY = 0;
+					tempY = getY();
+				}else if(inPortalVert){
+					inPortalVert = false;
+					System.out.println("Teleporting");
+					teleportToOtherPortal(portal);
+				}
+			}
+		}
+		}/**/
+	}
+	public void teleportToOtherPortal(IEntityPortal portal){
+		IEntityPortal other = portal;
+		
+			//other = portal.getOtherPortal();
+		
+			
+			
+		if(other.isHorizontal() && other.getDir() == Tile.BOTTOM){
+			int newx = other.getX();																																																												
+			int newy = other.getY()+4;
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = BOTTOM");
+		}else if(other.isHorizontal() && other.getDir() == Tile.TOP){
+			int newx = other.getX();
+			int newy = other.getY()-16;
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = TOP");
+		}else if (other.getDir() == Tile.RIGHT){
+			int newx = other.getX()+4;
+			int newy = other.getY();
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = RIGHT");
+		}else{
+			int newx = other.getX()-1-image.getWidth();
+			int newy = other.getY();
+			setX(newx);
+			setY(newy);
+			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = LEFT");
+		}
 	}
 	public boolean willShootBlue(){return willShootBlue;}
 	public void mouseClicked(int x, int y){
@@ -96,17 +180,20 @@ public class EntityPlayer extends Entity implements Shareable{
 	{
 		willShootBlue = !willShootBlue;
 	}
+	public boolean isJumping(){
+		return (jumpCountDown != 0);
+	}
 	public void processKeys(){
 		boolean[] keys = GamePanel.instance.keys;
 		if(keys[KeyEvent.VK_D]){
-			setImage((isJumping)? rightJumpAnim.next() : rightAnim.next());
+			setImage((isJumping())? rightJumpAnim.next() : rightAnim.next());
 			if(moveRight()){
-				setImage((isJumping)? rightJumpAnim.back() : rightAnim.back());
+				setImage((isJumping())? rightJumpAnim.back() : rightAnim.back());
 			}
 		}else if(keys[KeyEvent.VK_A]){
-			setImage((isJumping)? leftJumpAnim.next() : leftAnim.next());
+			setImage((isJumping())? leftJumpAnim.next() : leftAnim.next());
 			if(moveLeft()){
-				setImage((isJumping)? leftJumpAnim.back() : leftAnim.back());
+				setImage((isJumping())? leftJumpAnim.back() : leftAnim.back());
 			}
 		}else{
 			//System.out.print("Not moving");
@@ -137,8 +224,8 @@ public class EntityPlayer extends Entity implements Shareable{
 				if((t != null && t.boundingBox(0, 0) != null)){
 					speedY = 0;
 					setY(Map.tilesToPixels(y)+16);
-					jumpCountDown = 0;
-					isJumping = false;
+					
+					fall();
 					leftJumpAnim.reset();
 					rightJumpAnim.reset();
 				}else
@@ -168,7 +255,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(getY());
 		Tile t = map.getTile(y, x);
-		if(t != null && speedX == 0 && speedY == 0){
+		if(!inPortalVert && (t != null && speedX == 0 && speedY == 0)){
 			setY(getY()-1);
 		}
 		if(getX()<0)setX(0);
@@ -196,8 +283,6 @@ public class EntityPlayer extends Entity implements Shareable{
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
 		speedY = -6;
-		if (GamePanel.debug)
-			System.out.println("Jumping");
 		/**int newy = getY()+((speedY == 0)? speedY = -1 :(speedY > 0)? speedY-- : (Math.abs(speedY) < MAX_SPEEDY)? speedY-- : speedY);
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);
@@ -226,7 +311,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int x2 = Map.pixelsToTiles(newx+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2,x);
-		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
+		if(!inPortalHoriz && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null)) ){
 			
 			setX(Map.tilesToPixels(x)+16);
 			speedX = 0;
@@ -251,7 +336,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int y2 = Map.pixelsToTiles(getY()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2, x);
-		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
+		if(!inPortalHoriz && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null)) ){
 			setX(Map.tilesToPixels(x)-16);
 			speedX = 0;
 			/*for(int i = 0; i < speedX; i++){
@@ -269,13 +354,16 @@ public class EntityPlayer extends Entity implements Shareable{
 		}
 	}
 	public void fall(){
+		if(inPortalVert){
+			setY(tempY);
+		}
 		int newy = getY()+((speedY == 0)? speedY = 1 :(speedY < 0)? speedY+=1.5 : (Math.abs(speedY) < MAX_SPEEDY)? speedY+=1.5 : speedY)+32;
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);
 		int x2 = Map.pixelsToTiles(getX()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 =map.getTile(y, x2);
-		if((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null) ){
+		if(!inPortalVert && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null))){
 			setY(Map.tilesToPixels(y)-32);
 			speedY = 0;
 			isJumping = false;
@@ -292,18 +380,23 @@ public class EntityPlayer extends Entity implements Shareable{
 			setY(newy-32);
 		
 	}
-	public void setRedPortal(EntityPortal_Red portal){
+	public void setRedPortal(IEntityPortal_Red portal){
 		if (GamePanel.debug)
 			System.out.println("Setting red portal");
 		redportal =portal;
+		redportal.setOtherPortal(blueportal);
+		if(blueportal!=null)
+		blueportal.setOtherPortal(redportal);
 	}
-	public void setBluePortal(EntityPortal_Blue portal){
+	public void setBluePortal(IEntityPortal_Blue portal){
 		if (GamePanel.debug)
 			System.out.println("Setting blue portal");
+
 		blueportal = portal;
+		blueportal.setOtherPortal(redportal);
+		if(redportal != null)
+		redportal.setOtherPortal(blueportal);
 	}
-	public EntityPortal_Red getRedPortal(){ return redportal; }
-	public EntityPortal_Blue getBluePortal(){ return blueportal;}
 	
 	
 	/** gather any data to share with other player and package it, returning a 2D String array, containing key,value pairs.
@@ -349,4 +442,7 @@ public class EntityPlayer extends Entity implements Shareable{
 	public void setUsername(String username_) {
 		username = username_;
 	}
+	
+	public IEntityPortal_Red getRedPortal(){ return redportal; }
+	public IEntityPortal_Blue getBluePortal(){ return blueportal;}
 }

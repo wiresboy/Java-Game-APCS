@@ -12,6 +12,7 @@ import entity.Entity;
 import entity.EntityPlayer;
 import entity.EntityPlayerWebControlled;
 import entity.Player;
+import entity.IEntityPortal;
 
 import java.awt.image.*;
 import java.awt.event.*;
@@ -24,6 +25,9 @@ import java.util.Scanner;
  */
 public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener,MouseMotionListener{
 
+	
+	public static boolean debug = false;//only SOP'ing when this is set to true.
+	
 	private static final long serialVersionUID = 1L;
 	public static final int PWIDTH = 16*16*2; // size of panel
 	public static final int PHEIGHT = (10*16+9)*2; 
@@ -75,10 +79,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 
 	//private ArrayList<Integer> walkableTiles;
 	
-	public static boolean debug = true;//only SOP'ing when this is set to true.
-	
 	// **************WEB STUFF***************
-	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+	private boolean singlePlayer = true; //when testing this at school before I have the web thing figured out, you will need to set this to true.
 					//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
 	private EntityPlayer otherPlayer = null; 
 	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
@@ -277,8 +279,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if(debug){
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
-			g.drawString("mousex:"+mousex+" mousey:"+mousey,0,20);
-			
+			g.drawString("mousex:"+mousex/2+" mousey:"+mousey/2,0,20);
+			IEntityPortal red = player.getRedPortal();
+			IEntityPortal blue = player.getBluePortal();
+			if(red != null){
+				g.drawString("red: x:"+red.getX()+" y:"+red.getY()+" dir:"+red.getDir(), 0,30);
+				IEntityPortal other = red.getOtherPortal();
+				if(other != null){
+					g.drawString("      other: x:"+other.getX()+" y:"+other.getY(), 0, 40);
+				}
+			}
+			if(blue != null){
+				g.drawString("blu: x:"+blue.getX()+" y:"+blue.getY()+" dir:"+blue.getDir(), 0,50);
+				IEntityPortal other = blue.getOtherPortal();
+				if(other != null){
+					g.drawString("      other: x:"+other.getX()+" y:"+other.getY(), 0, 60);
+				}
+			}
+			g.drawString("Player x:"+player.getX()+" y:"+player.getY(), 0, 70);
 		}
 		if(player.willShootBlue()){
 			g.setColor(BLUE);

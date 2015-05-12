@@ -13,7 +13,7 @@ import map.Map;
 
 public abstract class Entity implements IEntity{
 	//TODO: Must implement Shareable, but I don't have time right now to understand all of the comment-less code that requires changing :)
-	private static int id_count = -1;
+	private static int id_count = 0;
 	public static ArrayList<Entity> list = new ArrayList<Entity>();
 	private int id;
 	protected Map map;
@@ -24,7 +24,7 @@ public abstract class Entity implements IEntity{
 	protected int speedX, speedY;
 	public Entity(){
 		id = id_count++;
-		list.add(this);
+		list.add(id,this);
 	}
 	public final void setMap(Map m){ this.map = m; }
 	public final int getX(){ return x; }
@@ -39,6 +39,9 @@ public abstract class Entity implements IEntity{
 	public int getId(){ return id; }
 	public void draw(Graphics2D g){
 		g.drawImage(image,x,y,null);
+		if(GamePanel.debug){
+			g.drawRect(x, y, image.getWidth(), image.getHeight());
+		}
 	}
 	public final void setX(int newx){
 		lastX = x;
@@ -119,7 +122,7 @@ public abstract class Entity implements IEntity{
 		int dir = -1;
 		int hitx = (int)x;
 		int hity = (int)y;
-		int leftx = left+1;
+		int leftx = left;
 		int rightx = left+15;
 		int topy = top+1;
 		int bottomy = top+14;
@@ -129,7 +132,7 @@ public abstract class Entity implements IEntity{
 			dir = Tile.LEFT;
 		}else if(hitx >= rightx){
 			dir = Tile.RIGHT;
-		}
+		}else
 		if(hity <= topy){
 			dir = Tile.TOP;
 		}else if(hity >= bottomy){
