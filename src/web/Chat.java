@@ -20,8 +20,12 @@ public class Chat implements MessageHookInterface, Runnable {
 		Scanner key = new Scanner(System.in);
 		while(run)
 		{
-			String input = myName + ": " + key.nextLine();
+			if (key.hasNextLine())
+			{
+				String input = myName + ": " + key.nextLine();
+			
 			MessageHolder.AddMessageToSend(Message.MessageFactoryStringToB64(Message.typeEnum.Chat, input));
+			}
 		}
 		key.close();
 		MessageHolder.removeHook(this);

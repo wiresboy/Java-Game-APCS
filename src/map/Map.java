@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import main.GamePanel;
+
 import tile.Tile;
 import tile.TileRegistry;
 import tileentity.TileEntity;
@@ -26,7 +28,8 @@ public class Map{
 		
 		map = new Tile[list.size()][list.get(0).length()/2];
 		tileEntities = new TileEntity[list.size()][list.get(0).length()/2];
-		System.out.println("list.get(0).length()/2 = "+(list.get(0).length()/2)+";; s.length()-2 = "+(list.get(0).length()-2));
+		if(GamePanel.debug)
+			System.out.println("list.get(0).length()/2 = "+(list.get(0).length()/2)+";; s.length()-2 = "+(list.get(0).length()-2));
 		int row = 0, column = 0;
 		for(String s : list){
 			column = 0;
@@ -39,7 +42,8 @@ public class Map{
 				}else{
 					Tile t = TileRegistry.getTile(hex);
 					if(t != null){
-						System.out.println("row = "+row+" column = "+column);
+						if(GamePanel.debug)
+							System.out.println("row = "+row+" column = "+column);
 						map[row][column] = t;
 						if(t.hasTileEntity()){
 							TileEntity te = t.createNewTileEntity();
@@ -54,9 +58,11 @@ public class Map{
 			}
 			row++;
 		}
-		System.out.println("Loaded map : ");
-		for(Tile[] tiles : map){
-			System.out.println(Arrays.toString(tiles));
+		if(GamePanel.debug){
+			System.out.println("Loaded map : ");
+			for(Tile[] tiles : map){
+				System.out.println(Arrays.toString(tiles));
+			}
 		}
 		return playerLoc;
    }

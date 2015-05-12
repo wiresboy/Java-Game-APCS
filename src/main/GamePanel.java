@@ -80,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//private ArrayList<Integer> walkableTiles;
 	
 	// **************WEB STUFF***************
-	private boolean singlePlayer = true; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
 					//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
 	private EntityPlayer otherPlayer = null; 
 	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
