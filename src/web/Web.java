@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Random;
 
+import main.GamePanel;
+
 public class Web {
 	private static final String USER_AGENT = "Mozilla/5.0/fun";
 	private static final String boundary =  "***&°°°&34#7&8*9**";//some string that will never appear in a file being uploaded
@@ -37,9 +39,11 @@ public class Web {
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
         
-        System.out.println(System.getProperty("user.dir")+"\\.tmp");
+        if (GamePanel.debug)
+			System.out.println(System.getProperty("user.dir")+"\\.tmp");
         String saveDir = System.getProperty("user.dir")+"\\.tmp";
-        System.out.println(saveDir);
+        if (GamePanel.debug)
+			System.out.println(saveDir);
  
         // always check HTTP response code first
         if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -64,12 +68,14 @@ public class Web {
             if (fileName.equals(""))//was the filename set?
             	fileName = "\\tmp-"+gen.nextInt(10000000);//appened a 7 digit random number to hopefully prevent overlap issues.
             	
- 
+            if (GamePanel.debug)
+            {
             System.out.println("Content-Type = " + contentType);
             System.out.println("Content-Disposition = " + disposition);
             System.out.println("Content-Length = " + contentLength);
             System.out.println("fileName = " + fileName);
- 
+            }
+            
             // opens input stream from the HTTP connection
             InputStream inputStream = httpConn.getInputStream();
             String saveFilePath = saveDir + File.separator + fileName;
@@ -86,7 +92,8 @@ public class Web {
             outputStream.close();
             inputStream.close();
  
-            System.out.println("File downloaded and saved at: "+saveFilePath);
+            if (GamePanel.debug)
+    			System.out.println("File downloaded and saved at: "+saveFilePath);
             httpConn.disconnect();
             
             return saveFilePath;

@@ -2,12 +2,15 @@ package entity;
 
 import java.awt.Graphics2D;
 
+import main.GamePanel;
+
 import util.Resources;
 
 public class EntityPortalHoriz_Blue extends EntityPortalHoriz_Red implements EntityPortal_Blue{
 	private EntityPortal_Red otherportal;
 	public EntityPortalHoriz_Blue(){
-		System.out.println("Creating new horizontal blue portal!");
+		if (GamePanel.debug)
+			System.out.println("Creating new horizontal blue portal!");
 		image = Resources.getEntity("PortalHoriz_Blue");
 	}
 	

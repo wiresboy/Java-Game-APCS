@@ -128,7 +128,8 @@ public class EntityPlayer extends Entity implements Shareable{
 		}else{
 			if(jumpCountDown != 0){
 				jumpCountDown--;
-				System.out.println("Jump Countdown = "+jumpCountDown);
+				if (GamePanel.debug)
+					System.out.println("Jump Countdown = "+jumpCountDown);
 				int newy = getY()+ ((speedY < 0)? speedY++ : speedY);
 				int x = Map.pixelsToTiles(getX());
 				int y = Map.pixelsToTiles(newy);
@@ -195,7 +196,8 @@ public class EntityPlayer extends Entity implements Shareable{
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
 		speedY = -6;
-		System.out.println("Jumping");
+		if (GamePanel.debug)
+			System.out.println("Jumping");
 		/**int newy = getY()+((speedY == 0)? speedY = -1 :(speedY > 0)? speedY-- : (Math.abs(speedY) < MAX_SPEEDY)? speedY-- : speedY);
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(newy);
@@ -291,11 +293,13 @@ public class EntityPlayer extends Entity implements Shareable{
 		
 	}
 	public void setRedPortal(EntityPortal_Red portal){
-		System.out.println("Setting red portal");
+		if (GamePanel.debug)
+			System.out.println("Setting red portal");
 		redportal =portal;
 	}
 	public void setBluePortal(EntityPortal_Blue portal){
-		System.out.println("Setting blue portal");
+		if (GamePanel.debug)
+			System.out.println("Setting blue portal");
 		blueportal = portal;
 	}
 	public EntityPortal_Red getRedPortal(){ return redportal; }

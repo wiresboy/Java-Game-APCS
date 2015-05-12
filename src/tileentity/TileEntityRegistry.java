@@ -2,12 +2,16 @@ package tileentity;
 
 import java.util.ArrayList;
 
+import main.GamePanel;
+
 public class TileEntityRegistry {
 	private static ArrayList<TileEntity> entities = new ArrayList<TileEntity>();
 	public static void registerTileEntity(TileEntity t){
-		System.out.print("Registering tile "+t.getClass().getSimpleName());
+		if (GamePanel.debug)
+			System.out.print("Registering tile "+t.getClass().getSimpleName());
 		entities.add(t.getId(), t);
-		System.out.println("   Register successful.");
+		if (GamePanel.debug)
+			System.out.println("   Register successful.");
 	}
 	public static TileEntity getTileEntity(int entityId){
 		for(TileEntity t : entities){

@@ -92,7 +92,8 @@ public abstract class Entity implements IEntity{
 			
 			
 		}
-		System.out.println("OnMap: coords = ("+x+","+y+"), t="+t);
+		if (GamePanel.debug)
+			System.out.println("OnMap: coords = ("+x+","+y+"), t="+t);
 
 		GamePanel.tempLineHelp = new int[4];
 		GamePanel.tempLineHelp[0]=startX;
@@ -102,7 +103,8 @@ public abstract class Entity implements IEntity{
 		
 		if (t==null)//if we jumped the loop by going off of the screen, then return null to indicate it.
 		{
-			System.out.println("Didn't find anything in that direction!");
+			if (GamePanel.debug)
+				System.out.println("Didn't find anything in that direction!");
 			return null;
 		}
 		int[] found = new int[3];
@@ -121,7 +123,8 @@ public abstract class Entity implements IEntity{
 		int rightx = left+15;
 		int topy = top+1;
 		int bottomy = top+14;
-		System.out.println("hitx = "+hitx+" , hity = "+hity+" , \nleftx = "+leftx+" , rightx = "+rightx+" , \ntopy = "+topy+" , bottomy = "+bottomy);
+		if (GamePanel.debug)
+			System.out.println("hitx = "+hitx+" , hity = "+hity+" , \nleftx = "+leftx+" , rightx = "+rightx+" , \ntopy = "+topy+" , bottomy = "+bottomy);
 		if(hitx <= leftx){
 			dir = Tile.LEFT;
 		}else if(hitx >= rightx){
@@ -197,7 +200,8 @@ public abstract class Entity implements IEntity{
 			x = x+16; break;
 		}
 		found[2] = dir;
-		System.out.println("Tile = ("+found[0]+","+found[1]+"), t= "+t+", Dir = "+dir);
+		if (GamePanel.debug)
+			System.out.println("Tile = ("+found[0]+","+found[1]+"), t= "+t+", Dir = "+dir);
 		return new Object[]{t,new Integer(dir),new Integer((int)x-16), new Integer((int)y-16)};
 	}
 	public String name(){

@@ -75,7 +75,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 
 	//private ArrayList<Integer> walkableTiles;
 	
-	private boolean debug = true;
+	public static boolean debug = true;//only SOP'ing when this is set to true.
 	
 	// **************WEB STUFF***************
 	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.

@@ -1,5 +1,6 @@
 package entity;
 
+import main.GamePanel;
 import map.Map;
 import tile.Tile;
 import util.Resources;
@@ -14,7 +15,8 @@ public class EntityShotPortal_Blue extends Entity{
 		this.starty=starty;
 		this.player = player;
 		this.angle = Math.atan2(clicky-starty, clickx-startx);//multipy y val by -1 since increasing y is downward.
-		System.out.println("start = ("+startx+","+starty+"), click = ("+clickx+","+clicky+"), angle = "+angle+", which is "+Math.toDegrees(angle));
+		if (GamePanel.debug)
+			System.out.println("start = ("+startx+","+starty+"), click = ("+clickx+","+clicky+"), angle = "+angle+", which is "+Math.toDegrees(angle));
 		image = Resources.getEntity("ShotPortal_Blue");
 	}
 	public void update(){}//we are not drawing this, so update can be ignored.
@@ -38,7 +40,8 @@ public class EntityShotPortal_Blue extends Entity{
 				createNewPortal(t,x,y,side);
 				return true;
 			}else{
-				System.out.println("Not creating portal since it isn't tileable!");
+				if (GamePanel.debug)
+					System.out.println("Not creating portal since it isn't tileable!");
 				return false;
 				
 			
@@ -46,7 +49,8 @@ public class EntityShotPortal_Blue extends Entity{
 	}
 	
 	public void createNewPortal(Tile t, int tilex, int tiley, int side){
-		System.out.println("ShotPortal_Blue: createNewPortal called!");
+		if (GamePanel.debug)
+			System.out.println("ShotPortal_Blue: createNewPortal called!");
 		switch(side){
 		case Tile.LEFT:
 			
@@ -89,7 +93,8 @@ public class EntityShotPortal_Blue extends Entity{
 			}
 			break;	
 		default:
-			System.out.println("ShotPortal_Blue: there was an error!");
+			if (GamePanel.debug)
+				System.out.println("ShotPortal_Blue: there was an error!");
 		}
 	}
 }

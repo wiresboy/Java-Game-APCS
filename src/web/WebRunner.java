@@ -1,5 +1,6 @@
 package web;
 
+import main.GamePanel;
 import entity.EntityPlayer;
 
 public class WebRunner implements Runnable {
@@ -15,7 +16,8 @@ public class WebRunner implements Runnable {
 		this.PlayerIt = it;
 		this.Game = game;
 		run = true;
-		System.out.println("Starting WebRunner");
+		if (GamePanel.debug)
+			System.out.println("Starting WebRunner");
 		(new Thread(this)).start();
 	}
 	

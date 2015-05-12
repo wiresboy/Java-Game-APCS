@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import util.Data;
+import main.GamePanel;
 import map.Map;
 import entity.IEntity;
 /**
@@ -24,7 +25,8 @@ public abstract class TileEntity implements IEntity{
 		name = thisClass.getSimpleName();
 		
 		id = id_count++;
-		System.out.println("Creating new TileEntity: "+name+" with id "+id);
+		if (GamePanel.debug)
+			System.out.println("Creating new TileEntity: "+name+" with id "+id);
 	}
 	public final void setMap(Map m){ this.map = m; }
 	public String getName(){ return name;}

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import main.GamePanel;
 /**
  * 
  * @author Lucas Rezac
@@ -12,11 +14,13 @@ import java.util.Scanner;
  */
 public class Resources{
 	public static BufferedImage getTile(String name){
-		System.out.println("Getting tile for "+name);
+		if (GamePanel.debug)
+			System.out.println("Getting tile for "+name);
 		return ImageManipulator.loadImage("tiles\\tiles\\"+name+".png");
 	}
 	public static BufferedImage getOverlay(String name){
-		System.out.println("Getting overlay for "+name);
+		if (GamePanel.debug)
+			System.out.println("Getting overlay for "+name);
 		return ImageManipulator.loadImage("tiles\\overlays\\"+name+".png");
 	}
 	public static ArrayList<String> getMap(String filename){
@@ -38,11 +42,13 @@ public class Resources{
 		return lines;
 	}
 	public static BufferedImage getPlayer(String name){
-		System.out.println("Getting player image for "+name);
+		if (GamePanel.debug)
+			System.out.println("Getting player image for "+name);
 		return ImageManipulator.loadImage("player\\"+name+".png");
 	}
 	public static BufferedImage getEntity(String name){
-		System.out.println("Getting entity image for "+name);
+		if (GamePanel.debug)
+			System.out.println("Getting entity image for "+name);
 		return ImageManipulator.loadImage("entities\\"+name+".png");
 	}
 	public static BufferedImage getError(){ 

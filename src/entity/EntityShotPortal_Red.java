@@ -1,5 +1,6 @@
 package entity;
 
+import main.GamePanel;
 import map.Map;
 import tile.Tile;
 import util.Resources;
@@ -12,7 +13,8 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 		image = Resources.getEntity("ShotPortal_Red");
 	}
 	public void createNewPortal(Tile t,int tilex, int tiley, int side){
-		System.out.println("ShotPortal_Red: createNewPortal called!");
+		if (GamePanel.debug)
+			System.out.println("ShotPortal_Red: createNewPortal called!");
 		switch(side){
 		case Tile.LEFT:
 			
@@ -55,7 +57,8 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 			}
 			break;	
 		default:
-			System.out.println("ShotPortal_Blue: there was an error!");
+			if (GamePanel.debug)
+				System.out.println("ShotPortal_Red: there was an error!");
 		}
 	}
 

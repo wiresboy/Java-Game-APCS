@@ -2,12 +2,15 @@ package entity;
 
 import java.awt.Graphics2D;
 
+import main.GamePanel;
+
 import util.Resources;
 
 public class EntityPortalVert_Red extends Entity implements EntityPortal_Red{
 	private EntityPortal_Blue otherportal;
 	public EntityPortalVert_Red(){
-		System.out.println("Creating new vertical red portal!");
+		if (GamePanel.debug)
+			System.out.println("Creating new vertical red portal!");
 		image = Resources.getEntity("PortalVert_Red");
 	}
 	@Override
