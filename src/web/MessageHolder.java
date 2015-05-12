@@ -51,6 +51,11 @@ public class MessageHolder {
 		hooks.add(h);
 	}
 	
+	public static void removeHook(MessageHookInterface h)
+	{
+		hooks.remove(h);
+	}
+	
 	public static void processMessagesWithHooks()
 	{
 		for (Message m : received)

@@ -5,6 +5,7 @@ import javax.swing.*;
 import map.Map;
 
 import util.*;
+import web.Chat;
 import web.GameStatus;
 import web.WebRunner;
 import entity.Entity;
@@ -126,6 +127,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			gameStatus = new GameStatus(mapName);
 			
 			webRunner = new WebRunner(player,otherPlayer,gameStatus);
+			
+			new Chat(myName);
 			
 			//TODO: we may want to wait here for the other player to sign in?
 			

@@ -50,6 +50,16 @@ public class Message {
 		return type;
 	}
 	
+	public String getStringContentFromB64()
+	{
+		return Base64Coder.decodeString(content);
+	}
+	
+	public byte[] getBytesContentFromB64()
+	{
+		return Base64Coder.decode(content);
+	}
+	
 	/**
 	 * Use toString to generate the string to send to the server.
 	 */
@@ -107,4 +117,10 @@ public class Message {
 			return null;
 		}
 	}
+	
+	public static Message MessageFactoryStringToB64(typeEnum t, String real)
+	{
+		return new Message(t, Base64Coder.encodeString(real));
+	}
+	
 }
