@@ -7,27 +7,23 @@ public class Chat implements MessageHookInterface, Runnable {
 	public static boolean run = true;//when set to false, chat ends.
 	
 	private String myName;
+	private Scanner key;
 	
-	public Chat(String myName)
+	public Chat(String myName, Scanner scanner_)
 	{
 		this.myName = myName;
+		this.key = scanner_;
 		(new Thread(this)).start();
 	}
 	
 	@Override
 	public void run() {
 		MessageHolder.addHook(this);
-		Scanner key = new Scanner(System.in);
 		while(run)
 		{
-			if (key.hasNextLine())
-			{
-				String input = myName + ": " + key.nextLine();
-			
+			String input = myName + ": " + key.nextLine();
 			MessageHolder.AddMessageToSend(Message.MessageFactoryStringToB64(Message.typeEnum.Chat, input));
-			}
 		}
-		key.close();
 		MessageHolder.removeHook(this);
 	}
 

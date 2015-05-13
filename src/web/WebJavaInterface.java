@@ -3,7 +3,7 @@ package web;
 import entity.EntityPlayer;
 
 public class WebJavaInterface{
-	private static final String baseURL = "http://java-game-apcs.appspot.com/";//"http://localhost:11080/";//"http://java-game-apcs.appspot.com/apcs/";//now old, needs to be updated for the Google url.
+	private static final String baseURL = "http://java-game-apcs.appspot.com/";//"http://localhost:8888/";//
 	private static final String playerURL = baseURL + "game/update/";
 	private static String username;//MyID.
 	private static String theirUsername;//username of the other player. Doubles as theirID.
@@ -49,7 +49,7 @@ public class WebJavaInterface{
 	/**
 	 * Updates player status and gets other player's status
 	 * @param me player being controlled by this computer
-	 * @param it object of other player, which will be updated with unpackData 
+	 * @param it object of other player, which will be updated with unpackData
 	 * @return player- other player
 	 */
 	public static void updatePlayerStatus(EntityPlayer me, EntityPlayer it)
@@ -57,6 +57,8 @@ public class WebJavaInterface{
 		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
 		
 		String toSend = DataTransmitter.pack2DStringArray(me.packData());
+		
+		toSend += MessageHolder.genStringOfMessagesToSend();
 		
 		try {
 			String rawReceived = Web.post(playerURL, new String[][]{{"game",mapName},{"me",username},{"meData", toSend},{"it",theirUsername}});
@@ -67,9 +69,16 @@ public class WebJavaInterface{
 			switch(HTTPResponseCode)
 			{
 			case HTTPResponseSuccess:
+				
 				String[] ReceivedParts = rawReceived.split(":");
 				it.unpackData(DataTransmitter.Unpack2DStringArray(ReceivedParts[0]));//send unpacked data to the other player object for updating and rendering.
+				
+				MessageHolder.AddAllReceivedMessages(ReceivedParts);
+				
 				break;
+				
+				
+				
 			case HTTPResponseFileNotFound:
 				throw new Exception("404 File not found: \n"+rawReceived);
 			case HTTPResponseMapUnknown:

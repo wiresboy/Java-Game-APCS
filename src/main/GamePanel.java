@@ -120,7 +120,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			String myName = key.nextLine();
 			System.out.println("Please enter the other players username. They must have the same map open as you do. You are playing |"+mapName+"|.");
 			String theirName = key.nextLine();
-			key.close();//must close the scanner so we don't cause any keyboard input issues.
 			
 			player.setUsername(myName);
 			otherPlayer = new EntityPlayerWebControlled(playerLocs[0],playerLocs[1],"Chell",theirName);
@@ -130,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			
 			webRunner = new WebRunner(player,otherPlayer,gameStatus);
 			
-			new Chat(myName);
+			new Chat(myName,key);
 			
 			//TODO: we may want to wait here for the other player to sign in?
 			

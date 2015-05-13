@@ -20,6 +20,29 @@ public class MessageHolder {
 		processMessagesWithHooks();
 	}
 	
+	/**
+	 * Adds a message. Doesn't process the message hooks, since that can be called later.
+	 * @param toAdd
+	 */
+	public static void AddReceivedMessagesNoProcess(String toAddRaw)
+	{
+		received.add(new Message(toAddRaw));
+	}
+	
+	public static void AddAllReceivedMessages(String[] responseParts)
+	{
+		//add all except for the first one, which is player data.
+		boolean first = true;
+		for (String part : responseParts)
+		{
+			if (first)
+				first = false;
+			else
+				AddReceivedMessagesNoProcess(part);
+		}
+		processMessagesWithHooks();
+	}
+	
 	
 	/**
 	 * Add message to the queue to send.
@@ -58,13 +81,16 @@ public class MessageHolder {
 	
 	public static void processMessagesWithHooks()
 	{
-		for (Message m : received)
+		if(received.size()==0)//don't run if there is nothing to process.
+			return;
+		for (int i = received.size()-1; i>=0; i--) //(Message m : received)(Throws a concurrent modification exception. Whoops!)
 		{
+			Message m = received.get(i);
 			for (MessageHookInterface hook: hooks)
 			{
 				if(hook.MessageHook(m))
 				{
-					received.remove(m);
+					received.remove(i);
 					break;//go on to next message.
 				}
 			}
