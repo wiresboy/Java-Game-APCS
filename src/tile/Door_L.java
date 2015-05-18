@@ -2,6 +2,7 @@ package tile;
 
 import java.awt.Shape;
 
+import util.EnumSide;
 import util.Resources;
 
 public class Door_L extends TileOverlay {
@@ -19,7 +20,7 @@ public class Door_L extends TileOverlay {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	public boolean isPortalable(int sides) {
+	public boolean isPortalable(EnumSide sides) {
 		return false;
 	}
 	public Shape boundingBox(int x, int y){

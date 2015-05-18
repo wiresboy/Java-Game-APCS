@@ -3,30 +3,19 @@ package main;
 import java.applet.Applet;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
-public class Test extends Applet implements KeyListener{
-	public Test(){
-		this.addKeyListener(this);
-	}
+public class Test {
 	public static void main(String[] args){
-		new Test();
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		String s = "LOL";
+		map.put(s, new String("HELLo"));
 		
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.toString()+" "+e.getKeyCode());
+	public static enum Side{
+		FALSE,
+		TRUE
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 }
