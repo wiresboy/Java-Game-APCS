@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import tile.Tile;
-
+import util.EnumSide;
 import main.GamePanel;
 import map.Map;
 
@@ -119,7 +119,7 @@ public abstract class Entity implements IEntity{
 		int bottom = top+Map.TILE_SIZE;
 		int right = left+Map.TILE_SIZE;
 		
-		int dir = -1;
+		EnumSide dir = null;
 		int hitx = (int)x;
 		int hity = (int)y;
 		int leftx = left;
@@ -129,14 +129,14 @@ public abstract class Entity implements IEntity{
 		if (GamePanel.debug)
 			System.out.println("hitx = "+hitx+" , hity = "+hity+" , \nleftx = "+leftx+" , rightx = "+rightx+" , \ntopy = "+topy+" , bottomy = "+bottomy);
 		if(hitx <= leftx){
-			dir = Tile.LEFT;
+			dir = EnumSide.LEFT;
 		}else if(hitx >= rightx){
-			dir = Tile.RIGHT;
+			dir = EnumSide.RIGHT;
 		}else
 		if(hity <= topy){
-			dir = Tile.TOP;
+			dir = EnumSide.TOP;
 		}else if(hity >= bottomy){
-			dir = Tile.BOTTOM;
+			dir = EnumSide.BOTTOM;
 		}
 		/*if(hitx < leftx){ //Test for left
 			if(hity < topy){
@@ -197,15 +197,15 @@ public abstract class Entity implements IEntity{
 				dir = Tile.LEFT;
 		}*/
 		switch(dir){
-		case Tile.TOP:
+		case TOP:
 			y = y+16; break;
-		case Tile.LEFT:
+		case LEFT:
 			x = x+16; break;
 		}
-		found[2] = dir;
+		//found[2] = dir;
 		if (GamePanel.debug)
 			System.out.println("Tile = ("+found[0]+","+found[1]+"), t= "+t+", Dir = "+dir);
-		return new Object[]{t,new Integer(dir),new Integer((int)x-16), new Integer((int)y-16)};
+		return new Object[]{t,dir,new Integer((int)x-16), new Integer((int)y-16)};
 	}
 	public String name(){
 		return this.getClass().getSimpleName();

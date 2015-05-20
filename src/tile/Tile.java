@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import entity.Entity;
 import map.Map;
+import util.EnumSide;
 import util.Resources;
 import tileentity.TileEntity;
 /**
@@ -49,8 +50,8 @@ public abstract class Tile{
 	public TileEntity createNewTileEntity(){ return null; }
 	public abstract boolean hasOverlay();
 	public void drawOverlay(Graphics2D g, int pixelX, int pixelY){ return; }
-	public static final int TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3;
-	public abstract boolean isPortalable(int sides);
+	//public static final int TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3;
+	public abstract boolean isPortalable(EnumSide left);
 	public void handleCollision(Entity e){
 		System.out.println("                      Collision detected ! "+e.toString());
 		/*int[] dir = e.getDirection();

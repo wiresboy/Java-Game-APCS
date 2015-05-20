@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import map.Map;
 import tile.Tile;
+import util.EnumSide;
 import util.Resources;
 
 public class EntityShotPortal_Blue extends Entity{
@@ -24,7 +25,7 @@ public class EntityShotPortal_Blue extends Entity{
 	public boolean go(){
 		Object[] values = this.findNextIntersection(startx, starty, angle);
 		Tile t = (Tile)values[0];
-		int side = ((Integer)values[1]).intValue();
+		EnumSide side = (EnumSide)values[1];
 		int x = ((Integer)values[2]).intValue();
 		int y  = ((Integer)values[3]).intValue();
 		//x = Map.tilesToPixels(x);
@@ -48,15 +49,15 @@ public class EntityShotPortal_Blue extends Entity{
 		}
 	}
 	
-	public void createNewPortal(Tile t, int tilex, int tiley, int side){
+	public void createNewPortal(Tile t, int tilex, int tiley, EnumSide side){
 		if (GamePanel.debug)
 			System.out.println("ShotPortal_Blue: createNewPortal called!");
 		tiley = Map.absPixelsToTiles(tiley);
 		tilex = Map.absPixelsToTiles(tilex);
 		switch(side){
-		case Tile.LEFT:
+		case LEFT:
 			
-			if(t != null && t.isPortalable(Tile.LEFT)){
+			if(t != null && t.isPortalable(EnumSide.LEFT)){
 				EntityPortalVert_Blue p = new EntityPortalVert_Blue();
 				p.setY(tiley+16);
 				p.setX(tilex);
@@ -65,9 +66,9 @@ public class EntityShotPortal_Blue extends Entity{
 				player.setBluePortal(p);
 			}
 			break;
-		case Tile.RIGHT:
+		case RIGHT:
 			
-			if(t != null && t.isPortalable(Tile.RIGHT)){
+			if(t != null && t.isPortalable(EnumSide.RIGHT)){
 				EntityPortalVert_Blue p = new EntityPortalVert_Blue();
 				p.setY(tiley+16);
 				p.setX(tilex+32);
@@ -76,9 +77,9 @@ public class EntityShotPortal_Blue extends Entity{
 				player.setBluePortal(p);
 			}
 			break;
-		case Tile.BOTTOM:
+		case BOTTOM:
 			
-			if(t != null && t.isPortalable(Tile.BOTTOM)){
+			if(t != null && t.isPortalable(EnumSide.BOTTOM)){
 				EntityPortalHoriz_Blue p = new EntityPortalHoriz_Blue();
 				p.setY(tiley+16);
 				p.setX(tilex+16);
@@ -87,9 +88,9 @@ public class EntityShotPortal_Blue extends Entity{
 				player.setBluePortal(p);
 			}
 			break;
-		case Tile.TOP:
+		case TOP:
 			
-			if(t != null && t.isPortalable(Tile.TOP)){
+			if(t != null && t.isPortalable(EnumSide.TOP)){
 				EntityPortalHoriz_Blue p = new EntityPortalHoriz_Blue();
 				p.setY(tiley);
 				p.setX(tilex);

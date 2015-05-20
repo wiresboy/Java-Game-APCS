@@ -3,6 +3,7 @@ package entity;
 import java.awt.Graphics2D;
 
 import web.Shareable;
+import util.EnumSide;
 
 public interface IEntityPortal {
 	void draw(Graphics2D g);
@@ -11,8 +12,8 @@ public interface IEntityPortal {
 	boolean isHorizontal();
 	IEntityPortal getOtherPortal();
 	void setOtherPortal(IEntityPortal p);
-	int getDir();
-	void setDir(int dir);
 	void setX(int x);//needed for the Web stuff, otherwise shouldn't be used.
 	void setY(int y);
+	EnumSide getDir();
+	void setDir(EnumSide dir);
 }

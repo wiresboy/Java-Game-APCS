@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import map.Map;
 import tile.Tile;
+import util.EnumSide;
 import util.Resources;
 
 public class EntityShotPortal_Red extends EntityShotPortal_Blue {
@@ -12,15 +13,15 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 		this.player = player;
 		image = Resources.getEntity("ShotPortal_Red");
 	}
-	public void createNewPortal(Tile t,int tilex, int tiley, int side){
+	public void createNewPortal(Tile t,int tilex, int tiley, EnumSide side){
 		if (GamePanel.debug)
 			System.out.println("ShotPortal_Red: createNewPortal called!");
 		tiley = Map.absPixelsToTiles(tiley);
 		tilex = Map.absPixelsToTiles(tilex);
 		switch(side){
-		case Tile.LEFT:
+		case LEFT:
 			
-			if(t != null && t.isPortalable(Tile.LEFT)){
+			if(t != null && t.isPortalable(EnumSide.LEFT)){
 				EntityPortalVert_Red p = new EntityPortalVert_Red();
 				p.setY(tiley+16);
 				p.setX(tilex);
@@ -29,9 +30,9 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 				player.setRedPortal(p);
 			}
 			break;
-		case Tile.RIGHT:
+		case RIGHT:
 			
-			if(t != null && t.isPortalable(Tile.RIGHT)){
+			if(t != null && t.isPortalable(EnumSide.RIGHT)){
 				EntityPortalVert_Red p = new EntityPortalVert_Red();
 				p.setY(tiley+16);
 				p.setX(tilex+32);
@@ -40,9 +41,9 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 				player.setRedPortal(p);
 			}
 			break;
-		case Tile.BOTTOM:
+		case BOTTOM:
 			
-			if(t != null && t.isPortalable(Tile.BOTTOM)){
+			if(t != null && t.isPortalable(EnumSide.BOTTOM)){
 				EntityPortalHoriz_Red p = new EntityPortalHoriz_Red();
 				p.setY(tiley+16);
 				p.setX(tilex+16);
@@ -51,9 +52,9 @@ public class EntityShotPortal_Red extends EntityShotPortal_Blue {
 				player.setRedPortal(p);
 			}
 			break;
-		case Tile.TOP:
+		case TOP:
 
-			if(t != null && t.isPortalable(Tile.TOP)){
+			if(t != null && t.isPortalable(EnumSide.TOP)){
 				EntityPortalHoriz_Red p = new EntityPortalHoriz_Red();
 				p.setY(tiley);
 				p.setX(tilex);

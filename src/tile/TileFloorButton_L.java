@@ -2,6 +2,7 @@ package tile;
 
 import tileentity.TileEntity;
 import tileentity.TileEntityFloorButton_L;
+import util.EnumSide;
 
 public class TileFloorButton_L extends Tile {
 	@Override
@@ -14,7 +15,7 @@ public class TileFloorButton_L extends Tile {
 	public boolean hasOverlay() { return false; }
 
 	@Override
-	public boolean isPortalable(int sides) {
+	public boolean isPortalable(EnumSide sides) {
 		return false;
 	}
 	

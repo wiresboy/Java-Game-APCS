@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -7,8 +8,10 @@ import java.awt.image.BufferedImage;
 
 import tile.Tile;
 import util.Animation;
+import util.EnumSide;
 import util.ImageManipulator;
 import util.Resources;
+import util.Texture;
 import web.Shareable;
 import main.GamePanel;
 import map.Map;
@@ -20,7 +23,7 @@ public class EntityPlayer extends Entity implements Shareable{
 	private boolean isJumping = false;
 	private int startx,starty;
 	private String name;
-	private BufferedImage stillLeft, stillRight;
+	private Texture stillLeft, stillRight;
 	private Animation leftAnim, rightAnim, leftJumpAnim, rightJumpAnim;
 	private EntityShotPortal_Blue shotPortalBlue;
 	private EntityShotPortal_Red shotPortalRed;
@@ -41,6 +44,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		startx = x;
 		starty = y;
 		this.name = name;
+		boolean isMel = name.equals("Mel");
 		//image = ImageManipulator.loadImage("error.png");
 		//rightImage = Resources.getPlayer("Jeff\\walk_1");
 		//leftImage = ImageManipulator.horizontalFlip(rightImage);
@@ -48,7 +52,8 @@ public class EntityPlayer extends Entity implements Shareable{
 		BufferedImage[] rightImages = new BufferedImage[rightImgNames.length];
 		BufferedImage[] leftImages = new BufferedImage[rightImgNames.length];
 		for(int i = 0; i < rightImgNames.length; i++){
-			BufferedImage img = Resources.getPlayer(name+"\\"+rightImgNames[i]);
+			Texture img = Resources.getPlayer(((isMel)? "Chell" : name)+"\\"+rightImgNames[i]);
+			if(isMel)img.replaceColors(new Color(255,147,0), new Color(91,170,255)).replaceColors(new Color(0,0,0),new Color(255,226,81)).replaceColors(new Color(255,223,215),new Color(255,206,193));
 			rightImages[i] = img;
 			leftImages[i] = ImageManipulator.horizontalFlip(img);
 		}
@@ -59,15 +64,17 @@ public class EntityPlayer extends Entity implements Shareable{
 		rightImages = new BufferedImage[jumpNames.length];
 		leftImages = new BufferedImage[jumpNames.length];
 		for(int i = 0; i < jumpNames.length; i++){
-			BufferedImage img = Resources.getPlayer(name+"\\"+jumpNames[i]);
+			Texture img = Resources.getPlayer(((isMel)? "Chell" : name)+"\\"+jumpNames[i]);
+			if(isMel)img.replaceColors(new Color(255,147,0), new Color(91,170,255)).replaceColors(new Color(0,0,0),new Color(255,226,81)).replaceColors(new Color(255,223,215),new Color(255,206,193));
 			rightImages[i] = img;
 			leftImages[i] = ImageManipulator.horizontalFlip(img);
 		}
 		leftJumpAnim = new Animation(leftImages,0);
 		rightJumpAnim = new Animation(rightImages,0);
 		
-		stillRight = Resources.getPlayer(name+"\\still");
-		stillLeft = ImageManipulator.horizontalFlip(stillRight);
+		stillRight = Resources.getPlayer(((isMel)? "Chell" : name)+"\\still");
+		if(isMel)stillRight.replaceColors(new Color(255,147,0), new Color(91,170,255)).replaceColors(new Color(0,0,0),new Color(255,226,81)).replaceColors(new Color(255,223,215),new Color(255,206,193));
+		stillLeft = (Texture) ImageManipulator.horizontalFlip(stillRight);
 		
 		setImage(rightAnim.next());
 		boundingBox = new Rectangle(x,y,image.getWidth(),image.getHeight());
@@ -83,7 +90,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal};
 		for(IEntityPortal portal : portals){
 		if(portal != null){
-			if(portal.isHorizontal() && portal.getDir() == Tile.TOP){
+			if(portal.isHorizontal() && portal.getDir() == EnumSide.TOP){
 				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()+16){
 					inPortalHoriz = true;
 				}else{
@@ -93,7 +100,7 @@ public class EntityPlayer extends Entity implements Shareable{
 						teleportToOtherPortal(portal);
 					}
 				}
-			}else if(!portal.isHorizontal() && portal.getDir() == Tile.LEFT){ //isVertical
+			}else if(!portal.isHorizontal() && portal.getDir() == EnumSide.LEFT){ //isVertical
 				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX()+16 && getY() >= portal.getY()-2 && getY() <= portal.getY()+6){
 					inPortalVert = true;
 					System.out.println("in left portal");
@@ -106,7 +113,7 @@ public class EntityPlayer extends Entity implements Shareable{
 					System.out.println("Teleporting");
 					teleportToOtherPortal(portal);
 				}
-			}else if(!portal.isHorizontal() && portal.getDir() == Tile.RIGHT){
+			}else if(!portal.isHorizontal() && portal.getDir() == EnumSide.RIGHT){
 				if(getX() >= portal.getX()-16 && getX() <= portal.getX()+image.getWidth()-16 && getY() >= portal.getY() && getY() <= portal.getY()+6){
 					inPortalVert = true;
 					System.out.println("in right portal");
@@ -130,19 +137,19 @@ public class EntityPlayer extends Entity implements Shareable{
 		
 			
 			
-		if(other.isHorizontal() && other.getDir() == Tile.BOTTOM){
+		if(other.isHorizontal() && other.getDir() == EnumSide.BOTTOM){
 			int newx = other.getX();																																																												
 			int newy = other.getY()+4;
 			setX(newx);
 			setY(newy);
 			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = BOTTOM");
-		}else if(other.isHorizontal() && other.getDir() == Tile.TOP){
+		}else if(other.isHorizontal() && other.getDir() == EnumSide.TOP){
 			int newx = other.getX();
 			int newy = other.getY()-16;
 			setX(newx);
 			setY(newy);
 			System.out.println("Teleporting to : "+newx+", "+newy+" with Dir = TOP");
-		}else if (other.getDir() == Tile.RIGHT){
+		}else if (other.getDir() == EnumSide.RIGHT){
 			int newx = other.getX()+4;
 			int newy = other.getY();
 			setX(newx);

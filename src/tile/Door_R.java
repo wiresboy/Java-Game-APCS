@@ -2,6 +2,8 @@ package tile;
 
 import java.awt.Shape;
 
+import util.EnumSide;
+
 public class Door_R extends TileOverlay {
 
 	@Override
@@ -20,7 +22,7 @@ public class Door_R extends TileOverlay {
 	}
 
 	@Override
-	public boolean isPortalable(int sides) {
+	public boolean isPortalable(EnumSide sides) {
 		// TODO Auto-generated method stub
 		return false;
 	}

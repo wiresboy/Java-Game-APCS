@@ -1,5 +1,7 @@
 package tile;
 
+import util.EnumSide;
+
 public class BlackTile extends Tile{
 	@Override
 	public String getId(){ return "0E"; }
@@ -11,6 +13,6 @@ public class BlackTile extends Tile{
 	public boolean hasOverlay(){ return false; }
 	
 	@Override
-	public boolean isPortalable(int sides){ return false;}
+	public boolean isPortalable(EnumSide sides){ return false;}
 
 }
