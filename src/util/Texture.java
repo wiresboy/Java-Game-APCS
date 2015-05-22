@@ -1,6 +1,7 @@
 package util;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
@@ -18,8 +19,12 @@ public class Texture extends BufferedImage{
 	public Texture(int i1, int i2, int i3, IndexColorModel arg){
 		super(i1,i2,i3,arg);
 	}
-	public Texture(BufferedImage bi){
-		super(bi.getColorModel(),bi.copyData(null),bi.getColorModel().isAlphaPremultiplied(),null);
+	public Texture(BufferedImage source){
+		super(source.getWidth(), source.getHeight(), source.getType());
+		Graphics g = this.getGraphics();
+		g.drawImage(source, 0, 0, null);
+		g.dispose();
+		    
 	}
 	public Texture replaceColors(Color c1, Color c2){
 		for(int y = 0; y < getHeight(); y++){

@@ -17,7 +17,9 @@ public abstract class Tile{
 	protected BufferedImage image = null;
 	protected BufferedImage overlay = null;
 	public Tile(){
+		try{
 		image = Resources.getTile(this.getClass().getSimpleName());
+		}catch(Exception e){}
 	}
 	/**
 	 * @return a String representation of this tile's hexadecimal id number. See Lucas for the chart.

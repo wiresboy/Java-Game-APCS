@@ -9,7 +9,9 @@ public abstract class TileOverlay extends Tile {
 	public TileOverlay(){
 		offsetX = 0; offsetY = 0;
 		String className = this.getClass().getSimpleName();
+		try{
 		overlay = Resources.getOverlay(className);
+		}catch(Exception e){}
 	}
 	@Override
 	public final boolean hasOverlay(){ return true; }

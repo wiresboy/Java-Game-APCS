@@ -74,7 +74,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		
 		stillRight = Resources.getPlayer(((isMel)? "Chell" : name)+"\\still");
 		if(isMel)stillRight.replaceColors(new Color(255,147,0), new Color(91,170,255)).replaceColors(new Color(0,0,0),new Color(255,226,81)).replaceColors(new Color(255,223,215),new Color(255,206,193));
-		stillLeft = (Texture) ImageManipulator.horizontalFlip(stillRight);
+		stillLeft = new Texture( ImageManipulator.horizontalFlip(stillRight));
 		
 		setImage(rightAnim.next());
 		boundingBox = new Rectangle(x,y,image.getWidth(),image.getHeight());
