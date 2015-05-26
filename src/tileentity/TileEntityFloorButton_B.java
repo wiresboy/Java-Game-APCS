@@ -8,10 +8,4 @@ import tileentity.TileEntity;
  */
 public class TileEntityFloorButton_B extends TileEntity {
 
-	@Override
-	void update() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

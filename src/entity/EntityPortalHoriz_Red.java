@@ -3,6 +3,8 @@ package entity;
 import java.awt.Graphics2D;
 
 import main.GamePanel;
+import map.Map;
+import tile.Tile;
 import util.EnumSide;
 import util.Resources;
 
@@ -21,7 +23,19 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 		}
 	}
 	@Override
-	public void update() {}
+	public void update() {
+		int x = getX();
+		int y = getY();
+		Tile t= map.getTile(Map.pixelsToTiles(y), Map.pixelsToTiles(x));
+		if(t != null){
+			y +=16;
+			t= map.getTile(Map.pixelsToTiles(y), Map.pixelsToTiles(x));
+			if(t != null){
+				y-=18;
+			}
+		}
+		setY(y);
+	}
 	public boolean isHorizontal(){return true;}
 	public void setOtherPortal(IEntityPortal other){ otherportal = (IEntityPortal_Blue) other; }
 	public IEntityPortal getOtherPortal(){return otherportal;}

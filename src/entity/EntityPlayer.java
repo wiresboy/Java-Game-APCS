@@ -84,6 +84,8 @@ public class EntityPlayer extends Entity implements Shareable{
 		testforportals();
 		if(inPortalVert)System.out.println("In portal vert!");
 		if(inPortalHoriz)System.out.println("In portal horiz!");
+		if(redportal != null)redportal.update();
+		if(blueportal != null)blueportal.update();
 	}
 	public void testforportals(){
 		
@@ -92,17 +94,19 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(portal != null){
 			if(portal.isHorizontal() && portal.getDir() == EnumSide.TOP){
 				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()+16){
-					inPortalHoriz = true;
+					/*inPortalHoriz = true;
 				}else{
 					if(inPortalHoriz){
 						inPortalHoriz = false;
 						System.out.println("Teleporting");
 						teleportToOtherPortal(portal);
-					}
+					}*/
+					teleportToOtherPortal(portal);
+				
 				}
 			}else if(!portal.isHorizontal() && portal.getDir() == EnumSide.LEFT){ //isVertical
 				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX()+16 && getY() >= portal.getY()-2 && getY() <= portal.getY()+6){
-					inPortalVert = true;
+					/*inPortalVert = true;
 					System.out.println("in left portal");
 					jumpCountDown = 0;
 					isJumping = false;
@@ -110,12 +114,12 @@ public class EntityPlayer extends Entity implements Shareable{
 					tempY = getY();
 				}else if(inPortalVert){
 					inPortalVert = false;
-					System.out.println("Teleporting");
+					System.out.println("Teleporting");*/
 					teleportToOtherPortal(portal);
 				}
 			}else if(!portal.isHorizontal() && portal.getDir() == EnumSide.RIGHT){
 				if(getX() >= portal.getX()-16 && getX() <= portal.getX()+image.getWidth()-16 && getY() >= portal.getY() && getY() <= portal.getY()+6){
-					inPortalVert = true;
+					/*inPortalVert = true;
 					System.out.println("in right portal");
 					jumpCountDown = 0;
 					isJumping = false;
@@ -123,20 +127,26 @@ public class EntityPlayer extends Entity implements Shareable{
 					tempY = getY();
 				}else if(inPortalVert){
 					inPortalVert = false;
-					System.out.println("Teleporting");
+					System.out.println("Teleporting");*/
 					teleportToOtherPortal(portal);
 				}
 			}
 		}
 		}/**/
 	}
+	int telecount = 0;
+	IEntityPortal otherportal;
 	public void teleportToOtherPortal(IEntityPortal portal){
 		IEntityPortal other = portal;
+		if(!portal.isHorizontal())
+			other = portal.getOtherPortal();
 		
-			//other = portal.getOtherPortal();
-		
-			
-			
+		otherportal = other;
+		telecount ++;
+		if(telecount > 2){
+			other = otherportal.getOtherPortal();
+			telecount = 0;
+		}
 		if(other.isHorizontal() && other.getDir() == EnumSide.BOTTOM){
 			int newx = other.getX();																																																												
 			int newy = other.getY()+4;
