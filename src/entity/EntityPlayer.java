@@ -166,18 +166,24 @@ public class EntityPlayer extends Entity implements Shareable{
 	public boolean willShootBlue(){return willShootBlue;}
 	public void mouseClicked(int x, int y){
 		
-		//TODO: make sure that the start location is from the head or another decent place, not from an arbitrary corner.
-		x=x/2;
-		y=y/2;
+		x=(x/2);
+		y=(y/2);
+
+		int fromX = getX() + 12;
+		int fromY = getY() + 18;
+		
+		if (getDirection()[0] < 0)
+			fromX = getX() + 5;
+		
 		if(willShootBlue){
 			//if (blueportal!=null)
 				//remove last blue portal?
-			shotPortalBlue = new EntityShotPortal_Blue(x,y,getX(),getY(),this);
+			shotPortalBlue = new EntityShotPortal_Blue(x,y,fromX,fromY,this);
 			shotPortalBlue.setMap(map);
 			if(shotPortalBlue.go())
 				willShootBlue = false;
 		}else{
-			shotPortalRed = new EntityShotPortal_Red(x,y,getX(),getY(),this);
+			shotPortalRed = new EntityShotPortal_Red(x,y,fromX,fromY,this);
 			shotPortalRed.setMap(map);
 			if(shotPortalRed.go())
 				willShootBlue = true;
