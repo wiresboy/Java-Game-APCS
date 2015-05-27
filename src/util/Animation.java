@@ -4,20 +4,27 @@ import java.awt.image.*;
 import java.util.ArrayList;
 
 public class Animation {
-	private ArrayList<BufferedImage> images;
+	private ArrayList<Texture> images;
 	private int currImgIndx = 0;
 	private int framesToSkip;
 	private int lastFrame = 0, thisFrame = 0;
 	public Animation(BufferedImage[] images,int framesToSkip){
-		this.images = new ArrayList<BufferedImage>();
+		this.images = new ArrayList<Texture>();
 		for(BufferedImage i : images)
+			this.images.add(new Texture(i));
+		this.framesToSkip = framesToSkip;
+	}
+	public Animation(Texture[] images,int framesToSkip){
+		this.images = new ArrayList<Texture>();
+		for(Texture i : images)
 			this.images.add(i);
 		this.framesToSkip = framesToSkip;
 	}
-	public BufferedImage getCurrent(){
+	
+	public Texture getCurrent(){
 		return images.get(currImgIndx);
 	}
-	public BufferedImage next(){
+	public Texture next(){
 		if(thisFrame == lastFrame+framesToSkip){
 			lastFrame = thisFrame;
 			currImgIndx++;
@@ -30,7 +37,7 @@ public class Animation {
 		thisFrame++;
 		return getCurrent();
 	}
-	public BufferedImage back(){
+	public Texture back(){
 		if(currImgIndx == 0){
 			currImgIndx = images.size()-1;
 		}else{

@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import util.Data;
+import util.Texture;
 import main.GamePanel;
 import map.Map;
 import entity.IEntity;
@@ -32,10 +33,10 @@ public abstract class TileEntity implements IEntity{
 	public final void setMap(Map m){ this.map = m; }
 	public String getName(){ return name;}
 	public int getId(){ return id; }
-	public BufferedImage getImageBasedOnState(){
+	public Texture getImageBasedOnState(){
 		return null;
 	}
-	public BufferedImage getOverlayBasedOnState(){
+	public Texture getOverlayBasedOnState(){
 		return null;
 	}
 	public void readFromData(Data data){

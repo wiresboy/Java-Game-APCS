@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import tile.Tile;
 import util.EnumSide;
+import util.Texture;
 import main.GamePanel;
 import map.Map;
 
@@ -20,7 +21,7 @@ public abstract class Entity implements IEntity{
 	private int x, y;
 	protected int lastX, lastY;
 	protected Rectangle boundingBox;
-	protected BufferedImage image;
+	protected Texture image;
 	protected int speedX, speedY;
 	public Entity(){
 		id = id_count++;
@@ -34,8 +35,8 @@ public abstract class Entity implements IEntity{
 		return boundingBox;
 	}
 	public abstract void update();
-	public final BufferedImage getImage(){ return image; }
-	public final void setImage(BufferedImage b){ image = b; }
+	public final Texture getImage(){ return image; }
+	public final void setImage(Texture b){ image = b; }
 	public int getId(){ return id; }
 	public void draw(Graphics2D g){
 		g.drawImage(image,x,y,null);

@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import tile.IDecorationGrate;
 import tile.Tile;
 import util.Animation;
 import util.EnumSide;
@@ -88,8 +89,9 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(blueportal != null)blueportal.update();
 	}
 	public void testforportals(){
-		
-		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal};
+		IEntityPortal_Red greenportal = otherplayer.getFirstPortal();
+		IEntityPortal_Blue purpleportal = otherplayer.getSecondPortal();
+		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal, greenportal, purpleportal};
 		for(IEntityPortal portal : portals){
 		if(portal != null){
 			if(portal.isHorizontal() && portal.getDir() == EnumSide.TOP){
@@ -244,7 +246,7 @@ public class EntityPlayer extends Entity implements Shareable{
 				int x = Map.pixelsToTiles(getX());
 				int y = Map.pixelsToTiles(newy);
 				Tile t= map.getTile(y, x);
-				if((t != null && t.boundingBox(0, 0) != null)){
+				if((t != null && isSolid(t))){
 					speedY = 0;
 					setY(Map.tilesToPixels(y)+16);
 					
@@ -278,7 +280,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int x = Map.pixelsToTiles(getX());
 		int y = Map.pixelsToTiles(getY());
 		Tile t = map.getTile(y, x);
-		if(!inPortalVert && (t != null && speedX == 0 && speedY == 0)){
+		if(!inPortalVert && (t != null && speedX == 0 && speedY == 0) && isSolid(t)){
 			setY(getY()-1);
 		}
 		if(getX()<0)setX(0);
@@ -288,12 +290,17 @@ public class EntityPlayer extends Entity implements Shareable{
 	
 	public int getSpeedX(){ return speedX; }
 	
+	private boolean isSolid(Tile t){
+		return (t.boundingBox(0, 0) != null || t instanceof IDecorationGrate);
+	}
+	
 	public void kill(){
 		System.out.println("player died!");
 		setX(startx);
 		setY(starty);
 		map.reset();
 	}
+	EntityPlayer otherplayer = GamePanel.instance.otherPlayer;
 	@Override
 	public void draw(Graphics2D g){
 		super.draw(g);
@@ -302,6 +309,14 @@ public class EntityPlayer extends Entity implements Shareable{
 			redportal.draw(g);
 		if(blueportal != null)
 			blueportal.draw(g);
+		if(otherplayer != null){
+			IEntityPortal_Red greenportal = otherplayer.getFirstPortal();
+			IEntityPortal_Blue purpleportal = otherplayer.getSecondPortal();
+			if(greenportal != null)
+				greenportal.drawOtherColor(g);
+			if(purpleportal != null)
+				purpleportal.drawOtherColor(g);
+		}
 	}
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
@@ -334,7 +349,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int x2 = Map.pixelsToTiles(newx+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2,x);
-		if(!inPortalHoriz && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null)) ){
+		if(!inPortalHoriz && ((t != null && isSolid(t)) || (t2 != null && isSolid(t2))) ){
 			
 			setX(Map.tilesToPixels(x)+16);
 			speedX = 0;
@@ -359,7 +374,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int y2 = Map.pixelsToTiles(getY()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2, x);
-		if(!inPortalHoriz && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null)) ){
+		if(!inPortalHoriz && ((t != null && isSolid(t)) || (t2 != null && isSolid(t2))) ){
 			setX(Map.tilesToPixels(x)-16);
 			speedX = 0;
 			/*for(int i = 0; i < speedX; i++){
@@ -386,7 +401,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		int x2 = Map.pixelsToTiles(getX()+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 =map.getTile(y, x2);
-		if(!inPortalVert && ((t != null && t.boundingBox(0, 0) != null) || (t2 != null && t2.boundingBox(0, 0) != null))){
+		if(!inPortalVert && ((t != null && isSolid(t)) || (t2 != null && isSolid(t2)))){
 			setY(Map.tilesToPixels(y)-32);
 			speedY = 0;
 			isJumping = false;
@@ -466,6 +481,6 @@ public class EntityPlayer extends Entity implements Shareable{
 		username = username_;
 	}
 	
-	public IEntityPortal_Red getRedPortal(){ return redportal; }
-	public IEntityPortal_Blue getBluePortal(){ return blueportal;}
+	public IEntityPortal_Red getFirstPortal(){ return redportal; }
+	public IEntityPortal_Blue getSecondPortal(){ return blueportal;}
 }

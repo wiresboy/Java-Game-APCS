@@ -5,10 +5,17 @@ import tileentity.TileEntityFloorButton_B;
 import util.EnumSide;
 
 public class TileFloorButton_B extends Tile {
-
+	private boolean isFlipped = false;
+	public TileFloorButton_B(){}
+	public TileFloorButton_B(boolean b){
+		isFlipped = b;
+		if(isFlipped)
+			id = "31";
+	}
+	private String id = "30";
 	@Override
-	public String getId(){ return "30"; }
-
+	public String getId(){ return id; }
+	
 	@Override
 	public boolean hasTileEntity(){ return true; }
 
@@ -22,7 +29,7 @@ public class TileFloorButton_B extends Tile {
 	
 	@Override
 	public TileEntity createNewTileEntity(){
-		return new TileEntityFloorButton_B();
+		return new TileEntityFloorButton_B(isFlipped);
 	}
 
 }

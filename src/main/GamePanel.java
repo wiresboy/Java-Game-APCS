@@ -53,7 +53,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	private int mousex = 0, mousey = 0;
 	
 	private Start mainFrame;
-	private EntityPlayer player; 
+	public EntityPlayer player; 
+	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+	//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
+	public EntityPlayer otherPlayer = null; 
 	public static GamePanel instance;
 
 	private long gameStartTime;   // when the game started
@@ -80,9 +83,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//private ArrayList<Integer> walkableTiles;
 	
 	// **************WEB STUFF***************
-	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
-					//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
-	private EntityPlayer otherPlayer = null; 
+	
 	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
 	private WebRunner webRunner = null;
 	
@@ -279,8 +280,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			g.setColor(Color.WHITE);
 			g.drawString("X:"+player.getX()+" Y:"+player.getY()+" speedX:"+player.getSpeedX()+" speedY:"+player.getSpeedY(),0,10);
 			g.drawString("mousex:"+mousex/2+" mousey:"+mousey/2,0,20);
-			IEntityPortal red = player.getRedPortal();
-			IEntityPortal blue = player.getBluePortal();
+			IEntityPortal red = player.getFirstPortal();
+			IEntityPortal blue = player.getSecondPortal();
 			if(red != null){
 				g.drawString("red: x:"+red.getX()+" y:"+red.getY()+" dir:"+red.getDir(), 0,30);
 				IEntityPortal other = red.getOtherPortal();

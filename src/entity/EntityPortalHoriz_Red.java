@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import main.GamePanel;
@@ -7,20 +8,27 @@ import map.Map;
 import tile.Tile;
 import util.EnumSide;
 import util.Resources;
+import util.Texture;
 
 public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 	private IEntityPortal_Blue otherportal;
 	private EnumSide dir;
+	protected Texture otherimage;
 	public EntityPortalHoriz_Red(){
 		if (GamePanel.debug)
 			System.out.println("Creating new horizontal red portal!");
+		
 		image = Resources.getEntity("PortalHoriz_Red");
+		otherimage = Resources.getEntity("Portal_Horiz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
 	}
 	public void draw(Graphics2D g){
 		super.draw(g);
-		if(GamePanel.debug){
-			
-		}
+	}
+	public void drawOtherColor(Graphics2D g){
+		Texture temp = image;
+		image = otherimage;
+		super.draw(g);
+		image = temp;
 	}
 	@Override
 	public void update() {

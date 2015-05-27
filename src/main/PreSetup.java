@@ -49,9 +49,13 @@ public class PreSetup {
 		TileRegistry.registerTile(new ExitDoor_L());
 		TileRegistry.registerTile(new ExitDoor_R());
 		TileRegistry.registerTile(new TileFloorButton_B());
+		TileRegistry.registerTile(new TileFloorButton_B(true));
 		TileRegistry.registerTile(new TileFloorButton_L());
+		TileRegistry.registerTile(new TileFloorButton_L(true));
 		TileRegistry.registerTile(new TileFloorButton_R());
+		TileRegistry.registerTile(new TileFloorButton_R(true));
 		TileRegistry.registerTile(new TileFloorButton_T());
+		TileRegistry.registerTile(new TileFloorButton_T(true));
 		TileRegistry.registerTile(new WhiteTile_B());
 		TileRegistry.registerTile(new WhiteTile_L());
 		TileRegistry.registerTile(new WhiteTile_LB());
@@ -81,10 +85,5 @@ public class PreSetup {
 		TileRegistry.registerTile(new WhiteTileStainedTop());
 		TileRegistry.registerTile(new WhiteTileTop());
 		
-		//register tile entities
-		TileEntityRegistry.registerTileEntity(new TileEntityFloorButton_B());
-		TileEntityRegistry.registerTileEntity(new TileEntityFloorButton_T());
-		TileEntityRegistry.registerTileEntity(new TileEntityFloorButton_R());
-		TileEntityRegistry.registerTileEntity(new TileEntityFloorButton_L());
 	}
 }

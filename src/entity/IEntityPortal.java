@@ -13,4 +13,6 @@ public interface IEntityPortal extends IEntity{
 	void setOtherPortal(IEntityPortal p);
 	EnumSide getDir();
 	void setDir(EnumSide dir);
+	void draw(Graphics2D g);
+	void drawOtherColor(Graphics2D g);
 }

@@ -1,7 +1,8 @@
 package entity;
 
-import main.GamePanel;
+import java.awt.Color;
 
+import main.GamePanel;
 import util.Resources;
 
 public class EntityPortalVert_Blue extends EntityPortalVert_Red implements IEntityPortal_Blue{
@@ -10,6 +11,7 @@ public class EntityPortalVert_Blue extends EntityPortalVert_Red implements IEnti
 		if (GamePanel.debug)
 			System.out.println("Creating new vertical blue portal!");
 		image = Resources.getEntity("PortalVert_Blue");
+		otherimage = image.replaceColors(new Color(image.getRGB(0,0)),purple);
 	}
 	
 	public void setOtherPortal(IEntityPortal other){ otherportal = (IEntityPortal_Red) other; }

@@ -27,15 +27,22 @@ public class Texture extends BufferedImage{
 		    
 	}
 	public Texture replaceColors(Color c1, Color c2){
+		Texture t = new Texture(this);
 		for(int y = 0; y < getHeight(); y++){
 			for(int x = 0; x < getWidth(); x++){
 				Color color = new Color(this.getRGB(x, y));
 				if(color.equals(c1)){
-					this.setRGB(x,y,c2.getRGB());
+					t.setRGB(x,y,c2.getRGB());
 				}
 			}
 		}
-		return this;
+		return t;
+	}
+	public Texture horizontalFlip(){
+		return new Texture(ImageManipulator.horizontalFlip(this));
+	}
+	public Texture verticalFlip(){
+		return new Texture(ImageManipulator.verticalFlip(this));
 	}
 
 }
