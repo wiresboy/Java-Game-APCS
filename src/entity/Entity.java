@@ -3,7 +3,6 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import tile.Tile;
@@ -13,7 +12,6 @@ import main.GamePanel;
 import map.Map;
 
 public abstract class Entity implements IEntity{
-	//TODO: Must implement Shareable, but I don't have time right now to understand all of the comment-less code that requires changing :)
 	private static int id_count = 0;
 	public static ArrayList<Entity> list = new ArrayList<Entity>();
 	private int id;
@@ -117,8 +115,6 @@ public abstract class Entity implements IEntity{
 		
 		int top = Map.tilesToPixels(found[1]);//returns top y coordinate of box for use with calculating first impact point.
 		int left = Map.tilesToPixels(found[0]);//returns left x coordinate of box for use with calculating first impact point.
-		int bottom = top+Map.TILE_SIZE;
-		int right = left+Map.TILE_SIZE;
 		
 		EnumSide dir = null;
 		int hitx = (int)x;
@@ -202,6 +198,12 @@ public abstract class Entity implements IEntity{
 			y = y+16; break;
 		case LEFT:
 			x = x+16; break;
+		case BOTTOM:
+			break;
+		case RIGHT:
+			break;
+		default:
+			break;
 		}
 		//found[2] = dir;
 		if (GamePanel.debug)

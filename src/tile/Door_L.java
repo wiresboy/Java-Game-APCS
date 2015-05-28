@@ -3,7 +3,6 @@ package tile;
 import java.awt.Shape;
 
 import util.EnumSide;
-import util.Resources;
 
 public class Door_L extends TileOverlay {
 
@@ -17,7 +16,6 @@ public class Door_L extends TileOverlay {
 	}
 	@Override
 	public boolean hasTileEntity() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	public boolean isPortalable(EnumSide sides) {

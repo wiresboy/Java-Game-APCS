@@ -5,5 +5,5 @@ public abstract class TileEntityFloorButton extends TileEntity{
 	public TileEntityFloorButton(boolean b){
 		isFlipped = b;
 	}
-	private boolean isFlipped = false;
+	public boolean isFlipped = false;
 }

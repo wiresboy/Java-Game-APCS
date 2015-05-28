@@ -12,7 +12,6 @@ import tileentity.TileEntity;
  * @author Lucas Rezac
  *
  */
-//TODO: Comment what these methods mean! I have no idea what they do!
 public abstract class Tile{
 	protected BufferedImage image = null;
 	protected BufferedImage overlay = null;
@@ -56,38 +55,6 @@ public abstract class Tile{
 	public abstract boolean isPortalable(EnumSide left);
 	public void handleCollision(Entity e){
 		System.out.println("                      Collision detected ! "+e.toString());
-		/*int[] dir = e.getDirection();
-		int[] dir2 = new int[2];
-		System.arraycopy(dir,0,dir2,0,dir.length);
-		e.setX(e.getX()-dir[0]);
-		e.setY(e.getY()-dir[1]);
-		e.setDirection(dir2);*/
-		int x = e.getX();
-		int y = e.getY();
-		
 		
 	}
 }
-/*import java.awt.image.*;
-import main.Sprite;
-
-public class Tile extends Sprite{
-	private boolean isSolid;
-	public Tile(int x, int y, BufferedImage image) {
-		super(x, y, image);
-		isSolid = true;
-	}
-	public void setIsCollidable(boolean b){
-		isSolid = b;
-	}
-	public boolean isCollidable(){
-		return isSolid;
-	}
-	public void update(){}
-	//only animated tiles can be powered
-	public void power(){}
-	public String toString(){
-		String s = super.toString();
-		return "Tile"+s.substring(6);
-	}
-}*/

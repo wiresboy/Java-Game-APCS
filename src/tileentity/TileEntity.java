@@ -3,7 +3,6 @@ package tileentity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.image.BufferedImage;
 
 import util.Data;
 import util.Texture;
@@ -41,8 +40,6 @@ public abstract class TileEntity implements IEntity{
 	}
 	public void readFromData(Data data){
 		id = data.getInt("id");
-		// TODO figure out if this statement is needed
-		//id_count--;
 	}
 	public void writeToData(Data data){
 		data.setInt("id", id);

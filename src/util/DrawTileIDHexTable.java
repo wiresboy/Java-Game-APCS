@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import main.PreSetup;
 import map.Map;
 
+@SuppressWarnings("serial")
 public class DrawTileIDHexTable extends Applet{
 	BufferedImage canvas;
 	Image draw;
@@ -45,25 +46,18 @@ public class DrawTileIDHexTable extends Applet{
 		map.drawBase(g);
 		String dir = ImageManipulator.dir;
 		File output;
-		if(true/*System.getProperty("os.name").indexOf("MAC") != -1*/){
-			while(dir.indexOf("\\") != -1) dir = dir.replace("\\","/");
-			output = new File(dir+"/textures/hexchart_output.png");
-			System.out.println(output.getAbsolutePath());
-		}else{
-			output = new File(dir+"\\textures\\hexchart_output.png");
-			System.out.println(output.getAbsolutePath());
-		}
+		while(dir.indexOf("\\") != -1) dir = dir.replace("\\","/");
+		output = new File(dir+"/textures/hexchart_output.png");
+		System.out.println(output.getAbsolutePath());
 		if(!output.exists())
 			try {
 				output.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		try {
 			ImageIO.write(canvas, "PNG", output);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		draw = canvas.getScaledInstance(canvas.getWidth()*4, canvas.getHeight()*4, Image.SCALE_DEFAULT);

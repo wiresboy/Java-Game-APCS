@@ -7,6 +7,7 @@ public abstract class WallLight extends TileOverlay{
 	public WallLight(){
 		String className = this.getClass().getSimpleName();
 		//this will be either T or B, and will get the overlay as such
+		@SuppressWarnings("unused")
 		char c = className.charAt(className.indexOf("_")+2);
 		overlay = Resources.getOverlay("WallLight"); 
 		String label = className.substring(className.indexOf("_")+1);

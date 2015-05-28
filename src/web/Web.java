@@ -15,7 +15,6 @@ public class Web {
 	private static int lastResponseCode=0;
 	private static Random gen = new Random();
 	
-	private static String appEngineIP = "74.125.22.141";//these may be used because *.appspot.com is blocked at school.
 	
 	/**
 	 * Find the most appropriate IP address for accessing the appspot domain.

@@ -1,7 +1,6 @@
 package main;
 
 import tile.*;
-import tileentity.*;
 /**
  * 
  * @author Lucas Rezac

@@ -59,7 +59,6 @@ public class WebInterface {
 	 */
 	public static void updatePlayerStatus(EntityPlayer me, EntityPlayer it)
 	{
-		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
 		
 		String toSend = DataTransmitter.pack2DStringArray(me.packData());
 		try {
@@ -86,7 +85,6 @@ public class WebInterface {
 			}
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -105,10 +103,12 @@ public class WebInterface {
 	
 	//STUFF NOT USED IN V1:
 	
+	@SuppressWarnings("unused")
 	private static String password; //NOT USED FOR FIRST VERSION
 	private static String dispName; //NOT USED FOR FIRST VERSION
 
 	private static ArrayList<Shareable> toSend = new ArrayList<Shareable>();// NOT USED FOR FIRST VERSION
+	@SuppressWarnings("unused")
 	private static ArrayList<Shareable> toReceive = new ArrayList<Shareable>();// NOT USED FOR FIRST VERSION
 	
 	/**  NOT USED FOR FIRST VERSION
@@ -137,7 +137,6 @@ public class WebInterface {
 	 */
 	public static String logIn(String user, String pass)
 	{
-		//TODO: Actually check password up
 		username = user;
 		password = pass;// NOT USED FOR FIRST VERSION
 		dispName = "U"+user;// NOT USED FOR FIRST VERSION
@@ -152,7 +151,6 @@ public class WebInterface {
 	 */
 	public static String changeDisplayName(String newName)
 	{
-		//TODO: Implement changeDisplayName
 		return dispName;
 	}
 

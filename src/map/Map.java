@@ -16,7 +16,6 @@ public class Map{
 	public static final int TILE_SIZE = 16;
     private Tile[][] map;
     private TileEntity[][] tileEntities;
-    private int width,height;
     private String mapname;
     public int[] loadMap(String mapname){
     	ArrayList<String> list = Resources.getMap(mapname);
