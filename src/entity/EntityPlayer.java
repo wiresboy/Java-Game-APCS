@@ -457,11 +457,11 @@ public class EntityPlayer extends Entity implements Shareable{
 		
 		String[] redPortalX = new String[] {"rx",((Integer)redportal.getX()).toString()};
 		String[] redPortalY = new String[] {"ry",((Integer)redportal.getY()).toString()};
-		String[] redPortalDir  = new String[] {"rd",((Integer)redportal.getDir()).toString()};
+		String[] redPortalDir  = new String[] {"rd",((Integer)redportal.getDirInt()).toString()};
 		
 		String[] bluePortalX = new String[] {"bx",((Integer)blueportal.getX()).toString()};
 		String[] bluePortalY = new String[] {"by",((Integer)blueportal.getY()).toString()};
-		String[] bluePortalDir  = new String[] {"bd",((Integer)blueportal.getDir()).toString()};
+		String[] bluePortalDir  = new String[] {"bd",((Integer)blueportal.getDirInt()).toString()};
 		
 		
 		
@@ -495,7 +495,7 @@ public class EntityPlayer extends Entity implements Shareable{
 					redportal.setY(Integer.decode(row[1]));
 					break;
 				case "rz":
-					redportal.setDir(Integer.decode(row[1]));
+					redportal.setDirInt(Integer.decode(row[1]));
 					break;
 					
 
@@ -506,7 +506,7 @@ public class EntityPlayer extends Entity implements Shareable{
 					blueportal.setY(Integer.decode(row[1]));
 					break;
 				case "bz":
-					blueportal.setDir(Integer.decode(row[1]));
+					blueportal.setDirInt(Integer.decode(row[1]));
 					break;
 			}
 		}
