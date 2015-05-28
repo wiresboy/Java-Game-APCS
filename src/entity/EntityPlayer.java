@@ -507,9 +507,10 @@ public class EntityPlayer extends Entity implements Shareable{
 
 		for(String[] row : update)//loop through each item to use with this frame update
 		{
-
+			
 			if (row != null && row.length == 2)
 			{
+				//System.out.println("row: "+row[0]+", "+row[1]);
 				switch (row[0]){
 					case "x":
 						setX(Integer.decode(row[1]));
@@ -520,31 +521,24 @@ public class EntityPlayer extends Entity implements Shareable{
 		
 					case "rx"://red portal stuff
 						redx = Integer.decode(row[1]);
-						//if(redportal != null)redportal.setX(Integer.decode(row[1]));
 						break;
 					case "ry":
 						redy = Integer.decode(row[1]);
-						//if(redportal != null)redportal.setY(Integer.decode(row[1]));
 						break;
-					case "rz":
+					case "rd":
 						reddir = Integer.decode(row[1]);
-						//if(redportal != null)redportal.setDirInt(Integer.decode(row[1]));
 						break;
-		
-		
+						
 					case "bx"://blue portal stuff
 						bluex = Integer.decode(row[1]);
-						//if(blueportal != null)blueportal.setX(Integer.decode(row[1]));
 						break;
 					case "by":
 						bluey = Integer.decode(row[1]);
-						//if(blueportal != null)blueportal.setY(Integer.decode(row[1]));
 						break;
-					case "bz":
+					case "bd":
 						bluedir = Integer.decode(row[1]);
-						//if(blueportal != null)blueportal.setDirInt(Integer.decode(row[1]));
 						break;
-
+						
 					case "anim": // animation stuff
 						String name = row[1];
 						if(name.equals("left"))
@@ -569,25 +563,46 @@ public class EntityPlayer extends Entity implements Shareable{
 						animdata[3] = Integer.parseInt(row[1]);
 				}
 			}
+			//System.out.println("Red = "+redportal+", blue = "+blueportal+"; red x,y,z="+redx+", "+redy+", "+reddir+"; blue x,y,z="+bluex+", "+bluey+", "+bluedir);
 			//update/generate portals
-			if (redx!=-1 && redy!=-1 && reddir!=-1)
+			if (redx!=-1 && redy!=-1 && reddir!=-1)//essentially isset(), but ints so notset == -1
 			{
+				System.out.println("reds are set!");
 				if (redportal == null || (redportal.getX()!= redx) || (redportal.getY()!= redy) || (redportal.getDirInt()!= reddir))
 				{
-					if (reddir==0 || reddir == 2)
-					{
-						
-					}
-					else
-					{
-						
-					}
+					System.out.println("entered set method!");
+					IEntityPortal_Red p = null;
+					if (reddir==0 || reddir == 2) //create a horizontal portal:
+						p = new EntityPortalHoriz_Red();
+					else//nope, make it vertical
+						p = new EntityPortalVert_Red();
+					p.setY(redy);
+					p.setX(redx);
+					p.setMap(map);
+					p.setDirInt(reddir);
+					p.setOtherPortal(blueportal);
+					if (blueportal != null) blueportal.setOtherPortal(p);
+					setRedPortal(p);
 				}
 			}
 			
 			if (bluex!=-1 && bluey!=-1 && bluedir!=-1)
 			{
-				
+				if (blueportal == null || (blueportal.getX()!= bluex) || (blueportal.getY()!= bluey) || (blueportal.getDirInt()!= bluedir))
+				{
+					IEntityPortal_Blue p = null;
+					if (bluedir==0 || bluedir == 2) //create a horizontal portal:
+						p = new EntityPortalHoriz_Blue();
+					else//nope, make it vertical
+						p = new EntityPortalVert_Blue();
+					p.setY(bluey);
+					p.setX(bluex);
+					p.setMap(map);
+					p.setDirInt(bluedir);
+					p.setOtherPortal(redportal);
+					if (redportal != null) redportal.setOtherPortal(p);
+					setBluePortal(p);
+				}
 			}
 		}
 		currAnim.setData(animdata);

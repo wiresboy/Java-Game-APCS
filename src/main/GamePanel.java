@@ -27,7 +27,7 @@ import java.util.Scanner;
 public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener,MouseMotionListener{
 
 	
-	public static boolean debug = true;//only SOP'ing when this is set to true.
+	public static boolean debug = false;//only SOP'ing when this is set to true.
 	
 	private static final long serialVersionUID = 1L;
 	public static final int PWIDTH = 16*16*2; // size of panel
