@@ -28,8 +28,8 @@ public class EntityPlayer extends Entity implements Shareable{
 	private Animation leftAnim, rightAnim, leftJumpAnim, rightJumpAnim;
 	private EntityShotPortal_Blue shotPortalBlue;
 	private EntityShotPortal_Red shotPortalRed;
-	private IEntityPortal_Red redportal;
-	private IEntityPortal_Blue blueportal;
+	protected IEntityPortal_Red redportal;
+	protected IEntityPortal_Blue blueportal;
 	private boolean willShootBlue = true;
 	private String username;
 	public EntityPlayer(int x, int y,String name,String username_){
@@ -89,11 +89,22 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(blueportal != null)blueportal.update();
 	}
 	public void testforportals(){
+<<<<<<< HEAD
 		IEntityPortal_Red greenportal = null;
 		IEntityPortal_Blue purpleportal = null;
 		if(otherplayer != null){
 		greenportal = otherplayer.getFirstPortal();
 		purpleportal = otherplayer.getSecondPortal();
+=======
+
+		IEntityPortal_Red greenportal = null;
+		IEntityPortal_Blue purpleportal = null;
+		
+		if (otherplayer != null)
+		{
+			greenportal = otherplayer.getFirstPortal();
+			purpleportal = otherplayer.getSecondPortal();
+>>>>>>> origin/master
 		}
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal, greenportal, purpleportal};
 		for(IEntityPortal portal : portals){
@@ -452,7 +463,21 @@ public class EntityPlayer extends Entity implements Shareable{
 		String[] yRow = new String[] {"y",((Integer)getY()).toString()};
 		//TODO: Add other vars as needed, like character image, etc.
 		
-		return new String[][]{xRow,yRow};
+		String[] redPortalX = new String[] {"rx",((Integer)redportal.getX()).toString()};
+		String[] redPortalY = new String[] {"ry",((Integer)redportal.getY()).toString()};
+		String[] redPortalDir  = new String[] {"rd",((Integer)redportal.getDirInt()).toString()};
+		
+		String[] bluePortalX = new String[] {"bx",((Integer)blueportal.getX()).toString()};
+		String[] bluePortalY = new String[] {"by",((Integer)blueportal.getY()).toString()};
+		String[] bluePortalDir  = new String[] {"bd",((Integer)blueportal.getDirInt()).toString()};
+		
+		
+		
+		return new String[][]{
+				xRow,yRow, 
+				redPortalX, redPortalY, redPortalDir, 
+				bluePortalX, bluePortalY, bluePortalDir
+				};
 	}
 	
 	/** update all internal variables to new values based on data packed by a different client.
@@ -460,6 +485,7 @@ public class EntityPlayer extends Entity implements Shareable{
 	 */
 	@Override
 	public void unpackData(String[][] update) {
+		
 		for(String[] row : update)//loop through each item to use with this frame update
 		{
 			switch (row[0]){
@@ -468,6 +494,27 @@ public class EntityPlayer extends Entity implements Shareable{
 					break;
 				case "y":
 					setY(Integer.decode(row[1]));
+					break;
+					
+				case "rx"://red portal stuff
+					redportal.setX(Integer.decode(row[1]));
+					break;
+				case "ry":
+					redportal.setY(Integer.decode(row[1]));
+					break;
+				case "rz":
+					redportal.setDirInt(Integer.decode(row[1]));
+					break;
+					
+
+				case "bx"://blue portal stuff
+					blueportal.setX(Integer.decode(row[1]));
+					break;
+				case "by":
+					blueportal.setY(Integer.decode(row[1]));
+					break;
+				case "bz":
+					blueportal.setDirInt(Integer.decode(row[1]));
 					break;
 			}
 		}

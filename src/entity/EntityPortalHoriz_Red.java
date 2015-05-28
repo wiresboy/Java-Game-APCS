@@ -19,7 +19,11 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 			System.out.println("Creating new horizontal red portal!");
 		
 		image = Resources.getEntity("PortalHoriz_Red");
+<<<<<<< HEAD
 		otherimage = Resources.getEntity("PortalHoriz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
+=======
+		otherimage = Resources.getEntity("PortaljoeHoriz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
+>>>>>>> origin/master
 	}
 	public void draw(Graphics2D g){
 		super.draw(g);
@@ -49,4 +53,38 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 	public IEntityPortal getOtherPortal(){return otherportal;}
 	public void setDir(EnumSide dir){this.dir = dir;}
 	public EnumSide getDir(){return dir;}
+	
+	public void setDirInt(int dir) {
+		switch (dir)
+		{
+		case 0:
+			this.dir=EnumSide.TOP;
+			break;
+		case 1:
+			this.dir=EnumSide.RIGHT;
+			break;
+		case 2:
+			this.dir=EnumSide.BOTTOM;
+			break;
+		case 3:
+			this.dir=EnumSide.LEFT;
+			break;
+		}
+	}
+	public int getDirInt() {
+		switch (getDir())
+		{
+		case TOP:
+			return 0;
+		case RIGHT:
+			return 1;
+		case BOTTOM:
+			return 2;
+		case LEFT:
+			return 3;
+		default://imposible to reach
+			return -1;
+		}
+	}
+	
 }
