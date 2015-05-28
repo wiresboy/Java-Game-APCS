@@ -455,16 +455,29 @@ public class EntityPlayer extends Entity implements Shareable{
 		String[] xRow = new String[] {"x",((Integer)getX()).toString()};
 		String[] yRow = new String[] {"y",((Integer)getY()).toString()};
 		//TODO: Add other vars as needed, like character image, etc.
+
+		String[] redPortalX = {"",""};
+		String[] redPortalY = {"",""};
+		String[] redPortalDir = {"",""};
+
+		String[] bluePortalX = {"",""};
+		String[] bluePortalY = {"",""};
+		String[] bluePortalDir = {"",""};
 		
-		String[] redPortalX = new String[] {"rx",((Integer)redportal.getX()).toString()};
-		String[] redPortalY = new String[] {"ry",((Integer)redportal.getY()).toString()};
-		String[] redPortalDir  = new String[] {"rd",((Integer)redportal.getDirInt()).toString()};
 		
-		String[] bluePortalX = new String[] {"bx",((Integer)blueportal.getX()).toString()};
-		String[] bluePortalY = new String[] {"by",((Integer)blueportal.getY()).toString()};
-		String[] bluePortalDir  = new String[] {"bd",((Integer)blueportal.getDirInt()).toString()};
+		if (redportal != null)
+		{
+		redPortalX = new String[] {"rx",((Integer)redportal.getX()).toString()};
+		redPortalY = new String[] {"ry",((Integer)redportal.getY()).toString()};
+		redPortalDir  = new String[] {"rd",((Integer)redportal.getDirInt()).toString()};
+		}
 		
-		
+		if (blueportal != null)
+		{
+		bluePortalX = new String[] {"bx",((Integer)blueportal.getX()).toString()};
+		bluePortalY = new String[] {"by",((Integer)blueportal.getY()).toString()};
+		bluePortalDir  = new String[] {"bd",((Integer)blueportal.getDirInt()).toString()};
+		}
 		
 		return new String[][]{
 				xRow,yRow, 
@@ -481,34 +494,38 @@ public class EntityPlayer extends Entity implements Shareable{
 		
 		for(String[] row : update)//loop through each item to use with this frame update
 		{
-			switch (row[0]){
-				case "x":
-					setX(Integer.decode(row[1]));
-					break;
-				case "y":
-					setY(Integer.decode(row[1]));
-					break;
-					
-				case "rx"://red portal stuff
-					redportal.setX(Integer.decode(row[1]));
-					break;
-				case "ry":
-					redportal.setY(Integer.decode(row[1]));
-					break;
-				case "rz":
-					redportal.setDirInt(Integer.decode(row[1]));
-					break;
-					
 
-				case "bx"://blue portal stuff
-					blueportal.setX(Integer.decode(row[1]));
-					break;
-				case "by":
-					blueportal.setY(Integer.decode(row[1]));
-					break;
-				case "bz":
-					blueportal.setDirInt(Integer.decode(row[1]));
-					break;
+			if (row != null && row.length == 2)
+			{
+				switch (row[0]){
+					case "x":
+						setX(Integer.decode(row[1]));
+						break;
+					case "y":
+						setY(Integer.decode(row[1]));
+						break;
+		
+					case "rx"://red portal stuff
+						if(redportal != null)redportal.setX(Integer.decode(row[1]));
+						break;
+					case "ry":
+						if(redportal != null)redportal.setY(Integer.decode(row[1]));
+						break;
+					case "rz":
+						if(redportal != null)redportal.setDirInt(Integer.decode(row[1]));
+						break;
+		
+		
+					case "bx"://blue portal stuff
+						if(blueportal != null)blueportal.setX(Integer.decode(row[1]));
+						break;
+					case "by":
+						if(blueportal != null)blueportal.setY(Integer.decode(row[1]));
+						break;
+					case "bz":
+						if(blueportal != null)blueportal.setDirInt(Integer.decode(row[1]));
+						break;
+				}
 			}
 		}
 	}
