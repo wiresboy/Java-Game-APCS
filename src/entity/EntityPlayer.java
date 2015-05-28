@@ -89,8 +89,12 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(blueportal != null)blueportal.update();
 	}
 	public void testforportals(){
-		IEntityPortal_Red greenportal = otherplayer.getFirstPortal();
-		IEntityPortal_Blue purpleportal = otherplayer.getSecondPortal();
+		IEntityPortal_Red greenportal = null;
+		IEntityPortal_Blue purpleportal = null;
+		if(otherplayer != null){
+		greenportal = otherplayer.getFirstPortal();
+		purpleportal = otherplayer.getSecondPortal();
+		}
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal, greenportal, purpleportal};
 		for(IEntityPortal portal : portals){
 		if(portal != null){
