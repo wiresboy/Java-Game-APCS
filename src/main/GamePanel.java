@@ -4,14 +4,12 @@ import javax.swing.*;
 
 import map.Map;
 
-import util.*;
 import web.Chat;
 import web.GameStatus;
 import web.WebRunner;
 import entity.Entity;
 import entity.EntityPlayer;
 import entity.EntityPlayerWebControlled;
-import entity.Player;
 import entity.IEntityPortal;
 
 import java.awt.image.*;
@@ -53,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//private int tempX, tempY;
 	private int mousex = 0, mousey = 0;
 	
+	@SuppressWarnings("unused")
 	private Start mainFrame;
 	public EntityPlayer player; 
 	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
@@ -86,6 +85,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	// **************WEB STUFF***************
 	
 	private GameStatus gameStatus = null;//holds the status of the game for use with transfering thread info stuff. After initialization, DO NOT modify this!
+	@SuppressWarnings("unused")
 	private WebRunner webRunner = null;
 	
 	public static int[] tempLineHelp = new int[4];
@@ -133,8 +133,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			player.setOtherPlayer(otherPlayer);
 			otherPlayer.setOtherPlayer(player);
 			new Chat(myName,key);
-			
-			//TODO: we may want to wait here for the other player to sign in?
 			
 		}
 		
@@ -397,38 +395,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		mousex = e.getX();
 		mousey = e.getY();
 	}

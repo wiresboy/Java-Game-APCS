@@ -23,6 +23,7 @@ public class EntityPlayer extends Entity implements Shareable{
 	private int jumpCountDown = 0;
 	private boolean isJumping = false;
 	private int startx,starty;
+	@SuppressWarnings("unused")
 	private String name;
 	private Texture stillLeft, stillRight;
 	private Animation leftAnim, rightAnim, leftJumpAnim, rightJumpAnim;
@@ -104,45 +105,20 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(portal != null){
 			if(portal.isHorizontal() && portal.getDir() == EnumSide.TOP){
 				if(getX() >= portal.getX() && getX() <= portal.getX()+16 && getY() >= portal.getY()-image.getHeight()-1 && getY() <= portal.getY()+16){
-					/*inPortalHoriz = true;
-				}else{
-					if(inPortalHoriz){
-						inPortalHoriz = false;
-						System.out.println("Teleporting");
-						teleportToOtherPortal(portal);
-					}*/
 					teleportToOtherPortal(portal);
 				
 				}
 			}else if(!portal.isHorizontal() && portal.getDir() == EnumSide.LEFT){ //isVertical
 				if(getX() >= portal.getX()-image.getWidth() && getX() <= portal.getX()+16 && getY() >= portal.getY()-2 && getY() <= portal.getY()+6){
-					/*inPortalVert = true;
-					System.out.println("in left portal");
-					jumpCountDown = 0;
-					isJumping = false;
-					speedY = 0;
-					tempY = getY();
-				}else if(inPortalVert){
-					inPortalVert = false;
-					System.out.println("Teleporting");*/
 					teleportToOtherPortal(portal);
 				}
 			}else if(!portal.isHorizontal() && portal.getDir() == EnumSide.RIGHT){
 				if(getX() >= portal.getX()-16 && getX() <= portal.getX()+image.getWidth()-16 && getY() >= portal.getY() && getY() <= portal.getY()+6){
-					/*inPortalVert = true;
-					System.out.println("in right portal");
-					jumpCountDown = 0;
-					isJumping = false;
-					speedY = 0;
-					tempY = getY();
-				}else if(inPortalVert){
-					inPortalVert = false;
-					System.out.println("Teleporting");*/
 					teleportToOtherPortal(portal);
 				}
 			}
 		}
-		}/**/
+		}
 	}
 	int telecount = 0;
 	IEntityPortal otherportal;
@@ -207,7 +183,7 @@ public class EntityPlayer extends Entity implements Shareable{
 			shotPortalRed.setMap(map);
 			if(shotPortalRed.go())
 				willShootBlue = true;
-		}//*/
+		}
 	}
 	public void mouseRightClicked()//switch portal to other color; we may want it to be a button but I though mouse would work well.
 	{
@@ -268,11 +244,6 @@ public class EntityPlayer extends Entity implements Shareable{
 				leftJumpAnim.reset();
 				rightJumpAnim.reset();
 			}
-			/*if(speedY < 0){
-				fall();
-			}else if(speedY > 0){
-				jump();
-			}*/
 		}
 		
 		if(!keys[KeyEvent.VK_W]&& !keys[KeyEvent.VK_A]&& !keys[KeyEvent.VK_D] && !keys[KeyEvent.VK_S]  ){
@@ -316,7 +287,6 @@ public class EntityPlayer extends Entity implements Shareable{
 	@Override
 	public void draw(Graphics2D g){
 		super.draw(g);
-		//System.out.println(name()+" drawing!");
 		if(redportal != null)
 			redportal.draw(g);
 		if(blueportal != null)
@@ -333,46 +303,18 @@ public class EntityPlayer extends Entity implements Shareable{
 	public int getSpeedY(){ return speedY; }
 	public void jump(){
 		speedY = -6;
-		/**int newy = getY()+((speedY == 0)? speedY = -1 :(speedY > 0)? speedY-- : (Math.abs(speedY) < MAX_SPEEDY)? speedY-- : speedY);
-		int x = Map.pixelsToTiles(getX());
-		int y = Map.pixelsToTiles(newy);
-		Tile t = map.getTile(y, x);
-		if(t != null){
-			setY(Map.tilesToPixels(y)+16);
-			speedY = 0;
-			/*for(int i = 0; i < speedY; i++){
-				y = Map.pixelsToTiles(newy+i);
-				t = map.getTile(y,x);
-				if(t == null){
-					setX(newy+i);
-					return;
-				}
-			}*
-			return;
-		}else
-			setY(newy);
-		**/
 	}
 	public boolean moveLeft(){
 		int newx = getX()+((speedX == 0)? speedX = -1 : (speedX > 0)? speedX-- : (Math.abs(speedX) < MAX_SPEEDX)? speedX-- : speedX);
 		int x = Map.pixelsToTiles(newx);
 		int y = Map.pixelsToTiles(getY());
 		int y2 = Map.pixelsToTiles(getY()+16);
-		int x2 = Map.pixelsToTiles(newx+16);
 		Tile t = map.getTile(y, x);
 		Tile t2 = map.getTile(y2,x);
 		if(!inPortalHoriz && ((t != null && isSolid(t)) || (t2 != null && isSolid(t2))) ){
 			
 			setX(Map.tilesToPixels(x)+16);
 			speedX = 0;
-			/*for(int i = 0; i < speedX; i++){
-				x = Map.pixelsToTiles(newx+i);
-				t = map.getTile(y,x);
-				if(t == null){
-					setX(newx+i);
-					return;
-				}
-			}*/
 			return true;
 		}else{
 			setX(newx);
@@ -389,14 +331,6 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(!inPortalHoriz && ((t != null && isSolid(t)) || (t2 != null && isSolid(t2))) ){
 			setX(Map.tilesToPixels(x)-16);
 			speedX = 0;
-			/*for(int i = 0; i < speedX; i++){
-				x = Map.pixelsToTiles(newx-i);
-				t = map.getTile(y,x);
-				if(t == null){
-					setX(newx-i);
-					return;
-				}
-			}*/
 			return true;
 		}else{
 			setX(newx-16);
@@ -417,14 +351,6 @@ public class EntityPlayer extends Entity implements Shareable{
 			setY(Map.tilesToPixels(y)-32);
 			speedY = 0;
 			isJumping = false;
-			/*for(int i = 0; i < speedY; i++){
-				y = Map.pixelsToTiles(newy-i);
-				t = map.getTile(y,x);
-				if(t == null){
-					setX(newy-i);
-					return;
-				}
-			}*/
 			return;
 		}else
 			setY(newy-32);
@@ -458,7 +384,6 @@ public class EntityPlayer extends Entity implements Shareable{
 	public String[][] packData() {
 		String[] xRow = new String[] {"x",((Integer)getX()).toString()};
 		String[] yRow = new String[] {"y",((Integer)getY()).toString()};
-		//TODO: Add other vars as needed, like character image, etc.
 
 		String[] redPortalX = {"",""};
 		String[] redPortalY = {"",""};
@@ -516,7 +441,6 @@ public class EntityPlayer extends Entity implements Shareable{
 			
 			if (row != null && row.length == 2)
 			{
-				//System.out.println("row: "+row[0]+", "+row[1]);
 				switch (row[0]){
 					case "x":
 						setX(Integer.decode(row[1]));
@@ -569,14 +493,11 @@ public class EntityPlayer extends Entity implements Shareable{
 						animdata[3] = Integer.parseInt(row[1]);
 				}
 			}
-			//System.out.println("Red = "+redportal+", blue = "+blueportal+"; red x,y,z="+redx+", "+redy+", "+reddir+"; blue x,y,z="+bluex+", "+bluey+", "+bluedir);
 			//update/generate portals
 			if (redx!=-1 && redy!=-1 && reddir!=-1)//essentially isset(), but ints so notset == -1
 			{
-				System.out.println("reds are set!");
 				if (redportal == null || (redportal.getX()!= redx) || (redportal.getY()!= redy) || (redportal.getDirInt()!= reddir))
 				{
-					System.out.println("entered set method!");
 					IEntityPortal_Red p = null;
 					if (reddir==0 || reddir == 2) //create a horizontal portal:
 						p = new EntityPortalHoriz_Red();
