@@ -24,6 +24,15 @@ public class Animation {
 	public Texture getCurrent(){
 		return images.get(currImgIndx);
 	}
+	public void setData(int[] data){
+		this.currImgIndx = data[0];
+		this.framesToSkip = data[1];
+		this.lastFrame = data[2];
+		this.thisFrame = data[3];
+	}
+	public String[] getData(){
+		return new String[]{Integer.toString(currImgIndx),Integer.toString(framesToSkip),Integer.toString(lastFrame),Integer.toString(thisFrame)};
+	}
 	public Texture next(){
 		if(thisFrame == lastFrame+framesToSkip){
 			lastFrame = thisFrame;
