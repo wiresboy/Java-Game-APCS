@@ -230,10 +230,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		if (!isPaused && !gameOver){
 			player.update();
 			
-			if (!singlePlayer)
+			// This isn't needed as the other client can update itself, and then send back data
+			/*if (!singlePlayer)
 			{
 				otherPlayer.update();
-			}
+			}*/
 			
 			for(Entity e : Entity.list){
 				e.update();

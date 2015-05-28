@@ -19,11 +19,10 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 			System.out.println("Creating new horizontal red portal!");
 		
 		image = Resources.getEntity("PortalHoriz_Red");
-<<<<<<< HEAD
-		otherimage = Resources.getEntity("PortalHoriz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
-=======
-		otherimage = Resources.getEntity("PortaljoeHoriz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
->>>>>>> origin/master
+
+		otherimage = image.replaceColors(new Color(image.getRGB(0,0)),green );
+		//otherimage = Resources.getEntity("PortaljoeHoriz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
+
 	}
 	public void draw(Graphics2D g){
 		super.draw(g);
