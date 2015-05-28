@@ -130,7 +130,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			gameStatus = new GameStatus(mapName);
 			
 			webRunner = new WebRunner(player,otherPlayer,gameStatus);
-			
+			player.setOtherPlayer(otherPlayer);
+			otherPlayer.setOtherPlayer(player);
 			new Chat(myName,key);
 			
 			//TODO: we may want to wait here for the other player to sign in?

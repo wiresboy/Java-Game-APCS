@@ -92,10 +92,12 @@ public class EntityPlayer extends Entity implements Shareable{
 		IEntityPortal_Red greenportal = null;
 		IEntityPortal_Blue purpleportal = null;
 		
+		System.out.println("Test for portals: otherplayer = "+otherplayer);
 		if (otherplayer != null)
 		{
 			greenportal = otherplayer.getFirstPortal();
 			purpleportal = otherplayer.getSecondPortal();
+			System.out.println("Got green,purple portals: "+greenportal+", "+purpleportal);
 		}
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal, greenportal, purpleportal};
 		for(IEntityPortal portal : portals){
@@ -306,7 +308,11 @@ public class EntityPlayer extends Entity implements Shareable{
 		setY(starty);
 		map.reset();
 	}
-	EntityPlayer otherplayer = GamePanel.instance.otherPlayer;
+	EntityPlayer otherplayer = null;
+	public void setOtherPlayer(EntityPlayer o)
+	{
+		otherplayer = o;
+	}
 	@Override
 	public void draw(Graphics2D g){
 		super.draw(g);
