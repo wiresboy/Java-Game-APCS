@@ -77,7 +77,7 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 			return 2;
 		case LEFT:
 			return 3;
-		default://imposible to reach
+		default://probably impossible to reach, but eclipse can't know that.
 			return -1;
 		}
 	}

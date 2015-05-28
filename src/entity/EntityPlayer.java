@@ -492,6 +492,9 @@ public class EntityPlayer extends Entity implements Shareable{
 	@Override
 	public void unpackData(String[][] update) {
 		
+		int redx = -1, redy = -1, reddir = -1;
+		int bluex = -1, bluey = -1, bluedir = -1;
+		
 		for(String[] row : update)//loop through each item to use with this frame update
 		{
 
@@ -506,26 +509,52 @@ public class EntityPlayer extends Entity implements Shareable{
 						break;
 		
 					case "rx"://red portal stuff
-						if(redportal != null)redportal.setX(Integer.decode(row[1]));
+						redx = Integer.decode(row[1]);
+						//if(redportal != null)redportal.setX(Integer.decode(row[1]));
 						break;
 					case "ry":
-						if(redportal != null)redportal.setY(Integer.decode(row[1]));
+						redy = Integer.decode(row[1]);
+						//if(redportal != null)redportal.setY(Integer.decode(row[1]));
 						break;
 					case "rz":
-						if(redportal != null)redportal.setDirInt(Integer.decode(row[1]));
+						reddir = Integer.decode(row[1]);
+						//if(redportal != null)redportal.setDirInt(Integer.decode(row[1]));
 						break;
 		
 		
 					case "bx"://blue portal stuff
-						if(blueportal != null)blueportal.setX(Integer.decode(row[1]));
+						bluex = Integer.decode(row[1]);
+						//if(blueportal != null)blueportal.setX(Integer.decode(row[1]));
 						break;
 					case "by":
-						if(blueportal != null)blueportal.setY(Integer.decode(row[1]));
+						bluey = Integer.decode(row[1]);
+						//if(blueportal != null)blueportal.setY(Integer.decode(row[1]));
 						break;
 					case "bz":
-						if(blueportal != null)blueportal.setDirInt(Integer.decode(row[1]));
+						bluedir = Integer.decode(row[1]);
+						//if(blueportal != null)blueportal.setDirInt(Integer.decode(row[1]));
 						break;
 				}
+			}
+			//update/generate portals
+			if (redx!=-1 && redy!=-1 && reddir!=-1)
+			{
+				if (redportal == null || (redportal.getX()!= redx) || (redportal.getY()!= redy) || (redportal.getDirInt()!= reddir))
+				{
+					if (reddir==0 || reddir == 2)
+					{
+						
+					}
+					else
+					{
+						
+					}
+				}
+			}
+			
+			if (bluex!=-1 && bluey!=-1 && bluedir!=-1)
+			{
+				
 			}
 		}
 	}
