@@ -97,6 +97,7 @@ public class EntityPlayer extends Entity implements Shareable{
 		{
 			greenportal = otherplayer.getFirstPortal();
 			purpleportal = otherplayer.getSecondPortal();
+
 		}
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal, greenportal, purpleportal};
 		for(IEntityPortal portal : portals){

@@ -17,7 +17,6 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 	public EntityPortalHoriz_Red(){
 		if (GamePanel.debug)
 			System.out.println("Creating new horizontal red portal!");
-		
 		image = Resources.getEntity("PortalHoriz_Red");
 		otherimage = Resources.getEntity("PortalHoriz_Red").replaceColors(new Color(image.getRGB(0,0)),green );
 	}
