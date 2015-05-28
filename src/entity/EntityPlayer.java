@@ -89,7 +89,6 @@ public class EntityPlayer extends Entity implements Shareable{
 		if(blueportal != null)blueportal.update();
 	}
 	public void testforportals(){
-
 		IEntityPortal_Red greenportal = null;
 		IEntityPortal_Blue purpleportal = null;
 		
@@ -97,7 +96,6 @@ public class EntityPlayer extends Entity implements Shareable{
 		{
 			greenportal = otherplayer.getFirstPortal();
 			purpleportal = otherplayer.getSecondPortal();
-
 		}
 		IEntityPortal[] portals = {(IEntityPortal) redportal,(IEntityPortal) blueportal, greenportal, purpleportal};
 		for(IEntityPortal portal : portals){
@@ -464,6 +462,14 @@ public class EntityPlayer extends Entity implements Shareable{
 		String[] bluePortalY = {"",""};
 		String[] bluePortalDir = {"",""};
 		
+
+		String[] anim = {"anim", (speedX <= 0 && speedY == 0)? "left" : (speedX > 0 && speedY == 0)? "right" : (speedX <= 0 && speedY != 0)? "leftjump" : "rightjump"};
+		Animation currAnim = anim[1].equals("left")? leftAnim : anim[1].equals("right")? rightAnim : anim[1].equals("leftjump")? leftJumpAnim : rightJumpAnim;
+		String[] data = currAnim.getData();
+		String[] a1 = {"a1", data[0]};
+		String[] a2 = {"a2", data[1]};
+		String[] a3 = {"a3", data[2]};
+		String[] a4 = {"a4", data[3]};
 		
 		if (redportal != null)
 		{
@@ -482,7 +488,8 @@ public class EntityPlayer extends Entity implements Shareable{
 		return new String[][]{
 				xRow,yRow, 
 				redPortalX, redPortalY, redPortalDir, 
-				bluePortalX, bluePortalY, bluePortalDir
+				bluePortalX, bluePortalY, bluePortalDir,
+				anim, a1, a2, a3, a4
 				};
 	}
 	
@@ -495,6 +502,9 @@ public class EntityPlayer extends Entity implements Shareable{
 		int redx = -1, redy = -1, reddir = -1;
 		int bluex = -1, bluey = -1, bluedir = -1;
 		
+		Animation currAnim = leftAnim;
+		int[] animdata = new int[4];
+
 		for(String[] row : update)//loop through each item to use with this frame update
 		{
 
@@ -534,6 +544,29 @@ public class EntityPlayer extends Entity implements Shareable{
 						bluedir = Integer.decode(row[1]);
 						//if(blueportal != null)blueportal.setDirInt(Integer.decode(row[1]));
 						break;
+
+					case "anim": // animation stuff
+						String name = row[1];
+						if(name.equals("left"))
+							currAnim = leftAnim;
+						else if(name.equals("right"))
+							currAnim = rightAnim;
+						else if(name.equals("leftjump"))
+							currAnim = leftJumpAnim;
+						else
+							currAnim = rightJumpAnim;
+						break;
+					case "a1":
+						animdata[0] = Integer.parseInt(row[1]);
+						break;
+					case "a2":
+						animdata[1] = Integer.parseInt(row[1]);
+						break;
+					case "a3":
+						animdata[2] = Integer.parseInt(row[1]);
+						break;
+					case "a4":
+						animdata[3] = Integer.parseInt(row[1]);
 				}
 			}
 			//update/generate portals
@@ -557,6 +590,8 @@ public class EntityPlayer extends Entity implements Shareable{
 				
 			}
 		}
+		currAnim.setData(animdata);
+		setImage(currAnim.getCurrent());
 	}
 	
 	@Override//not used in the player class, but is in other entities.
