@@ -17,6 +17,7 @@ import entity.IEntityPortal;
 import java.awt.image.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.ConcurrentModificationException;
 import java.util.Scanner;
 /**
  * 
@@ -234,10 +235,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 			/*if (!singlePlayer)
 			{
 				otherPlayer.update();
+<<<<<<< HEAD
 			}*/
 			
 			for(Entity e : Entity.list){
 				e.update();
+=======
+			}
+			try {
+				for(Entity e : Entity.list){
+					e.update();
+				}
+			}
+			catch (ConcurrentModificationException e)
+			{
+				//means we added a portal somewhere. Just restart on the next loop.
+>>>>>>> origin/master
 			}
 		} 
 	   

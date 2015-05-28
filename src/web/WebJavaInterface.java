@@ -55,7 +55,6 @@ public class WebJavaInterface{
 	public static void updatePlayerStatus(EntityPlayer me, EntityPlayer it)
 	{
 		//TODO: Also get other data from server on match status like if it is still running, etc. How will this be returned? Game status?
-		
 		String toSend = DataTransmitter.pack2DStringArray(me.packData());
 		
 		toSend += MessageHolder.genStringOfMessagesToSend();

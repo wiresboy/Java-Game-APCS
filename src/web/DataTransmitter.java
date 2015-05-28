@@ -39,12 +39,15 @@ public class DataTransmitter {
 		String CSV = "";
 		for (String[] line : data)
 		{
-			for (String item : line)
+			if (line != null)
 			{
-				CSV += encode(item) + columnDelimiter;//add item and column terminator
+				for (String item : line)
+				{
+					CSV += encode(item) + columnDelimiter;//add item and column terminator
+				}
+				CSV = CSV.substring(0, CSV.length()-1);//remove final column terminator.
+				CSV+=rowDelimiter;//add line break
 			}
-			CSV = CSV.substring(0, CSV.length()-1);//remove final column terminator.
-			CSV+=rowDelimiter;//add line break
 		}
 		//TODO: Will we need to return the line break from the end of the string?
 		CSV = CSV.substring(0, CSV.length()-1);
