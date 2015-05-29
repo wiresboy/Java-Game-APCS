@@ -24,16 +24,22 @@ import java.util.Scanner;
  */
 public class GamePanel extends JPanel implements Runnable, KeyListener,MouseListener,MouseMotionListener{
 
-	
+	//SETTINGS ---------------------------------------------------
 	public static boolean debug = false;//only SOP'ing when this is set to true.
-	
+
+	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
+	//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
+
 	private static final long serialVersionUID = 1L;
+	//---------------------------------------------------------------
+	
+	
 	public static final int PWIDTH = 16*16*2; // size of panel
 	public static final int PHEIGHT = (10*16+9)*2; 
 	public static final int DHEIGHT = 32*16;
 	public static final int DWIDTH= 256*16;
-	public static final Color BLUE = new Color(121,214,253);
-	public static final Color RED = new Color(250,147,38);
+	public static final Color BLUE = new Color(140,0,255);//temp fix to deal with bad portal colors. original: new Color(121,214,253);
+	public static final Color RED = new Color(0,255,8);//new Color(250,147,38);
 	public static int offset = 0;
 	//private static int MAP_ID = 0;
 
@@ -54,8 +60,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	@SuppressWarnings("unused")
 	private Start mainFrame;
 	public EntityPlayer player; 
-	private boolean singlePlayer = false; //when testing this at school before I have the web thing figured out, you will need to set this to true.
-	//this may become a nice 1 vs 2 player feature, that can be set somewhere. For now, it is just a testing thing.
 	public EntityPlayer otherPlayer = null; 
 	public static GamePanel instance;
 
