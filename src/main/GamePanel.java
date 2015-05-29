@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 	//---------------------------------------------------------------
 	
 	
-	public static final int PWIDTH = (20*16)*2; // size of panel
+	public static final int PWIDTH = 16*16*2; // size of panel
 	public static final int PHEIGHT = (10*16+9)*2; 
 	public static final int DHEIGHT = 32*16;
 	public static final int DWIDTH= 256*16;
@@ -111,7 +111,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener,MouseList
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		map = new Map();
-		int[] playerLocs = map.loadMap("map1");//playerLocs holds location of the player. For now, both players start in the same place, so used for both.
+		int[] playerLocs = map.loadMap("testmap");//playerLocs holds location of the player. For now, both players start in the same place, so used for both.
 		player = new EntityPlayer(playerLocs[0],playerLocs[1],"Chell");
 		player.setMap(map);
 		
