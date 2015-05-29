@@ -31,6 +31,7 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 	}
 	@Override
 	public void update() {
+		try {
 		int x = getX();
 		int y = getY();
 		Tile t= map.getTile(Map.pixelsToTiles(y), Map.pixelsToTiles(x));
@@ -41,7 +42,11 @@ public class EntityPortalHoriz_Red extends Entity implements IEntityPortal_Red{
 				y-=18;
 			}
 		}
-		setY(y);
+		setY(y);}
+		catch (Exception e)
+		{
+			
+		}
 	}
 	public boolean isHorizontal(){return true;}
 	public void setOtherPortal(IEntityPortal other){ otherportal = (IEntityPortal_Blue) other; }
